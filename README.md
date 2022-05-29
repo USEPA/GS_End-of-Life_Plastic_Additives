@@ -12,4 +12,11 @@ The increase in demands for plastics and consequently an increase in global plas
 
 This repository contains Excel spreadsheets used to calculate material flow throughout the plastics life cycle, with strong emphasis on chemical additives in the end-of-life stages. Three major scenarios were presented with the manuscript: 1) Current plastic waste management infrastructure, 2) implementing chemical recycling to the existing plastics recycling, and 3) extracting chemical additives prior to the manufacturing stage. 
 
-General guideline for each spreadsheet: There are many tabs present in all three spreadsheets, which makes first time navigation relatively confusing. 
+General guideline for each spreadsheet: The user would primarily modify values on the yellow tab, titled "US 2018 Facts - Sensitivity". Values highlighted in yellow may be changed for sensitivity analysis purposes. Please note that the values shown for MSW generated, recycled, incinerated, landfilled, composted, imported, exported, reexported, and other categories in this tab were based on 2018 data. Analysis for other years can be made possible with a replicate version of this spreadsheet and the necessary data to replace those of 2018.
+
+There are many other tabs present in all three spreadsheets, which makes first time navigation relatively confusing. However, most of the tabs, especially those that contains "Stream # - Description", do not require user interaction. They are intermediate calculations that change according to the user inputs. It is available for the user to see so that the calculation/method is transparent. The major results of these individual stream tabs are ultimately compiled into one summary tab. All streams throughout the plastics life cycle, for each respective scenario (1, 2, and 3), is shown in the "US Mat Flow Analysis 2018" tab. For each stream, we acounted the approximate mass of plastics found in MSW, additives that may be present, and nonplastics. 
+
+
+_____________________________________
+
+Scenario 1 spreadsheet uniquely contains Material Flow Analysis Summary, in addition the LCI. 
