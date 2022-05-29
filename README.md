@@ -38,3 +38,8 @@ _____________________________________
 Scenario 3 - Chemical additives are extracted from mechanically recycled plastics
 
 This hypothetical scenario examines the effects of implementing an extraction technique post-mechanical recycling on global warming potentials, chemical additive releases, and energy footprint. Chemical additive extraction is promising when performed as a solid-liquid extraction with dissolution-precipitation.48 Common extraction types may include shake-flask extraction, Soxhlet extraction, ultrasonic extraction, microwave-assisted extraction, supercritical fluid extraction, accelerated solvent extraction, and dissolution-precipitation.48 The success rate of these methods is highly dependent on the additives, plastics, and extraction conditions. 
+
+______________________________________
+Figures and Data - A gs analysis on eol plastic management
+
+This word document contains the raw data used to create all the figures in the main manuscript. The major references used to obtain the data are also included where appropriate.
