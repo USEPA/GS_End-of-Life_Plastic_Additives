@@ -2,7 +2,7 @@
 This repository contains the data supporting the development of a generic analysis of current U.S. End-of-Life (EoL) processing scenarios to track and estimate environmental releases of plastic additives throughout the plastic EoL stage.
 
 Associated Manuscript Title: A Generic Scenario Analysis of End-of-Life Plastic Management: Chemical Additives 
-Submitted to: Energy and Environmental Science Journal
+(to be) Submitted to: Energy and Environmental Science Journal
 https://pubs.rsc.org/en/journals/journalissues/ee#!recentarticles&adv
 
 
@@ -20,7 +20,7 @@ There are many other tabs present in all three spreadsheets, which makes first t
 _____________________________________
 Scenario 1 - Mechanical Recycling (Existing Recycling Infrastructure)
 
-This hypothetical scenario predicts the effects of increasing the mechanical recycling rate on the global warming potentials, chemical additive releases, and energy footprint.109 The maximum technical feasibility of plastic recovery from the collection, sorting, and mechanical can theoretically reach a maximum recovery of 72%, as reported by Brouwer et al.113 Therefore, the recovery rate of the plastics sent for recycling could theoretically be between 0 – 72%. Plastic waste exports value was held constant at 4.5% regardless of the increase in recycling efficiency.114 Incineration and landfilling are selected as the secondary method for processing nonrecyclable plastic and were held at a constant ratio of 17.2:82.8. 
+This hypothetical scenario predicts the effects of increasing the mechanical recycling rate on the global warming potentials, chemical additive releases, and energy footprint. The maximum technical feasibility of plastic recovery from the collection, sorting, and mechanical can theoretically reach a maximum recovery of 72%, as reported by Brouwer et al.113 Therefore, the recovery rate of the plastics sent for recycling could theoretically be between 0 – 72%. Plastic waste exports value was held constant at 4.5% regardless of the increase in recycling efficiency.114 Incineration and landfilling are selected as the secondary method for processing nonrecyclable plastic and were held at a constant ratio of 17.2:82.8. 
 
 Scenario 1 spreadsheet uniquely contains Material Flow Analysis Summary, in addition the LCI. In the "Material Flow Analysis Summary" tab, we represented the input, output, releases, exposures, and greenhouse gas emissions based on the amount of materials inputted into a specific stage in the plastics life cycle. 
 
@@ -37,7 +37,7 @@ The life cycle inventory for pyrolysis process was estimated based on the values
 _____________________________________
 Scenario 3 - Chemical additives are extracted from mechanically recycled plastics
 
-This hypothetical scenario examines the effects of implementing an extraction technique post-mechanical recycling on global warming potentials, chemical additive releases, and energy footprint. Chemical additive extraction is promising when performed as a solid-liquid extraction with dissolution-precipitation.48 Common extraction types may include shake-flask extraction, Soxhlet extraction, ultrasonic extraction, microwave-assisted extraction, supercritical fluid extraction, accelerated solvent extraction, and dissolution-precipitation.48 The success rate of these methods is highly dependent on the additives, plastics, and extraction conditions. 
+This hypothetical scenario examines the effects of implementing an extraction technique post-mechanical recycling on global warming potentials, chemical additive releases, and energy footprint. Chemical additive extraction is promising when performed as a solid-liquid extraction with dissolution-precipitation. Common extraction types may include shake-flask extraction, Soxhlet extraction, ultrasonic extraction, microwave-assisted extraction, supercritical fluid extraction, accelerated solvent extraction, and dissolution-precipitation. The success rate of these methods is highly dependent on the additives, plastics, and extraction conditions. 
 
 ______________________________________
 Figures and Data - A gs analysis on eol plastic management
