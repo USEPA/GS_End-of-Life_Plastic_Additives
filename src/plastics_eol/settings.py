@@ -37,6 +37,10 @@ DOWNLOADS_DIR = join(BASE_DIR, '..', 'docs')
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# Note: Git might complain about this secret being exposed. However, this
+# secret is not used in any production settings and thus is not a security risk.
+# For production environments, this SECRET_KEY will be overridden with a
+# different protected value via local_settings.py or a .env file.
 SECRET_KEY = 'django-insecure-h&jjm2=hrxojts#7&17g*lsvo5tc2ko(7%-5)!2jsba#w%zyd='
 
 # SECURITY WARNING: don't run with debug turned on in production!
