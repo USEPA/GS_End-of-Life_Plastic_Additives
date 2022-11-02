@@ -1,0 +1,63 @@
+{% extends 'base/site_base_support.html' %}
+{% load humanize %}
+
+{% block support_content %}
+{% if supports %}
+{% if support_type_name == 'suggestion' %}
+<p><h3>Submitted Suggestions: {{query_show}}</h3></p>
+{% else %} <!-- support_type_name == 'suggestion' -->
+<p><h3>Submitted Help Requests: {{query_show}}</h3></p>
+{% endif %}<!-- support_type_name == 'suggestion' -->
+
+<table class="usa-table">
+  <thead id="support_head">
+    <tr>
+      <th data-sortable scope="col">Ref Num</th>
+      <th data-sortable scope="col">Submitter</th>
+      <th data-sortable scope="col">Subject</th>
+      <th data-sortable scope="col">Description</th>
+      <th data-sortable scope="col">Date Created</th>
+      <th data-sortable scope="col">Date Addressed</th>
+      <th data-sortable scope="col">Review Notes</th>
+      <th data-sortable scope="col">Status</th>
+      <th data-sortable scope="col">Edit</th>
+      <th data-sortable scope="col">Show</th>
+      <th data-sortable scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody id="support_body">
+    {% for obj in supports %}
+      <tr>
+        <th scope="row">{{obj.id}}</th>
+        <td>{{obj.weblink}}</td>
+        <td>{{obj.subject}}</td>
+        <td>{{obj.the_description}}</td>
+        <td>{{obj.created|date:"Y-m-d"}}</td>
+        <td>{{obj.date_resolved|date:"Y-m-d"}}</td>
+        <td>{{obj.review_notes}}</td>
+        <td>{{obj.status}}</td>
+        <td>
+            {% if obj.user == user or user.is_staff %}
+            <a href="{% url 'support:edit_support' support_type_name obj.id %}">Edit</a>
+            {% else %} <!-- obj.user == user or user.is_staff -->
+            <p>Edit</p>
+            {% endif %} <!-- obj.user == user or user.is_staff -->
+        </td>
+        <td><a href="{% url 'support:show_support' support_type_name obj.id %}">Show</a></td>
+        <td>
+            {% if obj.user == user or user.is_staff %}
+            <a href="{% url 'support:delete_support' support_type_name obj.id %}">Delete</a>
+            {% else %} <!-- obj.user == user or user.is_staff -->
+            <p>Delete</p>
+            {% endif %} <!-- obj.user == user or user.is_staff -->
+        </td>
+      </tr>
+    {% endfor %} <!-- for obj in supports -->
+    </tbody>
+</table>
+<div class="usa-sr-only usa-table__announcement-region" aria-live="polite"></div>
+
+{% else %} <!-- supports -->
+<table><tr><td>No Support Issues Found For This Query.</td></tr></table>
+{% endif %} <!-- supports -->
+{% endblock %} <!-- support_content -->

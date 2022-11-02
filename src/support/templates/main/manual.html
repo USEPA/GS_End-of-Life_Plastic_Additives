@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="white-box">
+    <h3>{{APP_NAME}} Introduction</h3>
+    <div>
+        <p>{{APP_DESCRIPTION_SHORT}}</p>
+    </div>
+    <div>
+        <div class="well">
+            <h4>Quick links</h4>
+            {#<div><a href="{% url 'citation' %}">Download Citations (txt)</a></div>#}
+            <div><a href="{% url 'support:download_manual' %}">View the {{APP_NAME}} user manual</a></div>
+            <div><a href="{% url 'dashboard' %}">Access the main dashboard</a></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

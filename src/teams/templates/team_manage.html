@@ -1,0 +1,122 @@
+{% extends 'main/base.html' %} {% load humanize %} {% block content %}
+
+<h3>Manage memberships for team '{{team.name}}'</h3>
+
+{% if team.team_memberships %}
+<table class="usa-table usa-table--borderless">
+  <caption>
+    Total members: {{team.team_memberships | length}}
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Member</th>
+      <th scope="col">Date Added to Team</th>
+      <th scope="col">Permissions</th>
+      <th scope="col">Remove</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for membership in team.team_memberships %}
+    <tr>
+      <th scope="row">
+        {% if membership.member.first_name %}
+        {{membership.member.first_name}} {{membership.member.last_name}}
+        {% else %}
+        {{membership.member.username}}
+        {% endif %} <!-- endif membership.member.first_name -->
+      </th>
+      <td>{{membership.added_date|date:"Y-m-d"}}</td>
+      <td>
+        {% if membership.is_owner %} Owner {% else %} {% if user_can_edit %}
+        <form method="post" action="{% url 'team_manage' team_id %}">
+          {% csrf_token %}
+          <input type="hidden" name="command" value="canedit" />
+          <input type="hidden" name="user_id" value="{{membership.member.id}}"/>
+          <select type="submit" name="can_edit" onchange="this.form.submit()"
+                  class="form-item__select">
+            <option value="True" {% if membership.can_edit %} selected {% endif %}>
+              Can edit
+            </option>
+            <option value="False" {% if not membership.can_edit %} selected {% endif %}>
+              Can view
+            </option>
+          </select>
+        </form>
+        {% else %}
+        {% if membership.can_edit %}
+        Can edit
+        {% else %}
+        Can view
+        {% endif %} <!-- endif membership.can_edit -->
+        {% endif %} <!-- endif user_can_edit -->
+        {% endif %} <!-- endif membership.is_owner -->
+      </td>
+      <td>
+        {% if membership.is_owner == False and user_can_edit %}
+        <form method="post" action="{% url 'team_manage' team_id %}">
+          {% csrf_token %}
+          <input type="hidden" name="command" value="deleteuser" />
+          <input type="hidden" name="user_id" value="{{membership.member.id}}"/>
+          <button class="usa-button usa-button--unstyled" type="submit">
+            <svg class="usa-icon usa-icon--size-3">
+              <use href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#delete"></use>
+            </svg>
+          </button>
+        </form>
+        {% endif %} <!-- endif membership.is_owner == False and user_can_edit -->
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if user_can_edit %}
+<table class="usa-table usa-table--borderless">
+  <caption>
+    Add members: {{nonmembers | length}} available
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">User</th>
+      <th scope="col">Email</th>
+      <th scope="col">Add Member</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if nonmembers %}
+    {% for nonmember in nonmembers %}
+    <tr>
+      <th scope="row">
+        {% if nonmember.first_name %}
+        {{nonmember.first_name}} {{nonmember.last_name}}
+        {% else %}
+        {{nonmember.username}}
+        {% endif %} <!-- endif nonmember.first_name -->
+      </th>
+      <td>{{nonmember.email}}</td>
+      <td>
+        <form method="post" action="{% url 'team_manage' team_id %}">
+          {% csrf_token %}
+          <input type="hidden" name="command" value="adduser" />
+          <input type="hidden" name="user_id" value="{{nonmember.id}}" />
+          <button class="usa-button usa-button--unstyled" type="submit">
+            <svg class="usa-icon usa-icon--size-3">
+              <use href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#group_add"></use>
+            </svg>
+          </button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %} <!-- endfor nonmember in nonmembers -->
+    {% else %} <!-- else no available nonmembers -->
+    <tr>
+      <td colspan="3">No users available to add!</td>
+    </tr>
+    {% endif %} <!-- endif nonmembers -->
+  </tbody>
+</table>
+{% endif %} <!-- endif user_can_edit -->
+
+<a type="reset" class="usa-button button--danger" href="{% url 'team_list' %}" >Back to Teams List</a>
+{% endif %} <!-- endif team.team_memberships -->
+{% endblock %}

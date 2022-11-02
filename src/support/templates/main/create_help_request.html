@@ -1,0 +1,48 @@
+{% extends 'base/site_base_support.html' %}
+{% block support_content %}
+
+<h3>Enter request, save, add any attachments, submit</h3>
+<form class="form-horizontal" enctype="multipart/form-data" method="post" action="." role="form" novalidate>
+    {% csrf_token %}
+    {% if form.errors %}
+    <div class="usa-alert usa-alert--error" role="alert">
+        <div class="usa-alert__body">
+            <h5 class="usa-alert__heading">Please correct the following errors</h5>
+            {% for field in form %}
+            {% if field.errors %}
+            <p class="usa-alert__text">{{field.label_tag}} {{ field.errors|striptags }}</p>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if success %}
+    <div class="usa-alert usa-alert--success">
+        <div class="usa-alert__body">
+            <p class="usa-alert__text">The help request has been created.</p>
+        </div>
+    </div>
+    {% endif %}
+
+    {% for field in form %}
+    <div class="usa-form-group">
+        <label class="usa-label">
+            <div>{{field.label_tag}}</div>
+            <div class="definition">{{field.help_text}}</div>
+        </label>
+        {{field}}
+        {% if field.errors %}
+        <div class="usa-alert usa-alert--error" role="alert">
+            <div class="usa-alert__body">
+                <p class="usa-alert__text">{{field.errors.as_text}}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <div class="usa-form-group">
+        <input type="submit" value="Save" class="usa-button">
+    </div>
+</form>
+{% endblock %}

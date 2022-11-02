@@ -1,0 +1,60 @@
+<li class="menu__item">
+  <a href="{% url 'home' %}" class="menu__link">Home</a>
+</li>
+<li class="menu__item">
+  <a href="{% url 'about' %}" class="menu__link">About</a>
+</li>
+<li class="menu__item">
+  <a href="{% url 'contact' %}" class="menu__link">Contact</a>
+</li>
+
+{% if user.is_authenticated %}
+<li class="menu__item">
+  <a href="{% url 'dashboard' %}" class="menu__link">Dashboard</a>
+</li>
+
+<li class="menu__item has-subnav">
+  <button class="menu__link has-subnav usa-nav__link" aria-expanded="false">Teams</button>
+  <ul class="menu menu__subnav is-wide">
+    <li class="menu__item"><a href="/teams/list/" class="menu__link">Manage existing teams</a></li>
+    <li class="menu__item"><a href="/teams/team/" class="menu__link">Create a new team</a></li>
+  </ul>
+</li>
+
+<li class="menu__item has-subnav">
+  <button class="menu__link has-subnav usa-nav__link" aria-expanded="false">
+    Help/Suggestions
+  </button>
+  <ul class="menu menu__subnav is-wide">
+    <li class="menu__item"><a href="{% url 'support:go_to_support' %}" class="menu__link">Suggestions</a></li>
+    <li class="menu__item"><a href="{% url 'support:events' %}" class="menu__link">Upcoming Events</a></li>
+    <li class="menu__item"><a href="{% url 'support:references' %}" class="menu__link">Project References</a></li>
+  </ul>
+</li>
+
+<li class="menu__item has-subnav">
+  <button class="menu__link has-subnav usa-nav__link" aria-expanded="false">
+    Welcome
+    {% if user.first_name %}
+    {{user.first_name}}
+    {% else %}
+    {{user.username}}
+    {% endif %}
+  </button>
+  <ul class="menu menu__subnav is-wide">
+    <li class="menu__item"><a href="{% url 'accounts:profile' %}" class="menu__link">My profile</a></li>
+    {% if user.is_staff %}
+    <li class="menu__item"><a href="{% url 'admin:index' %}" class="menu__link">Admin Portal</a></li>
+    {% endif %}
+    <li class="menu__item"><a href="{% url 'accounts:logout' %}" class="menu__link">Logout</a></li>
+  </ul>
+</li>
+
+{% else %}
+<li class="menu__item">
+  <a href="{% url 'accounts:register' %}" class="menu__link">Register</a>
+</li>
+<li class="menu__item">
+  <a href="{% url 'accounts:login' %}" class="menu__link">Log-in</a>
+</li>
+{% endif %}

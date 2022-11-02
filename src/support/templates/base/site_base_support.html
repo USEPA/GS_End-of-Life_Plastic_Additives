@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="grid-row">
+    <div class="grid-col-3">
+        <div class="usa-card grid-col-12">
+            <div class="usa-card__container">
+                <header class="usa-card__header">
+                    <h4 class="usa-card__heading">Help</h4>
+                </header>
+                <div class="usa-card__body">
+                    <p><a href="{% url 'support:create_support' 'help' %}">Request Help</a></p>
+                    <p><a class="" href="{% url 'support:list_supports' 'help' %}">Show Help Requests</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="usa-card grid-col-12">
+            <div class="usa-card__container">
+                <header class="usa-card__header">
+                    <h4 class="usa-card__heading">Suggestions</h4>
+                </header>
+                <div class="usa-card__body">
+                    <p><a href="{% url 'support:create_support' 'suggestion' %}">Make Suggestion</a></p>
+                    <p><a href="{% url 'support:list_supports' 'suggestion' %}">Show Submitted Suggestions</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-col-8 margin-1em">
+        {% block support_content %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+

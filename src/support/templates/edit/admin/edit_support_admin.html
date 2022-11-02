@@ -1,0 +1,163 @@
+{% extends 'base/site_base_support.html' %}
+{% block support_content %}
+<script>
+    $(function () {
+        var ul = $('#upload ul');
+        // Change this to the location of your server-side upload handler:
+        var url = '/support/file/upload/{{obj.id}}/';
+
+        $('#drop a').click(function(){
+            // Simulate a click on the file input button
+            // to show the file browser dialog
+            $(this).parent().find('input').click();
+        });
+
+        // Initialize the jQuery File Upload plugin
+        $('#upload').fileupload({
+            // This element will accept file drag/drop uploading
+            dropZone: $('#drop'),
+
+            // This function is called when a file is added to the queue;
+            // either via the browse button, or via drag/drop:
+            add: function (e, data) {
+                var tpl = $('<li class="working"><input type="text" value="0" data-width="48" data-height="48"'+
+                ' data-fgColor="#0788a5" data-readOnly="1" data-bgColor="#3e4043" /><p></p><span></span></li>');
+                // Append the file name and file size
+                tpl.find('p').text(data.files[0].name).append('<i>' + formatFileSize(data.files[0].size) + '</i>');
+                // Add the HTML to the UL element
+                data.context = tpl.appendTo(ul);
+                // Initialize the knob plugin
+                tpl.find('input').knob();
+                // Listen for clicks on the cancel icon
+                tpl.find('span').click(function(){
+                if(tpl.hasClass('working')){
+                    jqXHR.abort();
+                }
+                tpl.fadeOut(function(){
+                    tpl.remove();
+                });
+            });
+
+            // Automatically upload the file once it is added to the queue
+            var jqXHR = data.submit();
+        },
+
+      progress: function(e, data){
+            // Calculate the completion percentage of the upload
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            // Update the hidden input field and trigger a change
+            // so that the jQuery knob plugin knows to update the dial
+            data.context.find('input').val(progress).change();
+            if(progress == 100){
+                data.context.removeClass('working');
+            }
+        },
+
+        fail:function(e, data){
+            // Something has gone wrong!
+            data.context.addClass('error');
+        }
+    });
+
+    // Prevent the default action when a file is dropped on the window
+    $(document).on('drop dragover', function (e) {
+        e.preventDefault();
+    });
+
+    // Helper function that formats the file sizes
+    function formatFileSize(bytes) {
+        if (typeof bytes !== 'number') {
+            return '';
+        }
+        if (bytes >= 1000000000) {
+            return (bytes / 1000000000).toFixed(2) + ' GB';
+        }
+        if (bytes >= 1000000) {
+            return (bytes / 1000000).toFixed(2) + ' MB';
+        }
+        return (bytes / 1000).toFixed(2) + ' KB';
+    }
+});
+</script>
+
+<h3>Edit Suggestion (Admin):</h3>
+<form class="form-horizontal" enctype="multipart/form-data" method="post" action="." role="form" novalidate>
+    {% csrf_token %}
+    {% if form.errors %}
+    <div class="usa-alert usa-alert--error" role="alert">
+        <div class="usa-alert__body">
+            <h5 class="usa-alert__heading">Please correct the following errors</h5>
+            {% for field in form %}
+            {% if field.errors %}
+            <p class="usa-alert__text">{{field.label_tag}} {{ field.errors|striptags }}</p>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="usa-alert usa-alert--success">
+        <div class="usa-alert__body">
+            <p class="usa-alert__text">The progam has been created.</p>
+        </div>
+    </div>
+    {% endif %}
+
+    {% for field in form %}
+    <div class="usa-form-group">
+        <label class="usa-label">
+            <div>{{field.label_tag}}</div>
+            <div class="help-block">{{field.help_text}}</div>
+        </label>
+        {{field}}
+        {% if field.errors %}
+        <div class="usa-alert usa-alert--error" role="alert">
+            <div class="usa-alert__body">
+                <p class="usa-alert__text">{{field.errors.as_text}}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <div class="usa-form-group">
+        <input type="submit" value="Submit" class="usa-button">
+    </div>
+</form>
+
+
+{% if support_attachments %}
+<table class="usa-table" id="support_attachments_table">
+    <caption>File Attachments</caption>
+    <thead id="support_attachments_head">
+        <tr>
+            <th data-sortable scope="col">Filename</th>
+            <th data-sortable scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody id="support_attachments_body">
+        {% for obj in support_attachments %}
+            <tr>
+                <th scope="row">
+                    <a href="{{MEDIA_URL}}{{obj.attachment|urlencode}}">{{obj.the_name}}</a>
+                </th>
+                <td>
+                    <a href="{% url 'support:delete_support_attachment' obj.id %}">Remove</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="usa-sr-only usa-table__announcement-region" aria-live="polite"></div>
+{% endif %}
+
+{% if support.id %}
+<form id="upload" method="post" action="{% url 'support:file_upload_support' support.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    Drop Files ONLY Here
+    <a>Browse</a>
+    <input type="file" name="upl" multiple />
+    <ul><!-- The file uploads will be shown here --></ul>
+</form>
+{% endif %}
+{% endblock %}

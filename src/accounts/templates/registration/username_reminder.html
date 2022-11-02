@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+<!-- Password reset request form -->
+{% block content %}
+<h4>Forgot username</h4>
+
+<!-- code for displaying success or error message -->
+{% if messages %}
+<div class="usa-alert usa-alert--error" role="alert">
+    <div class="usa-alert__body">
+        {% for message in messages %}
+        <p class="usa-alert__text">{{ message }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Form rendering code for template -->
+<form action="" method="post" role="form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="usa-button" type="submit" value="Submit" />
+</form>
+{% endblock %}

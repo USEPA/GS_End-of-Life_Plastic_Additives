@@ -1,0 +1,7 @@
+PySimpleGUI
+numpy
+networkx
+# tkinter
+matplotlib
+# PIL
+pandas

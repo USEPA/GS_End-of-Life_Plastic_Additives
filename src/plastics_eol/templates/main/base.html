@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html class="no-js pattern-lab-content" lang="en" dir="ltr">
+    {% include 'main/base_head.html' %}
+
+    <main id="main" class="main" role="main" tabindex="-1">
+      {% block main %}
+      <div class="l-page">
+        <div class="l-constrain">
+          {% block content %} {% endblock %}
+        </div>
+      </div>
+      {% endblock %}
+    </main>
+
+    {% include 'epa/footer.html' %}
+
+    <a href="#" class="back-to-top" title="">
+      <svg class="back-to-top__icon" role="img" aria-label="">
+        <use href="https://www.epa.gov/themes/epa_theme/images/sprite.artifact.svg#arrow"></use>
+      </svg>
+    </a>
+    {% include 'epa/scripts.html' %}
+    {% include 'main/app_scripts.html' %}
+    <!-- Custom Addition: Include any extra JS files: -->
+    {% block extend_js %} {% endblock %}
+    <!-- Custom Addition: Block where child pages will put script blocks: -->
+    {% block scripts %}{% endblock %}
+</html>

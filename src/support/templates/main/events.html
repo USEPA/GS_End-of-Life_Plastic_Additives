@@ -1,0 +1,35 @@
+﻿{% extends 'main/base.html' %}
+{% block content %}
+<h2>Upcoming Events</h2>
+<h4>
+    Check back often for upcoming events, presentations,
+    training sessions, and more on the {{APP_NAME}} tool.
+</h4>
+<hr />
+<ul class="usa-card-group">
+    <li class="usa-card usa-card--flag tablet:grid-col-12">
+        <div class="usa-card__container">
+            <header class="usa-card__header">
+                <h4 class="usa-card__heading">
+                    Example
+                </h4>
+            </header>
+            <div class="usa-card__media grid-col-3">
+                <div class="usa-card__img">
+                    <div class="margin-2em">
+                        <h4>TUE</h4>
+                        <h4>November 1</h4>
+                        <h4>2022</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="usa-card__body">
+                <!-- NOTE: This section is paragraph text in an event card's body. -->
+                <p>
+                    Created this page. <mark>Use as an example.</mark>
+                </p>
+            </div>
+        </div>
+    </li>
+</ul>
+{% endblock %}
