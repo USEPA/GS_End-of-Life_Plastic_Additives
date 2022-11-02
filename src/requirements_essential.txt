@@ -7,6 +7,10 @@
 # This method ensures that all installed packages are in the requirements file, which
 # includes packages that are sub-requirements of other packages.
 
-django==4.1.3
-djangorestframework==3.14.0
-psycopg2==2.9.5
+black==22.10.0                # Package used to auto-format Python code.
+yapf==0.32.0                  # Package used to auto-format Python code.
+
+django==4.1.3                 # MVC-like framework for Python.
+djangorestframework==3.14.0   # REST framework support in Django.
+psycopg2==2.9.5               # PostgreSQL support.
+pycodestyle==2.9.1            # Python code linter.

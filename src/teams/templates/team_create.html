@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="white-box">
-    <form method="post" action="{% url 'team_create' %}">
+    <form method="post" action="{% url 'teams:team_create' %}">
         {% if form.errors %}
         <div class="usa-alert usa-alert--error" role="alert">
             <div class="usa-alert__body">
@@ -34,7 +34,7 @@
 
         <div class="button-group">
             <button type="submit" class="usa-button">Save</button>
-            <a type="reset" class="usa-button button--danger" href="{% url 'team_list' %}">Cancel</a>
+            <a type="reset" class="usa-button button--danger" href="{% url 'teams:team_list' %}">Cancel</a>
         </div>
     </form>
 </div>

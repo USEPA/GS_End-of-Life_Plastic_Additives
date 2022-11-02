@@ -28,7 +28,7 @@
       <td>{{membership.added_date|date:"Y-m-d"}}</td>
       <td>
         {% if membership.is_owner %} Owner {% else %} {% if user_can_edit %}
-        <form method="post" action="{% url 'team_manage' team_id %}">
+        <form method="post" action="{% url 'teams:team_manage' team_id %}">
           {% csrf_token %}
           <input type="hidden" name="command" value="canedit" />
           <input type="hidden" name="user_id" value="{{membership.member.id}}"/>
@@ -53,7 +53,7 @@
       </td>
       <td>
         {% if membership.is_owner == False and user_can_edit %}
-        <form method="post" action="{% url 'team_manage' team_id %}">
+        <form method="post" action="{% url 'teams:team_manage' team_id %}">
           {% csrf_token %}
           <input type="hidden" name="command" value="deleteuser" />
           <input type="hidden" name="user_id" value="{{membership.member.id}}"/>
@@ -95,7 +95,7 @@
       </th>
       <td>{{nonmember.email}}</td>
       <td>
-        <form method="post" action="{% url 'team_manage' team_id %}">
+        <form method="post" action="{% url 'teams:team_manage' team_id %}">
           {% csrf_token %}
           <input type="hidden" name="command" value="adduser" />
           <input type="hidden" name="user_id" value="{{nonmember.id}}" />
@@ -117,6 +117,6 @@
 </table>
 {% endif %} <!-- endif user_can_edit -->
 
-<a type="reset" class="usa-button button--danger" href="{% url 'team_list' %}" >Back to Teams List</a>
+<a type="reset" class="usa-button button--danger" href="{% url 'teams:team_list' %}" >Back to Teams List</a>
 {% endif %} <!-- endif team.team_memberships -->
 {% endblock %}
