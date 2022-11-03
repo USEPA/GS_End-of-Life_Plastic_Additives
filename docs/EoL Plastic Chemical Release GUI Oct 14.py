@@ -31,7 +31,7 @@ y = (hs/2) - (h/2)
 #set the dimensions of the screen  and where it is placed
 EoLPlasticgui.geometry('%dx%d+%d+%d' % (w, h, x, y-25))
 
-    
+
 #Create frames for GUI
 my_frame1 = Frame(my_program, width=300, height=300, bg="white") #Home frame
 userSpecificationsFrame = Frame(my_program, width = 300, height = 300, bg = 'white') #User specs frame
@@ -64,24 +64,24 @@ my_program.add(my_frame6, text = "Chemical Additives Database")
 
 
 #Create dictionaries of constant values that are from assumptions and will be used in calculations
-assumedValues={"Plastic waste lost to littering":0.02, "Plastic waste leak after landfill":0.1, "Plastic content in compost":0.01, 
-               "Total compost stream mass multiplier":1.01, "Total mass of plastic in compost stream(Tons):":426_000, 
+assumedValues={"Plastic waste lost to littering":0.02, "Plastic waste leak after landfill":0.1, "Plastic content in compost":0.01,
+               "Total compost stream mass multiplier":1.01, "Total mass of plastic in compost stream(Tons):":426_000,
                "Additive migration Fraction":0.02, "Incineration Efficiency Fraction":0.9999}
 
 #Creates dictionary of low additive Fractions. key = type of additive F6:F21; value = low value for bulk mass proportion G6:G21
-lowAdditiveFractions = {"Plasticizer":0.1, "Flame Retardant":0.007, "UV Stabilizer": 0.005, "Heat Stabilizer":0.005, "Antioxidant":0.005, "Slip Agent":0.001, "Lubricant":0.001, 
-                        "Antistatic":0.001, "Curing Agent":0.001, "Blowing Agent":0.005, "Biocide":0.00001, "Colorant": 0.0025, "Organic Pigment":0.00001, 
+lowAdditiveFractions = {"Plasticizer":0.1, "Flame Retardant":0.007, "UV Stabilizer": 0.005, "Heat Stabilizer":0.005, "Antioxidant":0.005, "Slip Agent":0.001, "Lubricant":0.001,
+                        "Antistatic":0.001, "Curing Agent":0.001, "Blowing Agent":0.005, "Biocide":0.00001, "Colorant": 0.0025, "Organic Pigment":0.00001,
                         "Clarifier/Toner": 0.00015, "Inorganic Pigment": 0.0001, "Filler": 0.00001, "Reinforcement": 0.15}
 
 #Create lists of categories to be paired with data for each year
-conditionsCategories = ["Total MSW (Tons):", "Total Plastic waste (Tons):", "Plastic Recycled (Total, domestic and export)", 
-                        "Plastic Domestically Recycled Fraction", "Efficiency of Domestic Recycling", "Plastic Export Fraction", 
+conditionsCategories = ["Total MSW (Tons):", "Total Plastic waste (Tons):", "Plastic Recycled (Total, domestic and export)",
+                        "Plastic Domestically Recycled Fraction", "Efficiency of Domestic Recycling", "Plastic Export Fraction",
                         "Plastic Re-Export Fraction", "Plastic Incinerated Fraction", "Plastic Landfilled Fraction", "Waste Facility Emissions"]
 
-typesOfWastes = ["Misc. Inorganic Waste", "Other", "Yard Trimmings", "Food", "Rubber, Leather and Textiles", "Wood", "Metals", "Glass", 
+typesOfWastes = ["Misc. Inorganic Waste", "Other", "Yard Trimmings", "Food", "Rubber, Leather and Textiles", "Wood", "Metals", "Glass",
                  "Paper and Paperboard", "Plastics"]
 
-typesOfWastesForCalculations = ["Misc. Inorganic Waste", "Other", "Yard Trimmings", "Food", "Rubber, Leather and Textiles", "Wood", "Metals", "Glass", 
+typesOfWastesForCalculations = ["Misc. Inorganic Waste", "Other", "Yard Trimmings", "Food", "Rubber, Leather and Textiles", "Wood", "Metals", "Glass",
                  "Paper and Paperboard"] #Note: This is the same as the one above without a plastics string
 
 #Creates list of strings of types of plastics in domestic calculations
@@ -154,7 +154,7 @@ plasticLandFractionsList2018 = [0.13410900183711, 0.175750153092468, 0.025719534
 plasticRecycledFractionsList2018 = [0.148179271708683, 0.176470588235294, 0.0235294117647059, 0.240616246498599, 0.00252100840336134, 0.228291316526611, 0.0633053221288515, 0.116526610644258]
 
 plasticIncinFractionsList2018 = [0.13410900183711, 0.175750153092468, 0.0257195345988977, 0.251684017146356, 0.00275566442131047, 0.248009797917942, 0.0685854255970606, 0.0933864053888549]
- 
+
 
 
 #Creates list of each kind of additive added to each type of plastic based on stream 6 additive categories
@@ -172,7 +172,7 @@ LDPEadditiveTypes = ["Antioxidant", "Slip Agent", "UV Stabilizer", "Flame Retard
 
 PLAadditiveTypes = ["Plasticizer", "Heat Stabilizer", "Filler", "Reinforcement", "Biocide", "Antioxidant", "Colorant"]
 
-otherResinAdditives = ["Plasticizer", "Antioxidant", "UV Stabilizer", "Colorant", "Flame Retardant", "Curing Agent", "Blowing Agent", "Biocide", "Clarifier/Toner", 
+otherResinAdditives = ["Plasticizer", "Antioxidant", "UV Stabilizer", "Colorant", "Flame Retardant", "Curing Agent", "Blowing Agent", "Biocide", "Clarifier/Toner",
                        "Inorganic Pigment", "Heat Stabilizer", "Organic Pigment", "Filler", "Reinforcement", "Lubricant", "Slip Agent", "Antistatic"]
 
 #Creates list of 8 preceding lists
@@ -201,7 +201,7 @@ def backwardsLumpPlasticCalculator(resinMassList, typeOfResin, additiveList):
     additiveFraction = sum([lowAdditiveFractions[i] for i in additiveList]) #Finds total Fraction of bulk mass that is resin
     lumpSum = resinMassList[typeOfResin]/(1-additiveFraction) #Divides to find bulk mass
     return lumpSum
-        
+
 
 def trvwListMaker(listOfDicts): #Creates lists that will be eventually added to LCI TRVW tables. Takes argument of list of dictionaries that are to be examined
     newList = []
@@ -215,7 +215,7 @@ def trvwListMaker(listOfDicts): #Creates lists that will be eventually added to 
                 q= float(q) #if value is a number, will and round to three decimal places and add to the TRVW list
                 subList.append(round(q,3))
             except ValueError:
-                subList.append(d[i]) #if value is not a number (if it is 'Unavaible'), it will be added 
+                subList.append(d[i]) #if value is not a number (if it is 'Unavaible'), it will be added
         for b in range(len(subList)):
             if subList[b] == 0:
                 subList[b] = "Negligible" #Changes 0's to negligible
@@ -228,11 +228,11 @@ def streamSummaryTRVWLister(listOfDicts, category): #creates lists that will be 
     for i in listOfDicts:
         if category in i:
             trvwList.append(i[category]) #adds values corresponding to category from dictionary to this list if there is one, otherwise adds 0
-        else: 
+        else:
             trvwList.append(0)
     return trvwList
 #Will accomplish recycling scaling calculations (Sensitivty Facts G9:G16)
-def recycleScaler(reportedList, plasticTotal, recycledFraction): #takes input of types of plastics, total plastic mass, and Fraction of plastic that is recycled 
+def recycleScaler(reportedList, plasticTotal, recycledFraction): #takes input of types of plastics, total plastic mass, and Fraction of plastic that is recycled
     newScaledDict = dict(zip(typesOfPlasticDomestic,[plasticTotal*recycledFraction/sum(reportedList)*i for i in reportedList])) #creates dictionary from above list
     return newScaledDict
 
@@ -249,7 +249,7 @@ def trvwRounder(num): #rounds numbers in stream summary trvw based on its magnit
                     value = '<0.1'
             else:
                 value = '<0.5'
-        else: 
+        else:
             value = '<1'
     else:
         value = '{:,}'.format(round(num))
@@ -261,10 +261,10 @@ def checkEntry(check): #will be used to make sure all data has an input
 
 def makeCalculations():
     assignValues() #will be removed before distribution. This is a programming shortcut
-    
+
     #creates list of lists of input data
     listOfDataLists = [conditions, mswCompProp, mswRecyc, mswIncin, mswLand, mswCompost, repRecPlastics, repPlasticImport, repPlasticsExport,
-                   repPlasticsReExport, plasticLandFractionsList, plasticRecycledFractionsList, plasticIncinFractionsList] 
+                   repPlasticsReExport, plasticLandFractionsList, plasticRecycledFractionsList, plasticIncinFractionsList]
 
     #Checks entry data lists to make sure they have data in there and returns error if necesssary
     for i in listOfDataLists:
@@ -279,52 +279,52 @@ def makeCalculations():
     matFlowMechRecycTRVW.delete(*matFlowMechRecycTRVW.get_children())
     matFlowIncinTRVW.delete(*matFlowIncinTRVW.get_children())
     matFlowLandTRVW.delete(*matFlowLandTRVW.get_children())
-    
-    
-    
-    
+
+
+
+
     #Creates dict of Fractions of total plastic landfilled are associated with each type of plastic
     plasticLandFractions = dict(zip(typesOfPlasticDomestic, plasticLandFractionsList))
 
-    
+
     #Creates dictionary of proportion of each type of plastic that has been recycled. key = type of plastic A5:A12; value = proportion of each type of plastic in MSW stream B5:B12
     plasticFractionsRecycled = dict(zip(typesOfPlasticDomestic, plasticRecycledFractionsList))
-    
+
     #Creates dict of incineration Fractions for each kind of plastic. Key = type of plastic, value = proportion of incineration make up
     plasticIncinFractionsDict = dict(zip(typesOfPlasticDomestic, plasticIncinFractionsList))
-    
+
     #Create dictionaries of data, associating category with value
-    mswGeneratedProps = dict(zip(typesOfWastes, mswCompProp)) #key = MSW waste, value = proportion of MSW 
-    
+    mswGeneratedProps = dict(zip(typesOfWastes, mswCompProp)) #key = MSW waste, value = proportion of MSW
+
     mswConditions = dict(zip(conditionsCategories, conditions)) #key = conditions (total MSW, total plastic, plastic recycled, etc.)
-    
-    
+
+
     #Creates dictionary of international recycling values
     repPlasticImportDict = dict(zip(typesOfPlasticsInternational, repPlasticImport))
-    
+
     repPlasticsExportDict = dict(zip(typesOfPlasticsInternational, repPlasticsExport))
-    
+
     repPlasticsReExportDict = dict(zip(typesOfPlasticsInternational, repPlasticsReExport))
-    
-    
-    
-    
-    
+
+
+
+
+
     #Creates dictionary of scaled recycled masses (key = type of plastic, value = bulk mass of plastic and additives)
     scaledRec = recycleScaler(repRecPlastics, conditions[1], conditions[2]) #G9:G16
-    
-    
-    
+
+
+
     ##########################################################################################################
     ##########################################################################################################
     #Stream 6 Calculations
     #Sheet = Stream 6 - PWaste Generated
     #Creates dictionary with total mass of each total type of plastic generated (total mass of plastics generated * Fraction of each kind of plastic). key = type of plastic A5:A12; value = bulk mass including additives C5:C12
     plasticsMassDict = dict(zip(typesOfPlasticDomestic, [plasticFractionsRecycled[i] * conditions[1] for i in typesOfPlasticDomestic]))
-    
-    
-    
-    #Creates dicts of additive masses in each kind of plastic in 
+
+
+
+    #Creates dicts of additive masses in each kind of plastic in
     PETAdditiveMasses = additiveMassCalculator(PETadditiveTypes, "PET", plasticsMassDict)
     HDPEAdditiveMasses = additiveMassCalculator(HDPEadditiveTypes, "HDPE", plasticsMassDict)
     PVCAdditiveMasses = additiveMassCalculator(PVCadditiveTypes, "PVC", plasticsMassDict)
@@ -333,220 +333,220 @@ def makeCalculations():
     LDPEAdditiveMasses = additiveMassCalculator(LDPEadditiveTypes, "LDPE", plasticsMassDict)
     PLAAdditiveMasses = additiveMassCalculator(PLAadditiveTypes, "PLA", plasticsMassDict)
     otherResinAdditivesMasses = additiveMassCalculator(otherResinAdditives, "Other Resin", plasticsMassDict)
-    
+
     #Creates list of preceding 8 dicts
     listOfStream6Additives_ = [PETAdditiveMasses, HDPEAdditiveMasses, PVCAdditiveMasses, LDPEAdditiveMasses,   PLAAdditiveMasses,
                                    PPAdditiveMasses, PSAdditiveMasses, otherResinAdditivesMasses]
-    
+
     averageDensityCalculation = sum([polymerWasteDensity[i]*plasticFractionsRecycled[i] for i in typesOfPlasticDomestic])* 0.00000110231
     ##########################################################################################################################
     #Stream 16 Calculations
     #Sheet = Stream 16 - MechRecyc
-    
+
     #Creates dictionary of bulk masses by multiplying scaled recycling values by the ratio of domestic recycled plastic to total recycled plastic
     stream16PlasticCalcMasses = dict(zip(typesOfPlasticDomestic, [conditions[3]/conditions[2]*scaledRec[i] for i in typesOfPlasticDomestic]))
-    
+
     #Creates dictionary of masses of each kind of additive in each kind of plastic
     stream16PET = additiveMassCalculator(PETadditiveTypes, "PET", stream16PlasticCalcMasses)
     stream16HDPE = additiveMassCalculator(HDPEadditiveTypes, "HDPE", stream16PlasticCalcMasses)
     stream16PVC = additiveMassCalculator(PVCadditiveTypes, "PVC", stream16PlasticCalcMasses)
     stream16PP = additiveMassCalculator(PPadditiveTypes, "PP", stream16PlasticCalcMasses)
-    stream16PS = additiveMassCalculator(PSadditiveTypes, "PS", stream16PlasticCalcMasses)   
+    stream16PS = additiveMassCalculator(PSadditiveTypes, "PS", stream16PlasticCalcMasses)
     stream16LDPE = additiveMassCalculator(LDPEadditiveTypes, "LDPE", stream16PlasticCalcMasses)
     stream16PLA = additiveMassCalculator(PLAadditiveTypes, "PLA", stream16PlasticCalcMasses)
     stream16Other = additiveMassCalculator(otherResinAdditives, "Other Resin", stream16PlasticCalcMasses)
-    
+
     #Creates dict of emissions factors per M24:M31. Key = type of additive, value = emission factor
     emissionFactors = {"PET":-1.13, "HDPE":-.88, "PVC":0, "LDPE":0, "PLA": 0, "PP":0, "PS":0, "Other Resin":-1.03}
-    
-    #Creates list of additive dicts in stream 16 
+
+    #Creates list of additive dicts in stream 16
     listOfstream16Additives = [stream16PET, stream16HDPE, stream16PVC, stream16LDPE, stream16PLA, stream16PP, stream16PS,  stream16Other]
-    
+
     #Calculates total amount of each kind of additive in stream 16; key = type of additive, value = total mass of additive
     totalAdditivesStream16_ = dict(zip(otherResinAdditives, [totalOfAdditiveType(i, listOfstream16Additives) for i in otherResinAdditives])) #Dict of additive in stream 16
-    
-    #Calculates Fraction of each additive of total mass of additives in stream 16; key = type of additive, value = Fraction of total 
+
+    #Calculates Fraction of each additive of total mass of additives in stream 16; key = type of additive, value = Fraction of total
     additiveFractionsStream16_ = dict(zip(otherResinAdditives, [totalAdditivesStream16_[i]/sum(totalAdditivesStream16_.values()) for i in otherResinAdditives]))
-    
+
     #Calculates total amount of each resin in stream 16; key = type of plastic, value = mass of resin
     stream16ResinMasses_ = dict(zip(typesOfPlasticDomestic, [totalResinCalculator(typesOfPlasticDomestic[i], stream16PlasticCalcMasses, listOfstream16Additives[i]) for i in range(8)]))
-    
-    
-    
+
+
+
     ############################################################################################
     #Stream 17
-    
-    #Creates dict by calculating emissions from stream 16 per emissions factors and converts to Tons of CO2. 
+
+    #Creates dict by calculating emissions from stream 16 per emissions factors and converts to Tons of CO2.
     #Multiplies bulk mass of each plastic by emission factor and then converts to Tons. Key = type of plastic, value = emissions in Tons of CO2
     emissionStream16 = dict(zip(typesOfPlasticDomestic, [emissionFactors[i]*stream16PlasticCalcMasses[i]*1.10231 for i in typesOfPlasticDomestic]))
-    
-    
+
+
     #############################################################################################
     #Stream 19
     #Sheet = Stream 19 - Contamination
-    #Creates dict of additive contaminations. Key = type of additive; value = contamination 
+    #Creates dict of additive contaminations. Key = type of additive; value = contamination
     additiveContaminationConstant = 0.0415 #C11
-    
+
     #Multiplies Fraction of each kind of additive by the total of plastic bulk masses in stream 16 and by the contamination constant
     stream19AdditivesTotals = dict(zip(otherResinAdditives, [additiveFractionsStream16_[i]*sum(stream16PlasticCalcMasses.values())*(additiveContaminationConstant) for i in otherResinAdditives]))
-    
-    
+
+
     #Calculates additives and degradation products in stream 19
     stream19Contaminants = sum(stream16PlasticCalcMasses.values())*0.0065
     stream19DegradationProducts = sum(stream16PlasticCalcMasses.values())*0.0515
-    
-    
-    
+
+
+
     #################################################################################################
     #Stream 4 Calculations
-    #Sheet = US Mat Flow Analysis 
+    #Sheet = US Mat Flow Analysis
     #Creates dict of total resin in stream 4, based on stream 6 and bulk plastic manufacturing for . Key = type of plastic, value = mass of resin
     stream4ResinMasses_ = dict(zip(typesOfPlasticDomestic, [totalResinCalculator(typesOfPlasticDomestic[i], plasticsMassDict, listOfStream6Additives_[i]) for i in range(8)]))
-    
+
     #Creates dict of total additives in stream 4, based on stream 6 and bulk plastic manufacturing for . Key = type of additive, value = mass of additive
     stream4AdditiveMasses_ = dict(zip(otherResinAdditives, [totalOfAdditiveType(i, listOfStream6Additives_) for i in otherResinAdditives]))
-    
-    
+
+
     ##############################################################################################
     #Stream 18 Calculations
-    #Sheet = US Mat Flow Analysis 
+    #Sheet = US Mat Flow Analysis
     #Creates dict of additive migration occuring in stream 18 by multiplying the mass of each kind of additive in stream 16 by the additive migration constant (0.02)
     stream18AdditiveMigration = dict(zip(otherResinAdditives, [0.02*totalAdditivesStream16_[i] for i in otherResinAdditives]))
-    
-    
+
+
     ###################################################################################################
     #Stream 21 Calculations
     #Sheet = Stream 21 - Import
-    
-    #Creates dict with key = type of plastic and value = amount of type of plastic imported based on reported Imported plastics in 
-    stream21PlasticMasses = {"PET":repPlasticImportDict["Other"]*0.4, "HDPE": repPlasticImportDict["Ethylene"]/2, "PVC":repPlasticImportDict["Vinyl Chloride"], 
+
+    #Creates dict with key = type of plastic and value = amount of type of plastic imported based on reported Imported plastics in
+    stream21PlasticMasses = {"PET":repPlasticImportDict["Other"]*0.4, "HDPE": repPlasticImportDict["Ethylene"]/2, "PVC":repPlasticImportDict["Vinyl Chloride"],
                              "LDPE":repPlasticImportDict["Ethylene"]/2, "PLA":0, "PP":0, "PS":repPlasticImportDict["Styrene"], "Other Resin": repPlasticImportDict["Other"]*0.6} #includes resin and additives lumped together
-    
-    
+
+
     #Creates dict of each kind of additive in each kind of plastic. Key = additive, value = mass of that additive
     stream21PET = additiveMassCalculator(PETadditiveTypes, "PET", stream21PlasticMasses)
     stream21HDPE = additiveMassCalculator(HDPEadditiveTypes, "HDPE", stream21PlasticMasses)
     stream21PVC = additiveMassCalculator(PVCadditiveTypes, "PVC", stream21PlasticMasses)
     stream21PP = additiveMassCalculator(PPadditiveTypes, "PP", stream21PlasticMasses)
-    stream21PS = additiveMassCalculator(PSadditiveTypes, "PS", stream21PlasticMasses)   
+    stream21PS = additiveMassCalculator(PSadditiveTypes, "PS", stream21PlasticMasses)
     stream21LDPE = additiveMassCalculator(LDPEadditiveTypes, "LDPE", stream21PlasticMasses)
     stream21PLA = additiveMassCalculator(PLAadditiveTypes, "PLA", stream21PlasticMasses)
     stream21Other = additiveMassCalculator(otherResinAdditives, "Other Resin", stream21PlasticMasses)
-    
+
     #Creates list of preceding dicts
-    listOfStream21Additives_ = [stream21PET, stream21HDPE, stream21PVC, stream21LDPE, stream21PLA, stream21PP, 
+    listOfStream21Additives_ = [stream21PET, stream21HDPE, stream21PVC, stream21LDPE, stream21PLA, stream21PP,
                                     stream21PS,  stream21Other]
-    
+
     #Totals each kind of additive in stream 21. Key = type of additive, value = amount of additive
     stream21AdditivesTotals = dict(zip(otherResinAdditives, [totalOfAdditiveType(i, listOfStream21Additives_) for i in otherResinAdditives]))
-    
+
     #Calculates total amount of each kind of resin in stream 21. Key = type of plastic, value = amount of resin
     stream21ResinMasses_ = dict(zip(typesOfPlasticDomestic, [totalResinCalculator(typesOfPlasticDomestic[i], stream21PlasticMasses, listOfStream21Additives_[i]) for i in range(8)]))
-    
+
     #Calculates emissions in this stream by multiplying bulk mass by 0.04 (the emissions factor) then converting into Tons of CO2
     stream21Emissions = dict(zip(typesOfPlasticDomestic, [0.04 * 1.10231* stream21PlasticMasses[i] for i in typesOfPlasticDomestic]))
-    
-    
+
+
     ################################################################################
     #Stream 22 Calculations
     #Sheet = Stream 22- Re-Export
-    
-    #Creates dict with key = type of plastic and value = amount of type of plastic reexported based on reported reexported plastics in 
-    
-    stream22PlasticMasses = {"PET":repPlasticsReExportDict["Other"]*0.4, "HDPE": repPlasticsReExportDict["Ethylene"]/2, "PVC":repPlasticsReExportDict["Vinyl Chloride"], 
+
+    #Creates dict with key = type of plastic and value = amount of type of plastic reexported based on reported reexported plastics in
+
+    stream22PlasticMasses = {"PET":repPlasticsReExportDict["Other"]*0.4, "HDPE": repPlasticsReExportDict["Ethylene"]/2, "PVC":repPlasticsReExportDict["Vinyl Chloride"],
                              "LDPE":repPlasticsReExportDict["Ethylene"]/2, "PLA":0, "PP":0, "PS":repPlasticsReExportDict["Styrene"], "Other Resin": repPlasticsReExportDict["Other"]*0.6}
-    
-    
+
+
     #Calculates amount of each additive in each type of plastic in stream 22. Key = type of additive, value = mass of that additive in stream 22
     stream22PET = additiveMassCalculator(PETadditiveTypes, "PET", stream22PlasticMasses)
     stream22HDPE = additiveMassCalculator(HDPEadditiveTypes, "HDPE", stream22PlasticMasses)
     stream22PVC = additiveMassCalculator(PVCadditiveTypes, "PVC", stream22PlasticMasses)
     stream22PP = additiveMassCalculator(PPadditiveTypes, "PP", stream22PlasticMasses)
-    stream22PS = additiveMassCalculator(PSadditiveTypes, "PS", stream22PlasticMasses)   
+    stream22PS = additiveMassCalculator(PSadditiveTypes, "PS", stream22PlasticMasses)
     stream22LDPE = additiveMassCalculator(LDPEadditiveTypes, "LDPE", stream22PlasticMasses)
     stream22PLA = additiveMassCalculator(PLAadditiveTypes, "PLA", stream22PlasticMasses)
     stream22Other = additiveMassCalculator(otherResinAdditives, "Other Resin", stream22PlasticMasses)
-    
+
     #Creates list of above dictionaries
-    listOfStream22Additives_ = [stream22PET, stream22HDPE, stream22PVC, stream22LDPE, stream22PLA, stream22PP, 
+    listOfStream22Additives_ = [stream22PET, stream22HDPE, stream22PVC, stream22LDPE, stream22PLA, stream22PP,
                                     stream22PS,  stream22Other]
-    
-    
+
+
     #Dict: Calculates total mass of each kind of resin in stream 22. Key = type of plastic, value = mass of resin
     stream22ResinMasses_ = dict(zip(typesOfPlasticDomestic, [totalResinCalculator(typesOfPlasticDomestic[i], stream22PlasticMasses, listOfStream22Additives_[i]) for i in range(8)]))
-    
+
     #Dict: Calculates total of each kind of additive in stream 22. Key = type of additive, value = mass of additive
     stream22AdditivesTotals = dict(zip(otherResinAdditives, [totalOfAdditiveType(i, listOfStream22Additives_) for i in otherResinAdditives]))
-    
+
     #Dict: Calculates emissions in stream 22. Emission factor 0.04*bulk mass of plastic in stream 22 and then converted into Tons of CO2
     stream22Emissions = dict(zip(typesOfPlasticDomestic, [0.04 * 1.10231* stream22PlasticMasses[i] for i in typesOfPlasticDomestic]))
-    
-    
-    
+
+
+
     ###############################################################################################################
     #Stream 23 Calculations
     #Sheet = Stream 23MechRec-Incin
-    
+
     #Dictionary of resin masses in stream 23, based on efficiency of domestic recycling (1-conditions208[4])/2, then multiplied by resin mass. key = type of plastic resin, value = mass of resin
     stream23ResinMasses_ = dict(zip(typesOfPlasticDomestic, [(1-conditions[4])/2*stream16ResinMasses_[i] for i in typesOfPlasticDomestic])) #Resin alone
-    
+
     #Dictionary of additive masses in stream 23, based on efficiency of domestic recycling (1-conditions208[4])/2, then multiplied by additive mass. key = type of plastic additive, value = mass of additive
     stream23AdditiveMasses_ = dict(zip(otherResinAdditives, [totalAdditivesStream16_[i]*(1-conditions[4])/2 for i in otherResinAdditives]))
     stream23PlasticMasses = dict(zip(typesOfPlasticDomestic, [backwardsLumpPlasticCalculator(stream23ResinMasses_, typesOfPlasticDomestic[i], additivesListList[i]) for i in range(8)]))
     #stream 23 Emissions calculations dictionary. Bulk plastic weight in stream * 0.04 * conversion factor to make units Tons of CO2. Key = type of plastic, value = emissions associated with that type
     stream23Emissions = dict(zip(typesOfPlasticDomestic, [0.04*1.10231*stream23PlasticMasses[i] for i in typesOfPlasticDomestic]))
-    
-    
+
+
     ###########################################################################################################
-    
-    #Stream28 Calculations unnecessary because they are the same as stream 23- as per sheet US Mat Flow Analysis 
-    
-    
+
+    #Stream28 Calculations unnecessary because they are the same as stream 23- as per sheet US Mat Flow Analysis
+
+
     ##########################################################################################################
     #Stream 20 Calculations
     #Sheet = Stream 20 Domestic Recyc
-    
-    
+
+
     #Creates dictionary of stream 20 resin masses. Key = type of plastic resin, value = mass of resin: stream16+stream21-stream22-stream23-stream28 (but stream28=stream23, so stream23 is subtracted twice)
     stream20ResinMasses = dict(zip(typesOfPlasticDomestic, [stream16ResinMasses_[i]+stream21ResinMasses_[i]-stream22ResinMasses_[i]-2*stream23ResinMasses_[i] for i in typesOfPlasticDomestic]))
-    
+
     #Creates dictionary of stream 20 additive masses. Key = type of additive, value = mass of additive: stream16-stream18+stream19+stream21-stream22-stream23-stream28 (stream28=stream23, so stream23 is substracted twice)
     stream20TotalAdditives = dict(zip(otherResinAdditives, [totalAdditivesStream16_[i]-stream18AdditiveMigration[i]+stream19AdditivesTotals[i]+stream21AdditivesTotals[i]-stream22AdditivesTotals[i]-2*stream23AdditiveMasses_[i] for i in otherResinAdditives]))
-    
+
     #Not given bulk masses, so bulk masses calculated here. Key = type of plastic, value = bulk mass of each type of plastic
     stream20PlasticCalcMasses = dict(zip(typesOfPlasticDomestic, [backwardsLumpPlasticCalculator(stream20ResinMasses, typesOfPlasticDomestic[i], additivesListList[i]) for i in range(8)]))
-    
-    stream20Emissions = dict(zip(typesOfPlasticDomestic, [stream20PlasticCalcMasses[i] * emissionFactors[i] for i in typesOfPlasticDomestic]))    
 
-    
+    stream20Emissions = dict(zip(typesOfPlasticDomestic, [stream20PlasticCalcMasses[i] * emissionFactors[i] for i in typesOfPlasticDomestic]))
+
+
     ###################################################################################################################################
     #Stream 1 Calculations
-    #Sheet =US Mat Flow Analysis 
+    #Sheet =US Mat Flow Analysis
     #Dictionary of stream1 resin masses. Key = type of resin, value = mass of resin: stream4- stream 20
     stream1PlasticMasses = dict(zip(typesOfPlasticDomestic, [stream4ResinMasses_[i] - stream20ResinMasses[i] for i in typesOfPlasticDomestic]))
-    
-    
+
+
     ###########################################################################################################
     #Stream 2 Calculations
-    #Sheet= US Mat Flow Analysis 
+    #Sheet= US Mat Flow Analysis
     #Dictionary of additive masses. Key = type of additive, value = mass of additive
     stream2AdditiveMasses = dict(zip(otherResinAdditives, [stream4AdditiveMasses_[i] - stream20TotalAdditives[i] for i in otherResinAdditives]))
-    
-    
+
+
     ##################################################################################
     #Stream 3 Calculations
     #Sheet = Stream 3 - Emissions
-    
+
     #Sum to create mass basis for stream 3
     stream1_stream2_total = sum(stream1PlasticMasses.values())+sum(stream2AdditiveMasses.values())
-    
-    
-    #Creats dict of Fraction of each kind of plastic in stream 3 based on total resin. Key = type of plastic, value = Fraction of total 
+
+
+    #Creats dict of Fraction of each kind of plastic in stream 3 based on total resin. Key = type of plastic, value = Fraction of total
     stream3PlasticFractions = dict(zip(typesOfPlasticDomestic, [stream1PlasticMasses[i]/sum(stream1PlasticMasses.values()) for i in typesOfPlasticDomestic]))
-    
+
     #Creates dict of bulk plastic masses of each kind of plastic based on Fraction determined above and mass basis. Key = type of plastic, value = bulk mass
     stream3PlasticMasses = dict(zip(typesOfPlasticDomestic, [stream3PlasticFractions[i]*stream1_stream2_total for i in typesOfPlasticDomestic])) #Lump sum
-    
+
     #Creates dictionary of additives for each type for each kind of plastic based on bulk mass
     stream3PETAdditives = additiveMassCalculator(PETadditiveTypes, "PET", stream3PlasticMasses)
     stream3HDPEAdditives = additiveMassCalculator(HDPEadditiveTypes, "HDPE", stream3PlasticMasses)
@@ -556,35 +556,35 @@ def makeCalculations():
     stream3PPAdditives = additiveMassCalculator(PPadditiveTypes, "PP", stream3PlasticMasses)
     stream3PSAdditives = additiveMassCalculator(PSadditiveTypes, "PS", stream3PlasticMasses)
     stream3OtherAdditives = additiveMassCalculator(otherResinAdditives, "Other Resin", stream3PlasticMasses)
-    
+
     #Creates dictionary of emisions factors for each kind of plastic. Key = type of plastic, value = emission factor
     stream3EmissionFactor = {"PET":2.2, "HDPE":1.53, "PVC":1.9, "LDPE":1.76, "PLA":2.09, "PP":1.51, "PS":2.46, "Other Resin":1.92}
-    
+
     #Creates dictionary of emissions for stream 3. Key = type of plastic, value = emissions for that (bulk mass*emission factor*conversion factor)
     stream3Emissions = dict(zip(typesOfPlasticDomestic, [stream3EmissionFactor[i] * stream3PlasticMasses[i]*1.10231 for i in typesOfPlasticDomestic]))
-    
-    
+
+
     #################################################################################################################
     #Stream 5 Calculations
-    #Sheet = US Mat Flow Analysis 
+    #Sheet = US Mat Flow Analysis
     polymerMigrationConstant = 4.71538E-06
     additiveMigrationConstant = 0.019945732
-    
+
     #Creates dict of resin masses in stream 5 by multiplying by polymer migration constant defined above. Key = type of resin, value = mass of migration
     stream5ResinMasses = dict(zip(typesOfPlasticDomestic, [polymerMigrationConstant*stream4ResinMasses_[i] for i in typesOfPlasticDomestic]))
-    
+
     #Creates dict of additive masses in stream 5 by multiplying by additive migration constant defined above. Key = type of resin, value = mass of migration
     stream5AdditiveMasses = dict(zip(otherResinAdditives, [additiveMigrationConstant*stream4AdditiveMasses_[i] for i in otherResinAdditives]))
-    
+
     #####################################################################################################################
     #Stream 27 Calculations
     #Sheet = Stream 27 - Export
-    
+
     #Dictionary defining mass of each kind of plastic for this stream based on Export definitions in US  Sensitivity facts. Key = type of plastic, value = bulk mass of that plastic
-    stream27PlasticMasses = {"PET":repPlasticsExportDict["Other"]*0.4, "HDPE":repPlasticsExportDict["Ethylene"]/2, 
+    stream27PlasticMasses = {"PET":repPlasticsExportDict["Other"]*0.4, "HDPE":repPlasticsExportDict["Ethylene"]/2,
                                  "PVC":repPlasticsExportDict["Vinyl Chloride"], "LDPE":repPlasticsExportDict["Ethylene"]/2,
                                  "PLA":0, "PP": 0, "PS":repPlasticsExportDict["Styrene"], "Other Resin":repPlasticsExportDict["Other"]*0.6}
-    
+
     #Dictionary defining mass of each kind of additive in each kind of plastic. Key = type of additive, value = mass of that additive
     stream27PETAdditives = additiveMassCalculator(PETadditiveTypes, "PET", stream27PlasticMasses)
     stream27HDPEAdditives = additiveMassCalculator(HDPEadditiveTypes, "HDPE", stream27PlasticMasses)
@@ -594,39 +594,39 @@ def makeCalculations():
     stream27PPAdditives = additiveMassCalculator(PPadditiveTypes, "PP", stream27PlasticMasses)
     stream27PSAdditives = additiveMassCalculator(PETadditiveTypes, "PS", stream27PlasticMasses)
     stream27OtherAdditives = additiveMassCalculator(otherResinAdditives, "Other Resin", stream27PlasticMasses)
-    
+
     #List of above dictionaries
     listOfstream27Additives = [stream27PETAdditives, stream27HDPEAdditives, stream27PVCAdditives, stream27LDPEAdditives, stream27PLAAdditives,
                                stream27PPAdditives, stream27PSAdditives, stream27OtherAdditives]
-    
+
     #Dictionary of resin masses in this stream. Key = type of resin, value = mass of resin
     stream27ResinMasses = dict(zip(typesOfPlasticDomestic, [totalResinCalculator(typesOfPlasticDomestic[i], stream27PlasticMasses, listOfstream27Additives[i]) for i in range(8)]))
-    
-    
+
+
     #Dictionary of additive masses in this stream. Key = type of additive, value = mass of additive
     stream27TotalAdditivesMasses = dict(zip(otherResinAdditives, [totalOfAdditiveType(i, listOfstream27Additives) for i in otherResinAdditives]))
-    
+
     #Dictionary of emissions in this stream, key = type of plastic, value = emissions associated with that plastic (bulk mass *0.04 * conversion factor to make units Tons CO2))
     stream27Emissions = dict(zip(typesOfPlasticDomestic, [0.04*1.10231*stream27PlasticMasses[i] for i in typesOfPlasticDomestic]))
-    
+
     ######################################################################################
     #Stream 8 Calculations
-    #Note: stream8 plastic resins and additives are the same as stream 27 as per US Mat FLow Analysis 
+    #Note: stream8 plastic resins and additives are the same as stream 27 as per US Mat FLow Analysis
     #Creates dictionary of types of MSW waste (without plastic), takes total MSW and multiplies that by their respective proportions. Key = type of MSW, value = mass of that MSW
     stream8MSWMasses_ = dict(zip(typesOfWastesForCalculations, [mswCompProp[i]*conditions[0] for i in range(len(typesOfWastesForCalculations))]))
-    
-    
+
+
     ####################################################################################################
     #Stream 9 Calculations
     #Sheet = Stream 9 - Litter
     #Determines total mass of stream 4, then multiplies it by littering constant to determine mass of littered plastic
     stream4TotalMass_ = sum(stream4AdditiveMasses_.values())+sum(stream4ResinMasses_.values())
     stream9TotalMass_ = 0.02*stream4TotalMass_
-    
-    #Creates dictionary of bulk plastic masses based on proportions of plastic generated and mass basis for stream. Key = type of plastic, value = bulk mass littered 
+
+    #Creates dictionary of bulk plastic masses based on proportions of plastic generated and mass basis for stream. Key = type of plastic, value = bulk mass littered
     stream9PlasticMasses_ = dict(zip(typesOfPlasticDomestic, [stream9TotalMass_*plasticFractionsRecycled[i] for i in typesOfPlasticDomestic]))
-    
-    
+
+
     #Creates dictionary of additives in littered plastic based on bulk masses determined above. Key = type of additive, value = mass of additive
     stream9PETAdditives = additiveMassCalculator(PETadditiveTypes, "PET", stream9PlasticMasses_)
     stream9HDPEAdditives = additiveMassCalculator(HDPEadditiveTypes, "HDPE", stream9PlasticMasses_)
@@ -636,72 +636,72 @@ def makeCalculations():
     stream9PPAdditives = additiveMassCalculator(PPadditiveTypes, "PP", stream9PlasticMasses_)
     stream9PSAdditives = additiveMassCalculator(PSadditiveTypes, "PS", stream9PlasticMasses_)
     stream9OtherAdditives = additiveMassCalculator(otherResinAdditives, "Other Resin", stream9PlasticMasses_)
-    
+
     #Creates list of above dicts
     listOfstream9Additives = [stream9PETAdditives, stream9HDPEAdditives, stream9PVCAdditives, stream9LDPEAdditives, stream9PLAAdditives,
                                stream9PPAdditives, stream9PSAdditives, stream9OtherAdditives]
-    
+
     #Creates dictionary of total of each kind of additive in this stream. Key = type of additive, value = total mass of additive in this stream
     stream9TotalAdditives = dict(zip(otherResinAdditives, [totalOfAdditiveType(i, listOfstream9Additives) for i in otherResinAdditives]))
-    
+
     #Creates dict of total resin in this stream. Key= type of resin, value = mass of resin in this stream
     stream9ResinTotals = dict(zip(typesOfPlasticDomestic, [totalResinCalculator(typesOfPlasticDomestic[i], stream9PlasticMasses_, listOfstream9Additives[i]) for i in range(8)]))
-    
+
     ###############################################################################################################
     #Stream 6 Pt. 2
-    
+
     #Dict of resin values in this stream
     stream6ResinTotals = dict(zip(typesOfPlasticDomestic, [stream4ResinMasses_[i] - stream5ResinMasses[i] for i in typesOfPlasticDomestic]))
-    
+
     #Dict of additive values in this stream
     stream6AdditiveTotals = dict(zip(otherResinAdditives, [stream4AdditiveMasses_[i] - stream5AdditiveMasses[i] for i in otherResinAdditives]))
-    
+
     ########################################################################################
     #Stream 10 Calculations
-    #Sheet = US Mat Flow Analysis 
-    
+    #Sheet = US Mat Flow Analysis
+
     #Creates dict of resin totals in this stream. Key = type of resin, value = mass of resin (stream6-stream9+stream27)
     stream10ResinTotals = dict(zip(typesOfPlasticDomestic, [stream6ResinTotals[i] - stream9ResinTotals[i] + stream27ResinMasses[i] for i in typesOfPlasticDomestic]))
-    
-    
+
+
     #Creates dict of additive totals in this stream. Key = type of additive, value = mass of additive (stream6-stream9+stream27)
     stream10AdditiveTotals = dict(zip(otherResinAdditives, [stream6AdditiveTotals[i] - stream9TotalAdditives[i]+stream27TotalAdditivesMasses[i] for i in otherResinAdditives]))
     #Note: stream 10 MSW data (rows 27:35) is the same as stream 8 so will be omitted for concision purposes
     totalStream10Waste = sum(stream10AdditiveTotals.values())+sum(stream10ResinTotals.values())+sum(stream8MSWMasses_.values()) #Cell K39
-    
-    
+
+
     ############################################################################################################
     #Stream 7 Calculations
-    #Sheet = US Mat Flow Analysis 
+    #Sheet = US Mat Flow Analysis
     stream7EmissionFactor = 230
-    
+
     #Calculates stream 7 emissions based on total stream 10 mass, emission factor, and conversion factor to Tons of CO2
     stream7TotalEmissions = totalStream10Waste*stream7EmissionFactor*0.00110231
-    
-    
+
+
     ############################################################################
     #Stream 11 Calculations
-    #Sheet = US Mat Flow Analysis 
-    
+    #Sheet = US Mat Flow Analysis
+
     #Creates dictionary of key = types of MSW (except plastic); value = mass of MSW incinerated (total mass incinerated*proportion incinerated)
     stream11MSWValues = dict(zip(typesOfWastesForCalculations, [mswIncin[0]*mswIncin[i] for i in range(1,len(typesOfWastesForCalculations)+1)]))
-    
-    
+
+
     ##############################################################################
     #Stream 12 Calculations
-    #Sheet = US Mat FLow Analysis 
-    
+    #Sheet = US Mat FLow Analysis
+
     #Creates dict of key = types of MSW (except plastic); value = mass of MSW landfilled (total mass landfilled*proportion landfilled)
     stream12MSWValues = dict(zip(typesOfWastesForCalculations, [mswLand[0]*mswLand[i] for i in range(1, len(typesOfWastesForCalculations)+1)]))
-    
-    
+
+
     ############################################################################
     #Stream 13 Calculations
     #Sheet = Stream 13-Plastic Compost
-    
-    #Creates dict of key = type of plastic, value = mass*0.01Fraction*Fraction of each kind of plastic. 
+
+    #Creates dict of key = type of plastic, value = mass*0.01Fraction*Fraction of each kind of plastic.
     stream13PlasticMasses = dict(zip(typesOfPlasticDomestic, [mswCompost[0]*0.0001*plasticFractionsRecycled[i] for i in typesOfPlasticDomestic]))
-    
+
     #Creates dict of key = type of additive, value = mass of additive in this stream
     stream13PETAdditives = additiveMassCalculator(PETadditiveTypes, "PET", stream13PlasticMasses)
     stream13HDPEAdditives = additiveMassCalculator(HDPEadditiveTypes, "HDPE", stream13PlasticMasses)
@@ -711,43 +711,43 @@ def makeCalculations():
     stream13PPAdditives = additiveMassCalculator(PPadditiveTypes, "PP", stream13PlasticMasses)
     stream13PSAdditives = additiveMassCalculator(PSadditiveTypes, "PS", stream13PlasticMasses)
     stream13OtherAdditives = additiveMassCalculator(otherResinAdditives, "Other Resin", stream13PlasticMasses)
-    
+
     #List of above dicts
     listOfStream13Additives = [stream13PETAdditives, stream13HDPEAdditives, stream13PVCAdditives, stream13LDPEAdditives, stream13PLAAdditives,
                                    stream13PPAdditives, stream13PSAdditives, stream13OtherAdditives]
-    
+
     #Totals additives and resins for this stream
     stream13AdditiveTotals = dict(zip(otherResinAdditives, [totalOfAdditiveType(i, listOfStream13Additives) for i in otherResinAdditives]))
     stream13ResinMasses = dict(zip(typesOfPlasticDomestic, [totalResinCalculator(typesOfPlasticDomestic[i], stream13PlasticMasses, listOfStream13Additives[i]) for i in range(8)]))
-    
+
     #MSW for this stream
     stream13MSW = dict(zip(typesOfWastesForCalculations, [mswCompost[i+1]*mswCompost[0] for i in range(10)]))
     #######################################################################################################################
     #Stream 14 Calculations
-    #Sheet = US Mat Flow Analysis 
+    #Sheet = US Mat Flow Analysis
     #Creates dict of key = types of MSW except plastic, value = mass recycled(total mass recycled*proportion of each kind of plastic recycled)
     stream14MSWValues = dict(zip(typesOfWastesForCalculations, [mswRecyc[0]*mswRecyc[i] for i in range(1, len(typesOfWastesForCalculations)+1)]))
-    
+
     ######################################################################
     #Stream 15 Input
-    #Sheet = US Mat Flow Analysis 
-    
+    #Sheet = US Mat Flow Analysis
+
     wasteFacilityEmissions = conditions[9]*1.10231 #CellP43
-    
-    
+
+
     #########################################################################
     #Stream 24 Calculations
     #Sheet = Stream 24 - Incineration
-    
-    
-    
-    
+
+
+
+
     #Calculates mass basis, total plastic*Fraction incinerated
     stream24MassBasis = conditions[1]*conditions[7]
-    
+
     #Creates dict of bulk masses of each kind of plastic based on mass basis and proportions of each plastic incinerated. Key = type of plastic, value = bulk mass
     stream24PlasticMasses = dict(zip(typesOfPlasticDomestic, [stream24MassBasis*plasticIncinFractionsDict[i] for i in typesOfPlasticDomestic]))
-    
+
     #Creates dict of additives based on bulk masses. Key= type of additive, value = mass of additive
     stream24PETAdditives = additiveMassCalculator(PETadditiveTypes, "PET", stream24PlasticMasses)
     stream24HDPEAdditives = additiveMassCalculator(HDPEadditiveTypes, "HDPE", stream24PlasticMasses)
@@ -757,42 +757,42 @@ def makeCalculations():
     stream24PPAdditives = additiveMassCalculator(PPadditiveTypes, "PP", stream24PlasticMasses)
     stream24PSAdditives = additiveMassCalculator(PSadditiveTypes, "PS", stream24PlasticMasses)
     stream24OtherAdditives = additiveMassCalculator(otherResinAdditives, "Other Resin", stream24PlasticMasses)
-    
+
     #List of above dicts
     listOfStream24Additives = [stream24PETAdditives, stream24HDPEAdditives, stream24PVCAdditives, stream24LDPEAdditives, stream24PLAAdditives,
                                    stream24PPAdditives, stream24PSAdditives, stream24OtherAdditives]
-    
+
     #Creates dict of total additives and resins in the straem
     stream24AdditiveTotals = dict(zip(otherResinAdditives, [totalOfAdditiveType(i, listOfStream24Additives) for i in otherResinAdditives]))
     stream24ResinMasses = dict(zip(typesOfPlasticDomestic, [totalResinCalculator(typesOfPlasticDomestic[i], stream24PlasticMasses, listOfStream24Additives[i]) for i in range(8)]))
-    
-    
+
+
     #Creates dict of emissions factors, then creates dict of emissions associated with each type of plastic's bulk masses
     stream24EmissionsFactors = {"PET": 1.24, "HDPE":1.27, "PVC":0.67, "LDPE": 1.27, "PLA":1.25, "PP":1.27, "PS":1.64, "Other Resin":2.33}
     stream24Emissions = dict(zip(typesOfPlasticDomestic, [stream24EmissionsFactors[i]*stream24PlasticMasses[i] *1.10231 for i in typesOfPlasticDomestic]))
-    
+
     ##########################################################################################
     #Stream 25 Calculations
-    #Sheet = US Mat Flow Analysis 
+    #Sheet = US Mat Flow Analysis
     #Creates dict of amount of resin, additive, and non-plastic MSW not incincerated (value = type of resin/additive/MSW, value = mass not incinerated)
     stream25ResinMasses = dict(zip(typesOfPlasticDomestic, [(stream24ResinMasses[i]+stream23ResinMasses_[i])*(1-assumedValues["Incineration Efficiency Fraction"]) for i in typesOfPlasticDomestic]))
     stream25AdditiveMasses = dict(zip(otherResinAdditives, [(stream24AdditiveTotals[i]+stream23AdditiveMasses_[i])*(1-assumedValues["Incineration Efficiency Fraction"]) for i in otherResinAdditives]))
-    
+
     stream25MSWValues = dict(zip(typesOfWastesForCalculations, [(stream11MSWValues[i])*(1-assumedValues["Incineration Efficiency Fraction"]) for i in typesOfWastesForCalculations]))
-    
+
     stream25AshMass = (sum(stream24AdditiveTotals.values())+sum(stream24ResinMasses.values()))/averageDensityCalculation * 0.01 * 2.05*0.0000011023
     #############################################################################################
     #Stream 26 Calculations
     #Sheet = Stream 26 Landfilled Plastic
-    
-    
+
+
     #Creates dict of total plastic landfilled
     stream26MassBasis = conditions[1]*conditions[8]
-    
+
     #Creates dict of key = type of plastic, value = bulk mass of type of plastic (mass basis for stream *proportion for each kind of plastic)
     stream26PlasticMasses = dict(zip(typesOfPlasticDomestic, [stream26MassBasis*plasticLandFractions[i] for i in typesOfPlasticDomestic]))
-    
-    
+
+
     #Creates dict of additives for each kind of plastic. Key = type of additive, value = mass
     stream26PETAdditives = additiveMassCalculator(PETadditiveTypes, "PET", stream26PlasticMasses)
     stream26HDPEAdditives = additiveMassCalculator(HDPEadditiveTypes, "HDPE", stream26PlasticMasses)
@@ -802,251 +802,251 @@ def makeCalculations():
     stream26PPAdditives = additiveMassCalculator(PPadditiveTypes, "PP", stream26PlasticMasses)
     stream26PSAdditives = additiveMassCalculator(PSadditiveTypes, "PS", stream26PlasticMasses)
     stream26OtherAdditives = additiveMassCalculator(otherResinAdditives, "Other Resin", stream26PlasticMasses)
-    
+
     #List of above created dicts
     listOfStream26Additives = [stream26PETAdditives, stream26HDPEAdditives, stream26PVCAdditives, stream26LDPEAdditives, stream26PLAAdditives,
                                    stream26PPAdditives, stream26PSAdditives, stream26OtherAdditives]
-    
+
     #Creates dict of Sums of additives and resins in this stream
     stream26AdditiveTotals = dict(zip(otherResinAdditives, [totalOfAdditiveType(i, listOfStream26Additives) for i in otherResinAdditives]))
     stream26ResinMasses = dict(zip(typesOfPlasticDomestic, [totalResinCalculator(typesOfPlasticDomestic[i], stream26PlasticMasses, listOfStream26Additives[i]) for i in range(8)]))
-    
+
     #Creates dict of emissions in this stream based on bulk masses in this stream
     stream26Emissions = dict(zip(typesOfPlasticDomestic, [0.04*stream26PlasticMasses[i] *1.10231 for i in typesOfPlasticDomestic]))
-    
-    
+
+
     #########################################################################
     #Stream 29 Calculations
     #Sheet = Stream 29 - Plastic Release
     #Creates dict of resins and additives in this stream based on leak constant. key = type of resin or additive, value = mass
     stream29ResinMasses = dict(zip(typesOfPlasticDomestic, [stream4ResinMasses_[i] * assumedValues["Plastic waste leak after landfill"] for i in typesOfPlasticDomestic]))
     stream29AdditiveMasses = dict(zip(otherResinAdditives, [stream4AdditiveMasses_[i]*assumedValues["Plastic waste leak after landfill"]+(stream26AdditiveTotals[i]+stream23AdditiveMasses_[i])*0.00001 for i in otherResinAdditives]))
-    
+
     #Creates dict of key = type of plastic, value = emissions associated with release (mass*0.04 for emission factor *conversion factor)
     stream29Emissions = dict(zip(typesOfPlasticDomestic, [stream29ResinMasses[i]*0.04*1.10231 for i in typesOfPlasticDomestic]))
-    
+
     ##########################################################################
     #Stream 30 Calculations
-    #Sheet = US Mat Flow Analysis 
+    #Sheet = US Mat Flow Analysis
     #Sums emissions in stream 26
     stream26totalEmissions = sum(stream26Emissions.values())
-    
-    #Inputs landfill emissions in 
+
+    #Inputs landfill emissions in
     FractionOfMSWEmissionLandfill = 0.15
     combinedLandfillEmissions = conditions[10]*FractionOfMSWEmissionLandfill
-    
+
     #Sums stream 30 emissions
     stream30Emissions = stream26totalEmissions+combinedLandfillEmissions
-    
+
     ###########################################################################
     #Total Incineration Calculations
-    #Sheet = US Mat Flow Analysis 
-    
+    #Sheet = US Mat Flow Analysis
+
     #Creates dict of total incineration for each kind of plastic and additive (stream 23 +stream 24).
     totalIncinerationPlasticResin = dict(zip(typesOfPlasticDomestic, [stream23ResinMasses_[i] + stream24ResinMasses[i] for i in typesOfPlasticDomestic]))
     totalIncinerationAdditives = dict(zip(otherResinAdditives, [stream23AdditiveMasses_[i]+stream23AdditiveMasses_[i] for i in otherResinAdditives]))
-    
+
     #Creates dict of total incineration for each kind of MSW (stream 11).
     totalIncinerationMSW = stream11MSWValues
-    
+
     #Total Landfill Calculations: sums stream 9, 23, 26 and subtracts stream 29 resins, additive, MSW masses
     totalLandfillPlasticResin = dict(zip(typesOfPlasticDomestic, [stream9ResinTotals[i]+stream23ResinMasses_[i]+stream26ResinMasses[i]-stream29ResinMasses[i] for i in typesOfPlasticDomestic]))
     totalLandfillAdditives = dict(zip(otherResinAdditives, [stream9TotalAdditives[i]+stream23AdditiveMasses_[i]+stream26AdditiveTotals[i]-stream29AdditiveMasses[i] for i in otherResinAdditives]))
     totalLandfilledOtherMSW = stream12MSWValues
-    
-    
-    
-    
-    
+
+
+
+
+
     ################################################################################
     ################################################################################
     #LCI Summary
     #Sheet= Material Flow Analysis Summary
     #Creates list of categories for following dicts
-    
+
     #Manufacturing Phase
     #Used as divisor in following input calculations:
     matFlowManufactureDivisor = stream1_stream2_total+sum(stream20PlasticCalcMasses.values())
-    
+
     #Sums each kind of resin from streams 1 and 20 and divides by total mass in streams1,2, and 20; then does same for total chemical additives in those same streams
     matFlowManufactureInput = dict(zip(typesOfPlasticDomestic, [(stream1PlasticMasses[i]+stream20ResinMasses[i])/matFlowManufactureDivisor for i in typesOfPlasticDomestic]))
     matFlowManufactureInput['Chemical Additives'] = (sum(stream2AdditiveMasses.values())+sum(stream20TotalAdditives.values()))/matFlowManufactureDivisor
-    
+
     #Sums each kind of resin and additive (additives all grouped together) from stream4 and divides by total mass in stream 4
     matFlowManufactureOutput = dict(zip(typesOfPlasticDomestic, [stream4ResinMasses_[i]/stream4TotalMass_ for i in typesOfPlasticDomestic]))
     matFlowManufactureOutput['Chemical Additives'] = sum(stream4AdditiveMasses_.values())/stream4TotalMass_
-    
-    
+
+
     #Littering, Inhalation, and derm expos unavailable
     matFlowManufactureLitter = dict(zip(matFlowAnalSumCategories, ["Unavailable" for i in matFlowAnalSumCategories]))
     matFlowManufactureInhal = matFlowManufactureLitter
     matFlowManufactureDerm = matFlowManufactureLitter
-    
-    #Greenhouse gas emissions from manufacturing= stream3 Emission factor*conversion factor +0.0025: 
+
+    #Greenhouse gas emissions from manufacturing= stream3 Emission factor*conversion factor +0.0025:
     matFlowManufactureGHG = dict(zip(typesOfPlasticDomestic, [stream3EmissionFactor[i]*1.10231+0.0025 for i in typesOfPlasticDomestic]))
     matFlowManufactureGHG['Chemical Additives'] = matFlowManufactureGHG['Other Resin']
-    
-    
+
+
     #TRVW (table) lists
     global manufactureDictList
     manufactureDictList = []
-    manufactureDictList = [matFlowManufactureInput, matFlowManufactureOutput, matFlowManufactureLitter, matFlowManufactureInhal, 
+    manufactureDictList = [matFlowManufactureInput, matFlowManufactureOutput, matFlowManufactureLitter, matFlowManufactureInhal,
                                matFlowManufactureDerm, matFlowManufactureGHG]
-    
-    
-    
+
+
+
     #####################################################
     #Use Phase
-    
+
     #Input same as output of manufacture
     matFlowUseInput = matFlowManufactureOutput
-    
+
     #Output determined based on stream 6 resins, total additives, and total mass
     matFlowUseOutput = dict(zip(typesOfPlasticDomestic, [stream6ResinTotals[i]/(sum(plasticsMassDict.values())) for i in typesOfPlasticDomestic]))
     matFlowUseOutput['Chemical Additives'] = sum(stream6AdditiveTotals.values())/(sum(plasticsMassDict.values()))
-    
-    
+
+
     #Littering Calculations: stream 5/(total of stream 4)
     matFlowUseLittering = dict(zip(typesOfPlasticDomestic, [(stream5ResinMasses[i]/stream4TotalMass_) for i in typesOfPlasticDomestic]))
     matFlowUseLittering['Chemical Additives'] = sum(stream5AdditiveMasses.values())/stream4TotalMass_
-    
+
     #Inhalation, dermal and GHG unavailable
     matFlowUseInhal = matFlowManufactureDerm
     matFlowUseDerm = matFlowManufactureDerm
     matFlowUseGHG = matFlowManufactureDerm
-    
-    
+
+
     global useDictList #creates list of above dicts
     useDictList = []
-    useDictList = [matFlowUseInput, matFlowUseOutput, matFlowUseLittering, matFlowUseInhal, matFlowUseDerm, 
+    useDictList = [matFlowUseInput, matFlowUseOutput, matFlowUseLittering, matFlowUseInhal, matFlowUseDerm,
                        matFlowUseGHG]
-    
+
     ############################################################
     #Collection and Sorting Phase (CSP)
-    
+
     #Input: divisor is total plastic and additive mass in stream 6, 27
     #Creates dict, key = category, value = proportion of total mass. stream6+27
     matFlowCSPInputDivisor = sum(stream6AdditiveTotals.values())+sum(stream6ResinTotals.values())+sum(stream27ResinMasses.values())+sum(stream27TotalAdditivesMasses.values())
     matFlowCSPInput = dict(zip(typesOfPlasticDomestic, [(stream6ResinTotals[i]+stream27ResinMasses[i])/matFlowCSPInputDivisor for i in typesOfPlasticDomestic]))
     matFlowCSPInput['Chemical Additives'] = (sum(stream6AdditiveTotals.values())+sum(stream27TotalAdditivesMasses.values()))/matFlowCSPInputDivisor
-    
-    
+
+
     #Output: stream27+16+24+26
     matFlowCSPOutput = dict(zip(typesOfPlasticDomestic, [(stream27ResinMasses[i]+stream16ResinMasses_[i]+stream24ResinMasses[i]+stream26ResinMasses[i])/matFlowCSPInputDivisor for i in typesOfPlasticDomestic]))
     matFlowCSPOutput['Chemical Additives'] = (sum(stream27TotalAdditivesMasses.values())+sum(totalAdditivesStream16_.values())+sum(stream24AdditiveTotals.values())+sum(stream26AdditiveTotals.values()))/matFlowCSPInputDivisor
-    
+
     #Littering: Input-Output
     matFlowCSPLittering = dict(zip(matFlowCSPOutput.keys(), [matFlowCSPInput[i]-matFlowCSPOutput[i] for i in matFlowCSPOutput.keys()]))
-    
-    #Emissions: 
+
+    #Emissions:
     matFlowCSPGHG = dict(zip(matFlowAnalSumCategories, [wasteFacilityEmissions/totalStream10Waste for i in matFlowAnalSumCategories]))
-        
+
     #Inhalation and dermal exposure unavailable
     matFlowCSPInhal = matFlowUseInhal
     matFlowCSPDerm = matFlowUseInhal
-    
+
     #creates list of above dicts
     global cspDictList
     cspDictList = []
     cspDictList = [matFlowCSPInput, matFlowCSPOutput, matFlowCSPLittering, matFlowCSPInhal, matFlowCSPDerm,
                        matFlowCSPGHG]
-    
+
     ############################################################
     #Mechanical Recycling
-    
+
     #Input: (stream16+19+21)/combined total of those streams
     matFlowMechRecycInputDivisor = sum(stream16PlasticCalcMasses.values())+sum(stream19AdditivesTotals.values())+sum(stream21PlasticMasses.values())+stream19DegradationProducts+stream19Contaminants
     matFlowMechRecycInput = dict(zip(typesOfPlasticDomestic, [(stream16ResinMasses_[i]+stream21ResinMasses_[i])/matFlowMechRecycInputDivisor for i in typesOfPlasticDomestic]))
     matFlowMechRecycInput['Chemical Additives']=(sum(totalAdditivesStream16_.values())+sum(stream19AdditivesTotals.values())+sum(stream21AdditivesTotals.values())+stream19Contaminants+stream19DegradationProducts)/matFlowMechRecycInputDivisor
-    
+
     #Output: (stream20+28+23+22)/sum of all three
     matFlowMechRecycOutDivisor = 2*(sum(stream23AdditiveMasses_.values())+sum(stream23ResinMasses_.values()))+sum(stream22PlasticMasses.values())+sum(stream20ResinMasses.values())+sum(stream20TotalAdditives.values())
     matFlowMechRecycOutput = dict(zip(typesOfPlasticDomestic, [(stream20ResinMasses[i]+2*stream23ResinMasses_[i]+stream22ResinMasses_[i])/matFlowMechRecycOutDivisor for i in typesOfPlasticDomestic]))
     matFlowMechRecycOutput['Chemical Additives'] = (sum(stream20TotalAdditives.values())+2*sum(stream23AdditiveMasses_.values())+sum(stream22AdditivesTotals.values()))/matFlowMechRecycOutDivisor
-    
+
     #Releases/littering (input*0.0001)
     matFlowMechRecycLittering = dict(zip(matFlowAnalSumCategories, [matFlowMechRecycInput[i]*0.0001 for i in matFlowAnalSumCategories]))
-    
+
     #Inhalation Exposure (105/(9.072*10^8)*21834*250)/matFlowInputDivisor*Input
     matFlowMechRecycInhal = dict(zip(matFlowAnalSumCategories, [matFlowMechRecycInput[i]*(105/(9.072*10**8)*21834*250)/matFlowMechRecycInputDivisor for i in matFlowAnalSumCategories]))
-    
+
     #Dermal Exposure (2170/(9.072*10^8))*21834*250*Input/matFlowInputDivisor
     matFlowMechRecycDermExp = dict(zip(matFlowAnalSumCategories, [matFlowMechRecycInput[i]*(2170/(9.072*10**8))*21834*250/matFlowMechRecycInputDivisor for i in matFlowAnalSumCategories]))
-    
+
     #GHG Emissions stream16 emissions factors
     matFlowMechRecycGHG = dict(zip(typesOfPlasticDomestic, [emissionFactors[i]*1.10231 for i in typesOfPlasticDomestic]))
     matFlowMechRecycGHG['Chemical Additives']=matFlowMechRecycGHG['Other Resin']
-    
+
     #creates list of above dicts
     global mechRecycDictList
     mechRecycDictList = []
-    mechRecycDictList = [matFlowMechRecycInput, matFlowMechRecycOutput, matFlowMechRecycLittering, 
+    mechRecycDictList = [matFlowMechRecycInput, matFlowMechRecycOutput, matFlowMechRecycLittering,
                              matFlowMechRecycInhal, matFlowMechRecycDermExp, matFlowMechRecycGHG]
-   
-    
+
+
     ###############################################################
     #Incineration
     #Input: (stream23+24)/sum of stream totals
     matFlowIncinInputDivisor = sum(stream23AdditiveMasses_.values())+sum(stream23ResinMasses_.values())+sum(stream24PlasticMasses.values())
     matFlowIncinInput = dict(zip(typesOfPlasticDomestic, [(stream23ResinMasses_[i]+stream24ResinMasses[i])/matFlowIncinInputDivisor for i in typesOfPlasticDomestic]))
     matFlowIncinInput['Chemical Additives'] = (sum(stream23AdditiveMasses_.values())+sum(stream24AdditiveTotals.values()))/matFlowIncinInputDivisor
-    
+
     #Output: 0
     matFlowIncinOutput = dict(zip(matFlowAnalSumCategories, [0 for i in matFlowAnalSumCategories]))
-    
+
     #Littering: stream25/sum of stream 23, 24
     matFlowIncinLitter = dict(zip(typesOfPlasticDomestic, [stream25ResinMasses[i]/matFlowIncinInputDivisor for i in typesOfPlasticDomestic]))
     matFlowIncinLitter['Chemical Additives']=sum(stream25AdditiveMasses.values())/matFlowIncinInputDivisor
-    
+
     #Inhalataion and dermal exposure: 0
     matFlowIncinInhal = dict(zip(matFlowAnalSumCategories, [0 for i in matFlowAnalSumCategories]))
     matFlowIncinDerm = matFlowIncinInhal
-    
+
     #GHG: stream24 emission factors
     matFlowIncinGHG = dict(zip(typesOfPlasticDomestic, [stream24EmissionsFactors[i]*1.10231 for i in typesOfPlasticDomestic]))
     matFlowIncinGHG['Chemical Additives'] = matFlowIncinGHG['Other Resin']
-    
-    
+
+
     global incinDictList
     incinDictList = []
     incinDictList = [matFlowIncinInput, matFlowIncinOutput, matFlowIncinLitter, matFlowIncinInhal, matFlowIncinDerm,
                          matFlowIncinGHG]
-    
+
     ################################################################
-    #Landfilling: 
-    
+    #Landfilling:
+
     #Input: stream26+28/sum of the two
     matFlowLandInputDivisor = sum(stream26PlasticMasses.values())+sum(stream23ResinMasses_.values())+sum(stream23AdditiveMasses_.values())
     matFlowLandInput = dict(zip(typesOfPlasticDomestic, [(stream26ResinMasses[i]+stream23ResinMasses_[i])/matFlowLandInputDivisor for i in typesOfPlasticDomestic]))
-    matFlowLandInput['Chemical Additives'] = (sum(stream26AdditiveTotals.values())+sum(stream23AdditiveMasses_.values()))/matFlowLandInputDivisor 
-    
-    
+    matFlowLandInput['Chemical Additives'] = (sum(stream26AdditiveTotals.values())+sum(stream23AdditiveMasses_.values()))/matFlowLandInputDivisor
+
+
     #Output = 0
     matFlowLandOutput = matFlowIncinInhal
-    
+
     #Littering: stream29/sum of stream26,28
     matFlowLandLitter = dict(zip(typesOfPlasticDomestic, [stream29ResinMasses[i]/matFlowLandInputDivisor for i in typesOfPlasticDomestic]))
     matFlowLandLitter['Chemical Additives'] = (sum(stream29AdditiveMasses.values())/matFlowLandInputDivisor)
-    
-    
+
+
     #Dermal and Inhalation Exposure = 0
     matFlowLandInhal = matFlowIncinInhal
     matFlowLandDerm = matFlowIncinInhal
-    
+
     #GHG: emission factor = 0.04*1.10231
     matFlowLandGHG = dict(zip(matFlowAnalSumCategories, [0.04*1.10231 for i in matFlowAnalSumCategories]))
-    
+
     #Creates list of above dicts
     global landDictList
     landDictList = []
     landDictList = [matFlowLandInput, matFlowLandOutput, matFlowLandLitter, matFlowLandInhal, matFlowLandDerm,
                         matFlowLandGHG]
-    
+
     #############################################################################
     #Stream Summary TRVW shtuff
     #creates dictionary that data will be extracted from to create stream summary trvw
     dummyDictionary = {}  #to serve in place of streams where no data is (e.g. no additive data in resin lists) to make sure no inappropriate numbers are added to table
-    
+
     #These dicts will be iterated over to look for data. (e.g. will be searched for "PET", "HDPE", etc.)
     listOfStreamsForResinTRVW = [stream1PlasticMasses, dummyDictionary, dummyDictionary, stream4ResinMasses_, stream5ResinMasses,
                                  stream6ResinTotals, dummyDictionary, stream27ResinMasses, stream9ResinTotals, stream10ResinTotals,
@@ -1054,63 +1054,63 @@ def makeCalculations():
                                  dummyDictionary, dummyDictionary, dummyDictionary, stream20ResinMasses, stream21ResinMasses_, stream22ResinMasses_,
                                  stream23ResinMasses_, stream24ResinMasses, stream25ResinMasses, stream26ResinMasses, stream27ResinMasses,
                                  stream23ResinMasses_, stream29ResinMasses, dummyDictionary, totalIncinerationPlasticResin, totalLandfillPlasticResin]
-    
-    listOfStreamforAdditivesTRVW = [dummyDictionary, stream2AdditiveMasses, dummyDictionary, stream4AdditiveMasses_, stream5AdditiveMasses, 
+
+    listOfStreamforAdditivesTRVW = [dummyDictionary, stream2AdditiveMasses, dummyDictionary, stream4AdditiveMasses_, stream5AdditiveMasses,
                                     stream6AdditiveTotals, dummyDictionary, stream27TotalAdditivesMasses, stream9TotalAdditives, stream10AdditiveTotals,
                                     dummyDictionary, dummyDictionary, stream13AdditiveTotals, dummyDictionary, dummyDictionary, totalAdditivesStream16_,
                                     dummyDictionary, stream18AdditiveMigration, stream19AdditivesTotals, stream20TotalAdditives, stream21AdditivesTotals,
                                     stream22AdditivesTotals, stream23AdditiveMasses_, stream24AdditiveTotals, stream25AdditiveMasses, stream26AdditiveTotals,
                                     stream27TotalAdditivesMasses, stream23AdditiveMasses_, stream29AdditiveMasses, dummyDictionary, totalIncinerationAdditives,
                                     totalLandfillAdditives]
-    
-    listOfStreamMSWTRVW = [dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, 
+
+    listOfStreamMSWTRVW = [dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary,
                            stream8MSWMasses_, dummyDictionary, stream8MSWMasses_, stream11MSWValues, stream12MSWValues, stream13MSW, stream14MSWValues,
                            dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary,
                            dummyDictionary, dummyDictionary, stream25MSWValues, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary, dummyDictionary,
                           totalIncinerationMSW, totalLandfilledOtherMSW]
-    
+
     #creates single list to be iterated over for filling stream summary trvw
-    
+
     global streamTRVWLists
     streamTRVWLists = []
     streamTRVWLists.clear() #clears to make sure that when new data is input, old data is erased
-    
+
     #list comprehension that will create list of lists for addition to stream summary table. streamSummaryTRVWLister defined above
     streamTRVWLists = [streamSummaryTRVWLister(listOfStreamsForResinTRVW, i) for i in typesOfPlasticDomestic]+[streamSummaryTRVWLister(listOfStreamforAdditivesTRVW, i) for i in otherResinAdditives]+[streamSummaryTRVWLister(listOfStreamMSWTRVW, i) for i in typesOfWastesForCalculations]
-   
+
     #following list will be used to make other calculations easier later on by removing row title, which can then be added later on
     listsWithoutTitles = [streamSummaryTRVWLister(listOfStreamsForResinTRVW, i) for i in typesOfPlasticDomestic]+[streamSummaryTRVWLister(listOfStreamforAdditivesTRVW, i) for i in otherResinAdditives]+[streamSummaryTRVWLister(listOfStreamMSWTRVW, i) for i in typesOfWastesForCalculations]
     for i in listsWithoutTitles:
         del i[0]
-    
+
     #Creates ash row list for addition to TRVW
     ashTRVWList = ['Ash', 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,stream25AshMass, 0,0,0,0,0,0,0,]
-    
+
     #Creates list for column sums at bottom of table, then Creates list of data lists that will be tacked on to the end of the stream summary TRVW
     totalStreamMassesList = ['Total Mass excluding emissions']+[sum([i[b] for i in listsWithoutTitles]) for b in range(32)]
-    
+
     listsToAdd =[ashTRVWList, totalStreamMassesList]
-    
+
     totalPlasticsStreamSummaryList = ['Total Plastics'] + [sum(i.values()) for i in listOfStreamsForResinTRVW]
     listsToAdd.append(totalPlasticsStreamSummaryList)
-    
+
     totalAdditivesStreamSummaryList = ['Total Additives'] + [sum(i.values()) for i in listOfStreamforAdditivesTRVW]
     listsToAdd.append(totalAdditivesStreamSummaryList)
-    
+
     actualMassEmissionTotalTRVWList = ['Actual mass of emission (Tons):'] + [0, 0, '-', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, stream25AshMass, 0, 0, 0, 0, 0, 0, 0]
     listsToAdd.append(actualMassEmissionTotalTRVWList)
-    
+
     totalEmissionsTRVWList = ['Total Emissions', 0,0, (sum(stream4AdditiveMasses_.values())+sum(stream4ResinMasses_.values()))*0.0025+sum(stream3Emissions.values()), 0,0,0, totalStream10Waste*230*0.00110231, 0,0,0,0,0,0,0, conditions[9]*1.10231131, 0, sum(emissionStream16.values()), 0, 0, sum(stream20Emissions.values()), 0, 0, sum(stream23Emissions.values()), 0, sum(stream24Emissions.values())+1.05*sum(stream11MSWValues.values()), sum(stream27Emissions.values()), sum(stream23Emissions.values()), sum(stream29Emissions.values()), stream30Emissions, 0, 0]
     listsToAdd.append(totalEmissionsTRVWList)
-    
+
     emissionsFromPlasticList = ['Emissions from plastic', 0,0, (sum(stream4AdditiveMasses_.values())+sum(stream4ResinMasses_.values()))*0.0025+sum(stream3Emissions.values()), 0,0,0, totalStream10Waste*230*0.00110231, 0,0,0,0,0,0,0, conditions[9]*1.10231131, 0, sum(emissionStream16.values()), 0, 0, sum(stream20Emissions.values()), 0, 0, sum(stream23Emissions.values()), 0, sum(stream24Emissions.values()),0, sum(stream27Emissions.values()), sum(stream23Emissions.values()), sum(stream29Emissions.values()), sum(stream26Emissions.values()), 0, 0]
     listsToAdd.append(emissionsFromPlasticList)
-    
-    
+
+
     streamTRVWLists = streamTRVWLists+listsToAdd
     #streamSummaryTRVW.insert(parent ='', index ='end', iid = 0, text = '', values = tuple([streamTitleRows[b] for b in range(len(streamTitleRows))]))
 
-    
+
     #Changes text on user specs page to confirm calcualtions are complete
     gapLabel1.config(text = 'Calculations Complete')
 
@@ -1119,7 +1119,7 @@ def makeCalculations():
     piecharttest=np.array(mswCompProp)
     plasticexplode = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5] #make the plastic section wedge out from the center of the pie.
     plt.rcParams["figure.figsize"] = (10, 7) #adjusts the whitespace to show the entirety of the figure
-    
+
     fig1, ax1=plt.subplots()
     ax1.pie(piecharttest, labels=typesOfWastes, explode=plasticexplode, autopct='%1.1f%%', pctdistance=0.9, labeldistance=1.05,
             shadow=True, startangle=180)
@@ -1130,27 +1130,27 @@ def makeCalculations():
 
     canvasPieChart = FigureCanvasTkAgg(fig1, master=plotFrame) # Convert the Figure to the data frame (tab)
     canvasPieChart.get_tk_widget().grid(column = 0, row = 0) # Show the widget on the screen
-    canvasPieChart.draw() # Draw the graph on the canvas?    
-    
-    
+    canvasPieChart.draw() # Draw the graph on the canvas?
+
+
     ### Bar Chart
     #Creates dictionary showing amount of each kind of plastic recycled, then creates list of values from that dict
     amountOfPlasticRecycled = dict(zip(typesOfPlasticDomestic, [stream16ResinMasses_[i]+stream27ResinMasses[i] for i in typesOfPlasticDomestic]))
     barData1 = list(amountOfPlasticRecycled.values())
-   
+
     #creates list of generated plastic masses from earlier dict
     barData2 = list(plasticsMassDict.values())
-    
-    
+
+
     #Comparison bar graph creation
     index = np.arange(len(typesOfPlasticDomestic)) #Creates x-axis categories
     bar_width = 0.35 #width of each bar
-    
+
     barChart, ax = plt.subplots() #defines graph
-    
+
     barRecyc = ax.bar(index, barData1, bar_width, label = "Amount Of Plastic Recycled") #creates data one data set for graph
     barCollected = ax.bar(index+bar_width, barData2, bar_width, label = "Amount of Plastic Collected") #creates second data set for graph
-    
+
     #Creates labels for axes and graph
     ax.set_xlabel("Type Of Plastic")
     ax.set_ylabel("Amount (tons)")
@@ -1158,19 +1158,19 @@ def makeCalculations():
     ax.set_xticks(index+bar_width/2)
     ax.set_xticklabels(typesOfPlasticDomestic)
     ax.legend()
-    
+
     #creates canvas for placement in GUI
     barCanvas = FigureCanvasTkAgg(barChart, master = plotFrame)
     barCanvas.draw()
     barCanvas.get_tk_widget().grid(column = 1, row = 0)
-    
-    
-    
+
+
+
 
 ##################################################################
 #Abstract Tab
 
-#Adding text boxes to Frame 1 
+#Adding text boxes to Frame 1
 #note: this information is no longer the abstract but the instructions
 #old widget names remain though sorry bout it
 abstract_frame1 = tk.Text(my_frame1, bd = 0, highlightthickness= 0, bg = "white",  height = 25, width = 90)
@@ -1192,7 +1192,7 @@ abstract_frame1.insert(tk.INSERT, "\n\n7. The “LCI” tab shows a lifecycle in
 title_frame1.insert(tk.INSERT, "\nA Generic Scenario Analysis of End-of-Life Plastic\nManagement: Chemical Additives") #title for frame
 
 #Configure title text boxes, fonts, etc.
-title_frame1.tag_configure("center", justify = 'center') 
+title_frame1.tag_configure("center", justify = 'center')
 title_frame1.tag_add("center", 1.0, 'end')
 title_frame1.configure(font = ("Helvetica", 24, "bold"))
 subtitle_frame1.insert(tk.INSERT, "Instructions")
@@ -1238,14 +1238,14 @@ materialFlowCanvas.create_window((0,0), window = materialFlowFrame, anchor = 'nw
 fontChoice = 'Helvetica 12 bold'
 materialFlowTitle = tk.Text(materialFlowFrame, bd = 0, highlightthickness = 0, bg = 'white', height = 2, width = 50)
 materialFlowTitle.insert(tk.INSERT, "\nLife Cycle Inventory")
-materialFlowTitle.tag_configure("center", justify = 'center') 
+materialFlowTitle.tag_configure("center", justify = 'center')
 materialFlowTitle.tag_add("center", 1.0, 'end')
 materialFlowTitle.configure(font = ("Helvetica 20 bold"))
 materialFlowTitle.config(state = 'disabled')
 
 materialFlowSubtitle = tk.Text(materialFlowFrame, bd = 0, highlightthickness = 0, bg = 'white', height = 1, width = 75)
 materialFlowSubtitle.insert(tk.INSERT, 'Select year or custom in "User Specifications" tab to populate table.')
-materialFlowSubtitle.tag_configure("center", justify = 'center') 
+materialFlowSubtitle.tag_configure("center", justify = 'center')
 materialFlowSubtitle.tag_add("center", 1.0, 'end')
 materialFlowSubtitle.configure(font = ("Helvetica 16 bold"))
 materialFlowSubtitle.config(state = 'disabled')
@@ -1274,7 +1274,7 @@ matFlowLandText = Text(materialFlowFrame, bd=0, highlightthickness = 0, bg = "wh
 #Creates lists of rows to be added to each LCI table
 matFlowColumnHeadings = ('Materials', 'Input (ton/total ton input)', 'Output (ton/total ton input)', 'Releases/Littering (ton/total ton input)', 'Inhalation Exposure (Tons/total ton input)', 'Dermal Exposure (Tons/total ton input)', 'Greenhouse Gas Emissions (Tons CO2-eq/ton input)')
 matFlowCategories = ['\nManufacture', "\nUse", '\nCollection and Sorting', '\nMechanical Recycling', '\nIncineration', '\nLandfill']
-matFlowTRVWList = [matFlowManufactureText, matFlowManufactureTRVW, matFlowUseText, matFlowUseTRVW, matFlowCSPText, matFlowCSPTRVW, matFlowMechRecycText, 
+matFlowTRVWList = [matFlowManufactureText, matFlowManufactureTRVW, matFlowUseText, matFlowUseTRVW, matFlowCSPText, matFlowCSPTRVW, matFlowMechRecycText,
                    matFlowMechRecycTRVW, matFlowIncinText, matFlowIncinTRVW, matFlowLandText, matFlowLandTRVW]
 
 
@@ -1293,14 +1293,14 @@ for i in range(len(matFlowTRVWList)):
         matFlowTRVWList[i].configure(font = ("Helvetica 16 bold"))
         matFlowTRVWList[i].config(state="disabled")
         matFlowTRVWList[i].pack()
-    
+
 def fillMatFlowAnalSumTRVW(): #will be used to fill each LCI trvw table
-    
+
     try:
         manufactureList = trvwListMaker(manufactureDictList) #in case of error won't crash code
-    except: 
+    except:
         return
-    
+
     #creates list for each trvw and its row
     useList = trvwListMaker(useDictList)
     cspList = trvwListMaker(cspDictList)
@@ -1308,40 +1308,40 @@ def fillMatFlowAnalSumTRVW(): #will be used to fill each LCI trvw table
     incinList = trvwListMaker(incinDictList)
     landList = trvwListMaker(landDictList)
     count = 0
-    
+
     #inserts above data into trvw tables
     for record in manufactureList:
         matFlowManufactureTRVW.insert(parent ='', index ='end', iid = count, text = '', values = (record[0], record[1], record[2], record[3], record[4], record[5], record[6]))
         count +=1
-    
+
     count = 0
     for record in useList:
         matFlowUseTRVW.insert(parent ='', index ='end', iid = count, text = '', values = (record[0], record[1], record[2], record[3], record[4], record[5], record[6]))
         count +=1
-        
+
     count = 0
     for record in cspList:
         matFlowCSPTRVW.insert(parent ='', index ='end', iid = count, text = '', values = (record[0], record[1], record[2], record[3], record[4], record[5], record[6]))
         count +=1
-        
+
     count = 0
     for record in mechRecycList:
         matFlowMechRecycTRVW.insert(parent ='', index ='end', iid = count, text = '', values = (record[0], record[1], record[2], record[3], record[4], record[5], record[6]))
-        count +=1    
-        
+        count +=1
+
     count = 0
     for record in incinList:
         matFlowIncinTRVW.insert(parent ='', index ='end', iid = count, text = '', values = (record[0], record[1], record[2], record[3], record[4], record[5], record[6]))
-        count +=1    
-        
+        count +=1
+
     count = 0
     for record in landList:
         matFlowLandTRVW.insert(parent ='', index ='end', iid = count, text = '', values = (record[0], record[1], record[2], record[3], record[4], record[5], record[6]))
-        count +=1    
-        
-        
-        
-        
+        count +=1
+
+
+
+
 ###################################################
 ### Entries tab
 
@@ -1363,19 +1363,19 @@ def checkProportions(listOfEntries, finalSum):
         return False
 
 #Above check function does not work for conditions category, so this function is used instead
-def conditionsCheckProp(): 
-    g = 0 
+def conditionsCheckProp():
+    g = 0
     for i in conditionsPropCheckList:
         try: #makes sure input is numbers only
             g += float(i.get())
         except:
             gapLabel1.config(text = 'Error: Please enter a number into each box to continue.')
             return
-    
+
     h = 0
     for b in conditionsPropCheckList2:
         h+= float(b.get())
-    
+
     standard = float(plasticRecycledPropEntry.get())  #ensures plastic recycled domestically and exported sum to total recycled
     if 0.99<g<1.01: #makes sure total waste proportions (incinerated, landfilled, recycled) sum to 1
         if 0.99*standard<h<1.01*standard:
@@ -1384,14 +1384,14 @@ def conditionsCheckProp():
         else:
             gapLabel1.config(text = 'Domestic and exported recycling do not sum to total recycled Fraction.') #for if
             gapLabel1.config(fg = 'red')
-    else: 
+    else:
         if 0.99*standard<h<1.01*standard:
             gapLabel1.config(fg = 'red')
             gapLabel1.config(text = "Plastic recycled proportion, landfill proportion, and incineration proportion do not sum to 1.")
         else:
             gapLabel1.config(text = "Plastic recycled proportion, landfill proportion, and incineration proportion do not sum to 1. Domestic and exported recycling do not sum to total recycled Fraction.")
             gapLabel1.config(fg = 'red')
-            
+
     return False
 
 #Packs canvas that will have data input section on it. Canvas allows for scroll bar to be added if necessary
@@ -1435,7 +1435,7 @@ values = {"2016" : "2016",
 #Variable for those radio buttons
 selectYear = StringVar()
 
- 
+
 # Loop is used to create multiple RadiobutTons
 # rather than creating each button separately
 fontChoice = 'Helvetica 9 bold' #Assign font choices
@@ -1447,7 +1447,7 @@ for (text, value) in values.items():
                 value = value, indicator = 0,
                 background = "gray81", font = fontChoice).grid(column = 0, row = frame2Row, columnspan=3, sticky=EW, ipady=5)
     frame2Row +=1
-    
+
 #Creates functions associated with radio buttons that will auto fill the entry boxes on the input tab
 def select2018():
     for i in customEntryList:
@@ -1466,7 +1466,7 @@ def select2018():
     for i in range(11):
         CompostMSWPropsEntry[i].insert(END, mswCompost2018[i])
     for i in range(8):
-        recycPlasticEntry[i].insert(END, plasticRecycledFractionsList2018[i]) 
+        recycPlasticEntry[i].insert(END, plasticRecycledFractionsList2018[i])
     for i in range(8):
         LandPlasticEntry[i].insert(END, plasticLandFractionsList2018[i])
     for i in range(8):
@@ -1479,7 +1479,7 @@ def select2018():
         ExportPlasticEntry[i].insert(END, repPlasticsExport2018[i])
     for i in range(4):
         ReExportPlasticEntry[i].insert(END, repPlasticsReExport2018[i])
-    
+
 #When custom is selected via radio button, the entry boxes will be cleared
 def selectCustom():
     for i in customEntryList:
@@ -1506,16 +1506,16 @@ def clicked(value):
 myButtonyear = Button(my_frame2, bg =  "grey", text="Select Year", fg = 'white', font = fontChoice, command=lambda: clicked(selectYear.get()))
 myButtonyear.grid(column=0, row=8, columnspan=3, sticky=EW, ipady=5)
 
-#Is currently a programmer's shortcut to take all values in entry boxes. This will be removed before distribution, forcing user to enter each individual category of data 
+#Is currently a programmer's shortcut to take all values in entry boxes. This will be removed before distribution, forcing user to enter each individual category of data
 def assignValues():
-    enter(typesOfWasteEntry, mswCompProp, typesOfWasteValueLabels, recycMSWPropsLabels, recycMSWPropsEntry, recycMSWButtonChecker, recycMSWAutoButton, recycMSWEnterButton)    
-    enter(conditionsentryList, conditions, conditionsValueValueLabelsList, typesOfWasteLabels, typesOfWasteEntry, mswCompButtonCheck, mswCompAuto, mswCompEnter)    
+    enter(typesOfWasteEntry, mswCompProp, typesOfWasteValueLabels, recycMSWPropsLabels, recycMSWPropsEntry, recycMSWButtonChecker, recycMSWAutoButton, recycMSWEnterButton)
+    enter(conditionsentryList, conditions, conditionsValueValueLabelsList, typesOfWasteLabels, typesOfWasteEntry, mswCompButtonCheck, mswCompAuto, mswCompEnter)
     enter(IncinMSWPropsEntry, mswIncin, IncinMSWPropsValueLabels, LandMSWPropsLabels, LandMSWPropsEntry, landMSWButtonChecker, landMSWAutoButton, landMSWEnterButton)
     enter(recycMSWPropsEntry, mswRecyc, recycMSWPropsValueLabels, IncinMSWPropsLabels, IncinMSWPropsEntry, incinMSWButtonChecker, incinMSWAutoButton, incinMSWEnterButton)
     enter(LandMSWPropsEntry, mswLand, LandMSWPropsValueLabels, CompostMSWPropsLabels, CompostMSWPropsEntry, compostMSWCheckerButton, compostMSWAutoButton, compostMSWEnterButton)
     enter(CompostMSWPropsEntry, mswCompost, CompostMSWPropsValueLabels, recycPlasticLabels, recycPlasticEntry, plasticRecycButtonChecker, plasticRecycAutoButton, plasticRecycEnterButton)
     enter(recycPlasticEntry, plasticRecycledFractionsList, plasticRecycValueLabels, IncinPlasticLabels, IncinPlasticEntry, plasticIncinButtonChecker, plasticIncinAutoButton, plasticIncinEnterButton)
-    enter(IncinPlasticEntry, plasticIncinFractionsList, IncinPlasticValueLabels, LandPlasticLabels, LandPlasticEntry, plasticLandButtonChecker, plasticLandAutoButton, plasticLandEnterButton)    
+    enter(IncinPlasticEntry, plasticIncinFractionsList, IncinPlasticValueLabels, LandPlasticLabels, LandPlasticEntry, plasticLandButtonChecker, plasticLandAutoButton, plasticLandEnterButton)
     enter(LandPlasticEntry, plasticLandFractionsList, LandPlasticValueLabels, RepRecycPlasticLabels, RepRecycPlasticEntry, NONE, plasticRepRecycAutoButton, plasticRepRecycEnterButton)
     enter(RepRecycPlasticEntry, repRecPlastics, RepRecycPlasticValueLabel, ImportPlasticLabels, ImportPlasticEntry, NONE, plasticImportAutoButton, plasticImportEnterButton)
     enter(ImportPlasticEntry, repPlasticImport, ImportPlasticValueLabels, ExportPlasticLabels, ExportPlasticEntry, NONE, plasticExportAutoButton, plasticExportEnterButton)
@@ -1553,17 +1553,17 @@ def enter(entry, appList, valueLabel, nextLabel, nextEntry, nextCheck, nextAuto,
             appList.append(value) #if data doesn't need to be checked, data will be automatically appended
     for v in range(len(valueLabel)):
         valueLabel[v].config(text = str(appList[v]), fg = 'saddlebrown') #will insert data into data analysis tab so user can look at plots and see data input at the same time
-    
-        
+
+
     gapLabel1.config(text = 'Previous data Entered') #will give confirmation message to user that data has been entered
-    
+
     try:
         showSection(nextLabel, nextEntry, nextCheck, nextAuto, nextEnter)
         gapLabel1.config(text = listOfEntryCategories[str(entry)])
 
     except:
         makeCalculations()
-        
+
 #autofills data for each category as necessary
 def autofill(entry, data):
     for i in range(len(entry)):
@@ -1608,7 +1608,7 @@ mswCompAuto = Button(my_frame2, text = ' Autofill 2018 Data', command = lambda: 
 
 #Create list of entry boxes to be placed MJC
 typesOfWasteEntry = [miscInOrgWasteEntry, otherWasteEntry, yardTrimmingsEntry, foodWasteEntry, rltWasteEntry, woodWasteEntry, metalsWasteEntry, glassWasteEntry, paperAndBoardEntry, plasticsEntry]
- 
+
 
 #Creates conditions labels and entries
 conditionsTitleLabel = Label(my_frame2, text = "Conditions", bg = 'white', font = 'Helvetica 12 bold')
@@ -1641,7 +1641,7 @@ landfillEmissionsEntry = Entry(my_frame2, width = 50)
 conditionsLabelsListForPlacement = [conditionsTitleLabel, totalMSWLabel, totalPlasticLabel, plasticRecycledPropLabel, plasticDomesticLabel, plasticExportPropLabel, plasticReExportPropLabel,
                                     plasticRecycEfficiencyLabel, plasticIncineratedPropLabel, plasticLandfillPropLabel, wasteFacilityEmissionsLabel, landfillEmissionsLabel]
 
-conditionsEntryListForPlacement = [totalMSWEntry, totalPlasticEntry, plasticRecycledPropEntry, plasticDomesticEntry, plasticExportPropEntry, plasticReExportPropEntry, 
+conditionsEntryListForPlacement = [totalMSWEntry, totalPlasticEntry, plasticRecycledPropEntry, plasticDomesticEntry, plasticExportPropEntry, plasticReExportPropEntry,
                                    plasticRecycEfficiencyEntry, plasticIncineratedPropEntry, plasticLandfillPropEntry, wasteFacilityEmissionsEntry, landfillEmissionsEntry]
 
 conditionsLabelsList = [conditionsTitleLabel, totalMSWLabel, totalPlasticLabel, plasticRecycledPropLabel, plasticDomesticLabel, plasticRecycEfficiencyLabel, plasticExportPropLabel,
@@ -1688,7 +1688,7 @@ glassRecycEntry = Entry(my_frame2, width = 50)
 paperRecycEntry = Entry(my_frame2, width = 50)
 plasticRecycEntry = Entry(my_frame2, width = 50)
 
-#Creates lists of labels and entries for placement 
+#Creates lists of labels and entries for placement
 recycMSWPropsLabels= [totalRecycLabel, totalRecycMassLabel, miscInOrgRecycLabel, otherWasteRecycLabel, yardTrimmingsRecycLabel, foodRecycLabel,
                       rltRecycLabel, woodRecycLabel, metalRecycLabel, glassRecycLabel, paperRecycLabel, plasticRecycLabel]
 
@@ -1861,7 +1861,7 @@ otherRecycPlasticsEntry = Entry(my_frame2, width=50)
 plaRecycEntry = Entry(my_frame2, width=50)
 
 
-#Creates lists for widget placement 
+#Creates lists for widget placement
 recycPlasticLabels = [plasticRecycProportionsLabel, petRecycLabel, hdpeRecycLabel, pvcRecycLabel, ldpeRecycLabel, plaRecycLabel, ppRecycLabel, psRecycLabel, otherRecycPlasticsLabel]
 recycPlasticEntry = [petRecycEntry, hdpeRecycEntry, pvcRecycEntry, ldpeRecycEntry, plaRecycEntry, ppRecycEntry, psRecycEntry, otherRecycPlasticsEntry]
 
@@ -2048,8 +2048,8 @@ plasticReExportEnterButton = Button(my_frame2, text = 'Enter Above Dataset', com
 
 
 #Creates lists of labels and entries to allow for a loop to place them on screen
-customLabelsList = [conditionsLabelsListForPlacement, typesOfWasteLabels, recycMSWPropsLabels, IncinMSWPropsLabels, LandMSWPropsLabels, 
-                    CompostMSWPropsLabels, recycPlasticLabels, IncinPlasticLabels, LandPlasticLabels, RepRecycPlasticLabels, ImportPlasticLabels, 
+customLabelsList = [conditionsLabelsListForPlacement, typesOfWasteLabels, recycMSWPropsLabels, IncinMSWPropsLabels, LandMSWPropsLabels,
+                    CompostMSWPropsLabels, recycPlasticLabels, IncinPlasticLabels, LandPlasticLabels, RepRecycPlasticLabels, ImportPlasticLabels,
                     ExportPlasticLabels, ReExportPlasticLabels]
 
 
@@ -2096,10 +2096,10 @@ innerGap14 = Label(my_frame2, bg = 'white')
 gapLabelsList = [gapLabel4, gapLabel5, gapLabel6, gapLabel7, gapLabel8, gapLabel9, gapLabel10, gapLabel11,
                  gapLabel12, gapLabel13, gapLabel14, gapLabel15]
 
-innerGapLabelsList = [innerGap1, innerGap2, innerGap3, innerGap4, innerGap5, innerGap6, innerGap7, innerGap8, innerGap9, innerGap10, 
+innerGapLabelsList = [innerGap1, innerGap2, innerGap3, innerGap4, innerGap5, innerGap6, innerGap7, innerGap8, innerGap9, innerGap10,
                       innerGap11, innerGap12, innerGap13, innerGap14]
 
-checkButtonList = [conditionsButtonChecker, mswCompButtonCheck, recycMSWButtonChecker, incinMSWButtonChecker,  landMSWButtonChecker, 
+checkButtonList = [conditionsButtonChecker, mswCompButtonCheck, recycMSWButtonChecker, incinMSWButtonChecker,  landMSWButtonChecker,
                    compostMSWCheckerButton, plasticRecycButtonChecker, plasticIncinButtonChecker, plasticLandButtonChecker]
 
 extraButTonsList = [conditionsAutoButton, conditionsEnterButton, mswCompAuto, mswCompEnter, recycMSWAutoButton, recycMSWEnterButton,
@@ -2118,7 +2118,7 @@ def calculateWasteProportions():
    makeCalculations()
    fillMatFlowAnalSumTRVW()
 
-#Create Button that will assign values and make calculations based on input 
+#Create Button that will assign values and make calculations based on input
 calculateButton = Button(my_frame2, text=" Calculate Streams ", command=calculateWasteProportions)
 
 #Grids conditions widgets at boot up
@@ -2141,7 +2141,7 @@ frameRow +=1
 calculateButton.grid(column=1, row=frameRow, columnspan = 2)
 
 
-#Function that will remove category widgets from screen 
+#Function that will remove category widgets from screen
 def removeLabels():
     for i in customLabelsList:
         for b in i:
@@ -2155,7 +2155,7 @@ def removeLabels():
     calculateButton.grid_remove()
     for i in extraButTonsList:
         i.grid_remove()
-            
+
 #function that will add next set of widgets to stream
 def showSection(label, entry, checkButton, autofill, enter):
     removeLabels()
@@ -2174,13 +2174,13 @@ def showSection(label, entry, checkButton, autofill, enter):
     if checkButton != NONE:
         checkButton.grid(column = 1, row = frameRow, columnspan = 2)
         frameRow+=1
-   
+
     autofill.grid(column = 1, row = frameRow, columnspan = 2)
     frameRow+=1
     enter.grid(column = 1, row = frameRow, columnspan = 2)
     frameRow+=1
     calculateButton.grid(column = 1, row = frameRow, columnspan = 2)
-    
+
 
 #Menu at left of buttons that will change list of available entries
 showConditionsButton = Button(my_frame2, text = 'Conditions', command = lambda:showSection(conditionsLabelsListForPlacement, conditionsEntryListForPlacement, conditionsButtonChecker, conditionsAutoButton, conditionsEnterButton))
@@ -2198,7 +2198,7 @@ showExportButton = Button(my_frame2, text = 'Exported Plastics', command = lambd
 showReExportButton = Button(my_frame2, text = 'Re-Exported Plastics', command = lambda: showSection(ReExportPlasticLabels, ReExportPlasticEntry, NONE, plasticReExportAutoButton, plasticReExportEnterButton))
 
 #Creates list of these buttons above
-showButtonLists = [showConditionsButton, showMSWCompButton, showrecycMSWButton, showincinMSWButton, showlandMSWButton, showcompostMSWButton, 
+showButtonLists = [showConditionsButton, showMSWCompButton, showrecycMSWButton, showincinMSWButton, showlandMSWButton, showcompostMSWButton,
                    showPlasticRecycButton, showIncinPlasticButton, showLandPlasticButton, showRepRecycButton, showImportButton, showExportButton,
                    showReExportButton]
 frameRow =11
@@ -2209,12 +2209,12 @@ for i in showButtonLists:
     frameRow +=1
 
 #List of strings that will be used as confirmation after each set of data is entered
-listOfEntryCategories = {str(conditionsentryList):"Conditions Data Entered", str(typesOfWasteEntry): "Municipal Solid Waste Composition Data Entered", str(recycMSWPropsEntry): "MSW Recycling Data Entered", 
-                         str(LandMSWPropsEntry): "MSW Landfill Data Entered", str(IncinMSWPropsEntry): "MSW Incineration Data Entered", str(CompostMSWPropsEntry): "MSW Compost Data Entered", 
+listOfEntryCategories = {str(conditionsentryList):"Conditions Data Entered", str(typesOfWasteEntry): "Municipal Solid Waste Composition Data Entered", str(recycMSWPropsEntry): "MSW Recycling Data Entered",
+                         str(LandMSWPropsEntry): "MSW Landfill Data Entered", str(IncinMSWPropsEntry): "MSW Incineration Data Entered", str(CompostMSWPropsEntry): "MSW Compost Data Entered",
                          str(recycPlasticEntry): "Plastic Recycled Data Entered", str(IncinPlasticEntry): "Plastic Incinerated Data Entered", str(LandPlasticEntry): "Plastic Landfill Data Entered",
-                         str(RepRecycPlasticEntry): "Reported Recycling Data Entered", str(ImportPlasticEntry): "Import Data Entered", str(ExportPlasticEntry): "Export Data Entered", 
+                         str(RepRecycPlasticEntry): "Reported Recycling Data Entered", str(ImportPlasticEntry): "Import Data Entered", str(ExportPlasticEntry): "Export Data Entered",
                          str(ReExportPlasticEntry): "Re-Export Data Entered"}
-        
+
 
 ####################################################
 ### Stream Summary Tab
@@ -2240,7 +2240,7 @@ def displayInput():
     dataAnalysisScrollBar.config(command=dataAnalysisCanvas.yview)
 
     dataAnalysisCanvas['yscrollcommand']=dataAnalysisScrollBar.set
-    
+
     dataAnalysisCanvas.bind('<Configure>', lambda e: dataAnalysisCanvas.configure(scrollregion = dataAnalysisCanvas.bbox('all')))
 
     dataAnalysisCanvas.create_window((0,0), window = my_frame7, anchor = 'nw')
@@ -2404,7 +2404,7 @@ psRecycStreamLabel = Label(my_frame7, text = "PS Proportion (Fraction):", bg = '
 otherRecycPlasticsStreamLabel = Label(my_frame7, text = "Other Plastics Proportion (Fraction):", bg = 'white', font = fontChoice)
 plaRecycStreamLabel = Label(my_frame7, text = "PLA Proportion (Fraction):", bg = 'white', font = fontChoice)
 
-plasticRecycPropsStreamsLabels = [plasticRecycProportionsStreamLabel, petRecycStreamLabel, hdpeRecycStreamLabel, pvcRecycStreamLabel, ldpeRecycStreamLabel, plaRecycStreamLabel, ppRecycStreamLabel, 
+plasticRecycPropsStreamsLabels = [plasticRecycProportionsStreamLabel, petRecycStreamLabel, hdpeRecycStreamLabel, pvcRecycStreamLabel, ldpeRecycStreamLabel, plaRecycStreamLabel, ppRecycStreamLabel,
                            psRecycStreamLabel, otherRecycPlasticsStreamLabel]
 
 #Types of plastics entry boxes and StreamLabels for landfilled list
@@ -2532,7 +2532,7 @@ conditionsValueValueLabelsList = [totalMSWValueLabel, totalPlasticValueLabel, pl
                         plasticReExportPropValueLabel, plasticIncineratedPropValueLabel, plasticLandfillPropValueLabel, wasteFacilityEmissionsValueLabel, landfillEmissionsValueLabel]
 
 conditionsValueValueLabelsListForPlacement = [totalMSWValueLabel, totalPlasticValueLabel, plasticRecycledPropValueLabel, plasticDomesticValueLabel, plasticExportPropValueLabel,
-                                  plasticReExportPropValueLabel, plasticRecycEfficiencyValueLabel, plasticIncineratedPropValueLabel, plasticLandfillPropValueLabel, wasteFacilityEmissionsValueLabel, 
+                                  plasticReExportPropValueLabel, plasticRecycEfficiencyValueLabel, plasticIncineratedPropValueLabel, plasticLandfillPropValueLabel, wasteFacilityEmissionsValueLabel,
                                   landfillEmissionsValueLabel]
 
 
@@ -2738,8 +2738,8 @@ def rowStreamPlacer(stream, value, gap, row):
                 value[i][a-1].grid(column = col +1, row = frameNum, sticky = W)
             frameNum+=1
         col +=2
-    
-    
+
+
 #places rows and appropriate gap labels
 rowStreamPlacer(rowStream1, rowValue1, 0, 2)
 gapLabelsList[1].grid(column = 0, row =15, columnspan = 6)
@@ -2752,45 +2752,45 @@ gapLabelsList[7].grid(column = 0, row = 51, columnspan = 6)
 rowStreamPlacer(rowStream5, rowValue5, 8, 52)
 gapLabelsList[9].grid(column = 0, row = 58, columnspan = 6)
 
-            
+
 
 #Creates scrollbar for input data frame
 dataAnalysisScrollBar = Scrollbar(my_frame7, orient = 'vertical', command = dataAnalysisCanvas.yview)
 dataAnalysisScrollBar.grid(column = 6, row = 0, rowspan = 80, sticky = NS)
 
 
-   
+
 
 ###################################################
 #Creating flow diagram
 #function that will open pop up window with stream trvw when button is pressed
 def open_popup():
-    
+
     #Creates pop up window with title
    top= Toplevel(streamFrame)
    top.geometry('%dx%d+%d+%d' % (w, h, x, y-25))
    top.title("Stream Calculations")
-   
+
    #Creates and packs stream summary trvw (table)
    streamSummaryTRVW = ttk.Treeview(top)
    streamSummaryTRVW.pack(padx=5, pady=5, fill='both', expand=True,side='top')
-   
+
    #Creates and configures x, then y scrollbar for trvw
    streamSummaryScrollBar = Scrollbar(top, orient = 'horizontal', command = streamSummaryTRVW.xview)
    streamSummaryScrollBar.config(command = streamSummaryTRVW.xview)
    streamSummaryTRVW.configure(xscrollcommand = streamSummaryScrollBar.set)
-   
+
    streamSummaryYScrollBar = Scrollbar(top, orient = 'vertical', command = streamSummaryTRVW.yview)
    streamSummaryYScrollBar.config(command = streamSummaryTRVW.xview)
    streamSummaryTRVW.configure(yscrollcommand = streamSummaryYScrollBar.set)
-   
+
    #packs y scrollbar -- there is some issue here I will return to MJC
    #streamSummaryYScrollBar.pack(side = RIGHT, fill = Y)
-   
+
    #Creates and packs button that will eventually allow data to be exported to excel
    exportButton = Button(top, text = 'Export to Excel')
    exportButton.pack()
-   
+
    #creates column headings in trvw
    streamSummaryColumns = tuple(['Stream'] + [str(i) for i in range(1,31)]+['Waste Incinerated 2018', 'Waste Accumulated in Landfill 2018'])
    streamSummaryTRVW['columns']=streamSummaryColumns
@@ -2798,22 +2798,22 @@ def open_popup():
    for name in streamSummaryColumns:
        streamSummaryTRVW.column(name, width = 250, anchor = CENTER, stretch = NO)
        streamSummaryTRVW.heading(name, text = name)
-       streamTitleRows = ['Stream Title', 'Monomer/Raw Materials', 'Additives', 'Manufacture GHG Releases', 'Manufacture to Use', 'Additives Migration', 'Use to Collection', 'Collection GHG Emissions', 'Other Waste into Collection', 
-                          'Plastic Litter', 'Collection to Sort', 'Nonrecyclable Incinerate: Sort to Incineration', 'Sort to Landfill', 'Sort to Compost', 'Sort to Recycle: Recyclable Nonplastic Waste', 'Sort GHG Emissions', 'Sort to Mechanical Recycling', 'Mechanical Recycling Net GHG Emissions', 
+       streamTitleRows = ['Stream Title', 'Monomer/Raw Materials', 'Additives', 'Manufacture GHG Releases', 'Manufacture to Use', 'Additives Migration', 'Use to Collection', 'Collection GHG Emissions', 'Other Waste into Collection',
+                          'Plastic Litter', 'Collection to Sort', 'Nonrecyclable Incinerate: Sort to Incineration', 'Sort to Landfill', 'Sort to Compost', 'Sort to Recycle: Recyclable Nonplastic Waste', 'Sort GHG Emissions', 'Sort to Mechanical Recycling', 'Mechanical Recycling Net GHG Emissions',
                           'Mechanical Recycling Additive Migration', 'Mechanical Recycling Additive Contamination', 'Plastic: Mechanical Recycling to Manufacture', 'Plastic Import', 'Plastic Re-Export', 'Mechanical Recycling to Incineration', 'Plastic: Sort to Incineration', "Incineration GHG Emissions",
                           'Plastic: Sort to Landfill', 'Plastic Export from Sort', 'Mechanical Recycling to Landfill', 'Landfill Plastic Leak', 'Landfill GHG Emissions', '', '']
-  
+
     #inserts titles into stream summary trvw
 
    streamSummaryTRVW.insert(parent ='', index ='end', iid = 0, text = '', values = tuple([streamTitleRows[b] for b in range(len(streamTitleRows))]))
-   
+
    count = 1
    #inserts data into stream summary trvw
    for i in streamTRVWLists:
        streamSummaryTRVW.insert(parent ='', index ='end', iid = count, text = '', values = tuple([trvwRounder(i[b]) for b in range(len(i))]))
        count +=1
-       
-       
+
+
     #adds stream summary scroll bars
    streamSummaryScrollBar.pack(fill = X)
 
@@ -2826,13 +2826,13 @@ flow = plt.figure(figsize = (40,45), dpi = 44) #Creates matplot figure
 
 
 #Creates lists that will be used to note connections between nodes
-From = ['Manufacture', "Stream 4:\nManufacture\nto Use",'Use', "Stream 6:\nUse to\nCollection",'Collection'] 
+From = ['Manufacture', "Stream 4:\nManufacture\nto Use",'Use', "Stream 6:\nUse to\nCollection",'Collection']
 
 To = ["Stream 4:\nManufacture\nto Use", 'Use', "Stream 6:\nUse to\nCollection", "Collection", 'Stream 10:\nCollection\nto Sort']
 
 
 From1 = ['Stream 10:\nCollection\nto Sort',"Sort", 'Stream 16:\nSort to\nMechanical\nRecycling', 'Sort', 'Stream 11:\nNonrecyclable\nSort to\nIncineration']
- 
+
 To1 = ["Sort",'Stream 16:\nSort to\nMechanical\nRecycling','Mechanical\nRecycling','Stream 11:\nNonrecyclable\nSort to\nIncineration', 'Energy\nRecovery\n(Incineration)']
 
 
@@ -2854,7 +2854,7 @@ From4 = ["Use", 'Collection', 'Stream 8:\nOther Waste', 'Collection', 'Sort']
 To4 = ["Stream 5:\nAdditive\nMigration", 'Stream 7:\nGHG\nReleases', 'Collection', 'Stream 9:\nPlastic\nLitter', 'Stream 14:\nRecyclable\nNonplastics']
 
 
-From5 = ["Sort", "Mechanical\nRecycling", 'Mechanical\nRecycling', "Stream 19:\nAdditive\nContamination", "Stream 21:\nPlastic Import", 
+From5 = ["Sort", "Mechanical\nRecycling", 'Mechanical\nRecycling', "Stream 19:\nAdditive\nContamination", "Stream 21:\nPlastic Import",
          "Mechanical\nRecycling", "Sort", "Stream 24:\nPlastic Sort\nto\nIncineration"]
 
 To5 = ["Stream 15:\nGHG\nReleases","Stream 17:\nNet GHG\nReleases", "Stream 18:\nAdditive\nMigration", "Mechanical\nRecycling", "Mechanical\nRecycling",
@@ -2865,7 +2865,7 @@ From6 = ['Energy\nRecovery\n(Incineration)', 'Sort', 'Stream 26:\nPlastic Sort\n
          'Sort', 'Mechanical\nRecycling', 'Stream 28:\nRecycling\nto Landfill', 'Landfilling and\nDegradation', 'Landfilling and\nDegradation']
 
 To6 = ["Stream 25:\nGHG\nReleases", 'Stream 26:\nPlastic Sort\nto Landfill', 'Landfilling and\nDegradation',
-       'Stream 27:\nPlastic Export', 'Stream 28:\nRecycling\nto Landfill', 'Landfilling and\nDegradation', 'Stream 29:\nPlastic Leak', 
+       'Stream 27:\nPlastic Export', 'Stream 28:\nRecycling\nto Landfill', 'Landfilling and\nDegradation', 'Stream 29:\nPlastic Leak',
        'Stream 30:\nGHG\nReleases']
 
 
@@ -2875,7 +2875,7 @@ Tos = [To1, To2, To3, To4, To5, To6]
 
 for i in Froms:
     From +=i
-    
+
 for i in Tos:
     To +=i
 
@@ -2931,7 +2931,7 @@ i = 0
 for a in From:
     Labels[a]=a
     i +=1
-    
+
 
 for i in To:
     if i not in list(Labels.values()):
@@ -2954,7 +2954,7 @@ for n in G.nodes:
 # By making a white node that is larger, I can make the arrow "start" beyond the node
 
 
-nodes = nx.draw_networkx_nodes(G, pos, 
+nodes = nx.draw_networkx_nodes(G, pos,
                        nodelist = Circles,
                        node_size=8.5e3,
                        node_shape='o',
@@ -2962,7 +2962,7 @@ nodes = nx.draw_networkx_nodes(G, pos,
                        edgecolors='black',
                        alpha=0.5)
 
-nodes = nx.draw_networkx_nodes(G, pos, 
+nodes = nx.draw_networkx_nodes(G, pos,
                        nodelist = Square,
                        node_size=5.5e3,
                        node_shape='s',
@@ -3003,16 +3003,16 @@ trvw.pack(padx=5, pady=5, fill='both', expand=True,side='top')
 
 
 
-#Creates scoll bars in (x) directions        
-#Creates scoll bars in (y) directions  
-scrollbary2=ttk.Scrollbar(trvw, orient="vertical", command=trvw.yview) 
-scrollbary2.pack(side="right", fill="y") 
+#Creates scoll bars in (x) directions
+#Creates scoll bars in (y) directions
+scrollbary2=ttk.Scrollbar(trvw, orient="vertical", command=trvw.yview)
+scrollbary2.pack(side="right", fill="y")
 # assign the scrollbars to the Treeview Widget
-trvw.configure(yscrollcommand=scrollbary2.set) 
+trvw.configure(yscrollcommand=scrollbary2.set)
 
 #Creates lists that will be added to the table
 dataframe2_rows = [['Iron_Steel', 2.19, 0.44], ['Low Carbon steel', 1.8, 0.44], ['Low alloy steel (cranskshafts and tools)', 2.0, 0.52], ['Cast Iron', 10.5, 0.51], ['Stainless_Steel', 4.95, 0.73], ['Aluminum', 12.0, 2.1], ['Magnesium alloys', 24.5, 2.9], ['Titanium alloy', 46.5, 5.2], ['Copper alloys', 3.7, 0.83], ['Lead alloys', 2.0, 0.45], ['Zinc (die cast) alloys', 4.1, 0.67], ['Zinc alloys', 3.2, 0.67], ['Nickel-Chromium alloy', 11.5, 2.0], ['Nickel-based superalloys', 35.6, 4.3], ['Silver', 100.0, 9.3], ['Gold', 26500.0, 43.0], ['Platinum', 14750.0, 367.0], ['Nickel', 9.0, 0.7], ['Palladium', 425.5, 'nan'], ['Rhodium', 1100.0, 'nan'], ['Iridium', 165.0, 'nan'], ['PP', 3.05, 2.1], ['PE', 2.75, 2.85], ['PET', 3.9, 2.35], ['LDPE', 2.75, 2.85], ['HDPE', 3.26, 2.28], ['PVC', 2.5, 2.15], ['PES (polysulfone)', 3.0, 0.0], ['PUR (polyurethane)', 3.7, 1.26], ['PUR foam', 4.5, 0.0], ['ABS', 3.8, 2.8], ['PS', 3.8, 2.85], ['Polycarbonate', 6.0, 2.55], ['Polyamide_Nylon', 7.95, 2.56], ['Polyactide (PLA)', 3.6, 2.2], ['Polyester', 'nan', 'nan'], ['Phenolics', 3.6, 'nan'], ['Nat_Rubber', 2.1, 'nan'], ['Butyl_Rubber_Synthetics', 6.6, 'nan'], ['Ethylene Vinyl Acetate (EVA)', 2.1, 2.8], ['Paper_Cardboard', 19.5, 0.76], ['Eglass_Fiber', 3.52, 'nan'], ['Cotton', 2.55, 'nan'], ['Systems (unit as specified)', 'nan', 'nan'], ['Desktop computer, without screen', 274.0, 'nan'], ['Laptop Computer', 250.0, 'nan'], ['Small electronic devices (per kg)', 300.0, 'nan'], ['LCD displays (per m2)', 335.0, 'nan'], ['Laser jet printer', 68.0, 'nan'], ['Subsytems, per unit', 'nan', 'nan'], ['Printed wiring board, desktop PC motherboard', 162.0, 'nan'], ['Printed wiring board, laptop PC motherboard', 267.0, 'nan'], ['hard disk drive', 8.0, 'nan'], ['CD-ROM/DVD-ROM drive', 10.0, 'nan'], ['Power supply', 30.0, 'nan'], ['Fan', 12.0, 'nan'], ['Keyboard (per unit)', 27.0, 'nan'], ['Mouse devices, optical with cable, per unit', 6.0, 'nan'], ['Toner module, laser jet', 10.5, 'nan'], ['CPU', 'nan', 'nan'], ['CRT', 'nan', 'nan'], ['LCD', 'nan', 'nan'], ['notebook', 'nan', 'nan'], ['computer_average', 'nan', 'nan'], ['mobile_phone', 'nan', 'nan'], ['CRT_glass', 'nan', 'nan'], ['E_waste_copper', 'nan', 'nan'], ['E_waste_lead', 'nan', 'nan'], ['Printed circuit board', 1723.0, 'nan']]
-column_names2=['Material', 'Primary (virgin)', 'Secondary (mechanically recycled)']  
+column_names2=['Material', 'Primary (virgin)', 'Secondary (mechanically recycled)']
 
 #assigns and adds columns names to table
 trvw.configure(columns=column_names2)
@@ -3025,7 +3025,7 @@ for i,row in enumerate(dataframe2_rows):
         trvw.insert("", "end", values=row,tags=('oddrow',))
     else:
         trvw.insert("", "end", values=row,tags=('evenrow',))
-        
+
 
 
 
@@ -3146,27 +3146,27 @@ for i in range(18):
     assumptionTextList[i].insert(tk.INSERT, assumptions[i][0])
     assumptionTextList[i].tag_configure('center', justify = "center")
     assumptionTextList[i].tag_add('center', 1.0, 'end')
-    
+
     effectTextList[i].grid(column = 1, row = assumpRow)
     effectTextList[i].config(font=("Helvetica 14 bold"))
     effectTextList[i].insert(tk.INSERT, assumptions[i][1])
     effectTextList[i].tag_configure('center', justify = "center")
     effectTextList[i].tag_add('center', 1.0, 'end')
-    
+
     justificationTextList[i].grid(column = 2, row = assumpRow)
     justificationTextList[i].config(font=("Helvetica 14 bold"))
     justificationTextList[i].insert(tk.INSERT, assumptions[i][2])
     justificationTextList[i].tag_configure('center', justify = "center")
     justificationTextList[i].tag_add('center', 1.0, 'end')
-    
+
     assumpRow+=1
-    
+
 allAssumpTexts = justificationTextList + assumptionTextList + effectTextList
 
 #Configures textboxes to prevent editing
 for i in allAssumpTexts:
     i.config(state = 'disabled')
-    
+
 ##### Chemical Additives data base
 
 #Creates and configures title text box
@@ -3201,10 +3201,10 @@ count = 0
 for i in chemicalAdditivesList:
        chemicalAdditivesTRVW.insert(parent ='', index ='end', iid = count, text = '', values = tuple(i))
        count +=1
-       
-#Creates scoll bars in (y) direction 
-additivesScrollbar=ttk.Scrollbar(chemicalAdditivesTRVW, orient="vertical", command=chemicalAdditivesTRVW.yview) 
-additivesScrollbar.pack(side="right", fill="y") 
+
+#Creates scoll bars in (y) direction
+additivesScrollbar=ttk.Scrollbar(chemicalAdditivesTRVW, orient="vertical", command=chemicalAdditivesTRVW.yview)
+additivesScrollbar.pack(side="right", fill="y")
 # assign the scrollbars to the Treeview Widget
 chemicalAdditivesTRVW.configure(yscrollcommand=additivesScrollbar.set)
 
