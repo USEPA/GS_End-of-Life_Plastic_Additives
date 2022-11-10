@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+{% include 'scenario/wizard_header.html' %}
+
+<h3>Input Condition Values for Scenario {{obj.scenario_id}}</h3>
+
+<form method="post" >
+    {% if form.errors %}
+    <div class="usa-alert usa-alert--error" role="alert">
+        <div class="usa-alert__body">
+            <h5 class="usa-alert__heading">Please correct the following errors</h5>
+            {% for field in form %}
+                {% if field.errors %}
+                <p class="usa-alert__text">{{field.label_tag}} {{ field.errors|striptags }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% csrf_token %}
+    {{ form }}
+
+    <div class="button-group">
+        <button type="submit" class="usa-button">Save</button>
+        <button type="reset" class="usa-button">Reset Inputs</button>
+    </div>
+</form>
+{% endblock %}

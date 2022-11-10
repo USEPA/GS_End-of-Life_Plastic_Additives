@@ -4,6 +4,19 @@
 
 """Constant value declarations."""
 
+
+ALL_SCENARIO_FIELDS = [
+    'conditions', 'msw_composition', 'msw_recycling', 'msw_incineration',
+    'msw_landfill', 'msw_compost', 'msw_compost', 'plastic_recycling',
+    'incinerated_plastic', 'landfilled_plastic', 'reported_recycled_masses',
+    'imported_plastic', 'exported_plastic', 're_exported_plastic']
+
+COMPLETE_CSS = 'usa-step-indicator__segment--complete'
+CURRENT_CSS = 'usa-step-indicator__segment--current'
+COMPLETE_SPAN = 'completed'
+INCOMPLETE_SPAN = 'not completed'
+
+
 # Constant values from assumptions to be used in calculations.
 ASSUMED_VALUES = {
     "Plastic waste lost to littering": 0.02,
