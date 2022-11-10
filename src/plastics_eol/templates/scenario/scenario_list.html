@@ -1,0 +1,86 @@
+{% extends 'main/base.html' %} {% load static %} {% block content %}
+<div style="text-align: center">
+  <h2>
+    Plastics End of Life Scenarios
+  </h2>
+</div>
+
+<p>
+  This page contains existing EoL Scenarios that you have created.
+  It does not contain Scenarios created by other users.
+</p>
+
+{% if user.is_authenticated %}
+
+<table class="usa-table">
+  <caption>
+    EoL Scenarios
+  </caption>
+  <thead>
+    <tr>
+      <th data-sortable scope="col">#</th>
+      <th data-sortable scope="col">Name</th>
+      <th data-sortable scope="col">Created By</th>
+      <th data-sortable scope="col">Date Created</th>
+      <th data-sortable scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if objects %} {% for scenario in objects %}
+    <tr id="{{scenario.id}}" onclick="rowClick('{{scenario.id}}')">
+      <th scope="row">{{scenario.id}}</th>
+      <td>{{scenario.name}}</td>
+      <td>{{scenario.created_by}}</td>
+      <td>{{scenario.date|date:"Y-m-d"}}</td>
+      <td>{{scenario.description}}</td>
+    </tr>
+    {% endfor %} {% else %}
+    <tr>
+      <td colspan="5">No Scenarios exist!</td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+<div class="usa-sr-only usa-table__announcement-region" aria-live="polite"></div>
+
+<div class="button-group">
+  <button class="usa-button" onclick="window.location.href='/scenario/create'">
+    Create a new Scenario
+  </button>
+</div>
+
+<div class="button-group">
+  <button class="usa-button modSelectedButton" onclick="editScenario(this)" disabled>
+    Edit Selected Scenario
+  </button>
+  <button class="usa-button" onclick="exportAll('docx')">
+    Export All to Docx
+  </button>
+  <button class="usa-button" onclick="exportAll('pdf')">
+    Export All to PDF
+  </button>
+  <button class="usa-button" onclick="exportAll('excel')">
+    Export All to Excel
+  </button>
+</div>
+{% endif %} {% endblock %} {% block extend_js %}
+<!-- NOTE: JQuery is already included inside base.html... -->
+<!-- NOTE: Not sure why, but JQuery won't work unless I include again here. -->
+<script src="https://www.epa.gov/core/assets/vendor/jquery/jquery.min.js?v=3.6.0"></script>
+<script src="{% static 'scripts/app.js' %}"></script>
+{% endblock %} {% block scripts %}
+<script>
+  function editScenario(btn) {
+    if ($(btn).attr("disabled")) return;
+    window.location.href = "/scenario/edit/" + $(btn).attr("id");
+  }
+
+  function exportAll(exportType) {
+    urlType = "exportexcel";
+    if (exportType === "pdf") urlType = "exportpdf";
+    else if (exportType === "docx") urlType = "exportdocx";
+
+    window.location.href = "/scenario/" + urlType;
+  }
+</script>
+{% endblock %}

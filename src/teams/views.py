@@ -186,8 +186,8 @@ class TeamEditView(FormView):
             # return render(request, self.template, ctx)
             return HttpResponseRedirect('/teams/list/')
 
-        # We should never get here, so just redirect to the dashboard.
-        return HttpResponseRedirect(reverse('dashboard'))
+        # We should never get here, so just redirect to the home.
+        return HttpResponseRedirect(reverse('home'))
 
 
 class TeamManagementView(FormView):
@@ -324,8 +324,8 @@ class TeamManagementView(FormView):
                 BytesIO(ctx['nonmembers_data']))
             return render(request, self.template, ctx)
 
-        # We should never get here, so just redirect to the dashboard.
-        return HttpResponseRedirect(reverse('dashboard'))
+        # We should never get here, so just redirect to the home.
+        return HttpResponseRedirect(reverse('home'))
 
 
 #########################

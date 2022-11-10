@@ -1,0 +1,187 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+<h3>Details for Scenario {{scenario.id}} "{{scenario}}"</h3>
+
+<div class="grid-row grid-gap">
+    <div class="tablet:grid-col">
+        
+    </div>
+</div>
+
+<div class="grid-row grid-gap">
+    <div class="tablet:grid-col">
+        <h5 class="site-preview-heading border-top-1px border-base-light padding-top-1 margin-top-0">
+            Scenario {{scenario.id}} required inputs status
+        </h5>
+        <ul class="usa-icon-list">
+            <!------------ Conditions ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.condition %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.condition %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>Conditions</h5></a>
+                </div>
+            </li>
+            <!------------ MSWComposition ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.mswcomposition %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.mswcomposition %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>MSW Composition</h5></a>
+                </div>
+            </li>
+            <!------------ MSWRecycling ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.mswrecycling %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.mswrecycling %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>MSW Recycling</h5></a>
+                </div>
+            </li>
+            <!------------ MSWIncineration ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.mswincineration %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.mswincineration %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>MSW Incineration</h5></a>
+                </div>
+            </li>
+            <!------------ MSWLandfill ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.mswlandfill %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.mswlandfill %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>MSW Landfilled</h5></a>
+                </div>
+            </li>
+            <!------------ MSWCompost ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.mswcompost %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.mswcompost %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>MSW Composted</h5></a>
+                </div>
+            </li>
+            <!------------ PlasticRecycling ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.plasticrecycling %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.plasticrecycling %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>Plastic Recycling</h5></a>
+                </div>
+            </li>
+            <!------------ PlasticIncineration ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.plasticincineration %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.plasticincineration %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>Plastic Incineration</h5></a>
+                </div>
+            </li>
+            <!------------ PlasticLandfill ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.plasticlandfill %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.plasticlandfill %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>Plastic Landfilled</h5></a>
+                </div>
+            </li>
+            <!------------ PlasticReportedRecycled ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.plasticreportedrecycled %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.plasticreportedrecycled %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>Plastic Reported Recycled</h5></a>
+                </div>
+            </li>
+            <!------------ ImportedPlastic ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.importedplastic %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.importedplastic %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>Imported Plastic</h5></a>
+                </div>
+            </li>
+            <!------------ ExportedPlastic ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.exportedplastic %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.exportedplastic %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>Exported Plastic</h5></a>
+                </div>
+            </li>
+            <!------------ ReExportedPlastic ------------>
+            <li class="usa-icon-list__item">
+                <div class="usa-icon-list__icon {% if scenario.reexportedplastic %}text-green{% else %}text-red{% endif %}">
+                    <svg class="usa-icon" aria-hidden="true" role="img">
+                        <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#{% if scenario.reexportedplastic %}check_circle{% else %}cancel{% endif %}"></use>
+                    </svg>
+                </div>
+                <div class="usa-icon-list__content">
+                    <a href="#"><h5>Re-Exported Plastic</h5></a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- <ol class="usa-process-list">
+    <li class="usa-process-list__item">
+        <a href="/scenario/{{scenario.id}}/condition"><h5 class="usa-process-list__heading">Conditions</h5></a>
+        <p>{% if scenario.condition %}{{scenario.condition}}{% else %}No condition!{% endif %}</p>
+    </li>
+    <li class="usa-process-list__item">
+        <h5 class="usa-process-list__heading">MSW Composition</h5>
+    </li>
+    <li class="usa-process-list__item">
+        <h5 class="usa-process-list__heading">MSW Recycling</h5>
+    </li>
+    <li class="usa-process-list__item">
+        <h5 class="usa-process-list__heading">MSW Incineration</h5>
+    </li>
+    <li class="usa-process-list__item">
+        <h5 class="usa-process-list__heading">MSW Landfill</h5>
+    </li>
+    <li class="usa-process-list__item">
+        <h5 class="usa-process-list__heading">MSW Compost</h5>
+    </li>
+</ol> -->
+
+{% endblock %}

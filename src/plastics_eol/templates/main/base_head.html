@@ -1,8 +1,11 @@
 {% include 'epa/head.html' %}
+{% load static %}
 <!--
   Add any additional head content here. The content in this file should be
   specific to this app and will override any conflicting content from the EPA
   template. For example custom CSS.
 -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+
 {% include 'epa/section_banner.html' %}
 {% include 'epa/header.html' %}

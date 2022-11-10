@@ -159,9 +159,9 @@ def trvw_rounder(num):
     value = 0
     if isinstance(num, str):
         value = num
-    elif num<1:
-        if num<0.5:
-            if num<0.1:
+    elif num < 1:
+        if num < 0.5:
+            if num < 0.1:
                 if num == 0:
                     value = 0
                 else:
