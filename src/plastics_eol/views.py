@@ -9,11 +9,17 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 
-from .forms import ConditionForm, MSWCompositionForm, ScenarioForm
+from .forms import ConditionForm, MSWCompositionForm, MSWCompostForm, \
+    MSWIncinerationForm, MSWLandfillForm, MSWRecyclingForm, \
+    ScenarioForm, PlasticRecyclingForm, PlasticIncinerationForm, \
+    PlasticLandfillForm, PlasticReportedRecycledForm, \
+    ImportedPlasticForm, ExportedPlasticForm, ReExportedPlasticForm
+
 from .models import Condition, ExportedPlastic, ImportedPlastic, \
     ReExportedPlastic, MSWComposition, MSWCompost, MSWIncineration, \
     MSWLandfill, MSWRecycling, PlasticIncineration, PlasticLandfill, \
     PlasticRecycling, PlasticReportedRecycled, Scenario
+
 from .utils import get_steps
 
 
@@ -82,29 +88,14 @@ class ScenarioDetail(LoginRequiredMixin, DetailView):
     template_name = 'scenario/scenario_detail.html'
 
 
-# class CreatePartial(LoginRequiredMixin, CreateView):
-#     """Custom partial class to contain constant pieces of other classes."""
-
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = self.title
-#         ctx['step_num'] = self.step_num
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
-
-
-class ConditionsCreate(LoginRequiredMixin, CreateView):
-    """Scenario Conditions Create view."""
-
-    form_class = ConditionForm
-    template_name = 'scenario/_generic_inputs_create.html'
+class WizardCreatePartial(LoginRequiredMixin, CreateView):
+    """Custom partial class to contain constant pieces of other classes."""
 
     def get_context_data(self, *args, **kwargs):
         """Override default context to return the proper scenario step."""
         ctx = super().get_context_data(*args, **kwargs)
-        ctx['page_title'] = 'Condition'
-        ctx['step_num'] = 0
+        ctx['page_title'] = self.page_title
+        ctx['step_num'] = self.step_num
         ctx = get_steps(ctx, ctx['step_num'])
         return ctx
 
@@ -112,15 +103,24 @@ class ConditionsCreate(LoginRequiredMixin, CreateView):
         """Override default form validator to add scenario_id"""
         obj = form.save(commit=False)
         obj.scenario_id = self.kwargs['pk']
-        super(ConditionsCreate, self).form_valid(form)
+        return super(WizardCreatePartial, self).form_valid(form)
 
     def get_success_url(self, *args, **kwargs):
         """
         On successful Scenario creation, automatically redirect users
-        to the first page in the scenario wizard.
+        to the next page in the scenario wizard.
         """
-        return reverse_lazy('msw_composition_create',
-                            args=(self.object.scenario_id,))
+        return reverse_lazy(self.next_url, args=(self.object.scenario_id,))
+
+
+class ConditionsCreate(WizardCreatePartial):
+    """Scenario Conditions Create view."""
+
+    form_class = ConditionForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'Condition'
+    step_num = 0
+    next_url = 'msw_composition_create'
 
 
 class ConditionsDetail(LoginRequiredMixin, DetailView):
@@ -130,379 +130,121 @@ class ConditionsDetail(LoginRequiredMixin, DetailView):
     template_name = 'scenario/conditions_detail.html'
 
 
-class MSWCompositionCreate(LoginRequiredMixin, CreateView):
+class MSWCompositionCreate(WizardCreatePartial):
     """Scenario MSWComposition Create view."""
 
     form_class = MSWCompositionForm
     template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'MSW Composition'
+    step_num = 1
+    next_url = 'msw_recycling_create'
 
-    def get_context_data(self, *args, **kwargs):
-        """Override default context to return the proper scenario step."""
-        ctx = super().get_context_data(*args, **kwargs)
-        ctx['page_title'] = 'MSW Composition'
-        ctx['step_num'] = 1
-        ctx = get_steps(ctx, ctx['step_num'])
-        return ctx
 
-    def get_success_url(self, *args, **kwargs):
-        """
-        On successful Scenario creation, automatically redirect users
-        to the first page in the scenario wizard.
-        """
-        return reverse_lazy('msw_recycling_create',
-                            args=(self.object.scenario_id,))
+class MSWRecyclingCreate(WizardCreatePartial):
+    """Scenario MSW Recycling Create view."""
 
+    form_class = MSWRecyclingForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'MSW Recycling'
+    step_num = 2
+    next_url = 'msw_incineration_create'
 
-# class MSWCompositionDetail(LoginRequiredMixin, DetailView):
-#     """Scenario MSWComposition Detail view."""
 
-#     model = Condition
-#     template_name = 'scenario/msw_composition_detail.html'
+class MSWIncinerationCreate(WizardCreatePartial):
+    """Scenario MSWIncineration Create view."""
 
+    form_class = MSWIncinerationForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'MSW Incineration'
+    step_num = 3
+    next_url = 'msw_landfill_create'
 
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
 
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
+class MSWLandfillCreate(WizardCreatePartial):
+    """Scenario MSWLandfill Create view."""
 
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
+    form_class = MSWLandfillForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'MSW Landfill'
+    step_num = 4
+    next_url = 'msw_compost_create'
 
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
 
+class MSWCompostCreate(WizardCreatePartial):
+    """Scenario MSWCompost Create view."""
 
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
+    form_class = MSWCompostForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'MSW Compost'
+    step_num = 5
+    next_url = 'plastic_recycling_create'
 
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
 
+class PlasticRecyclingCreate(WizardCreatePartial):
+    """Scenario Plastic Recycling Create view."""
 
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
+    form_class = PlasticRecyclingForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'Plastic Recycling'
+    step_num = 6
+    next_url = 'plastic_incineration_create'
 
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
 
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
+class PlasticIncinerationCreate(WizardCreatePartial):
+    """Scenario Plastic Incineration Create view."""
 
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
+    form_class = PlasticIncinerationForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'Plastic Incineration'
+    step_num = 7
+    next_url = 'plastic_landfill_create'
 
 
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
+class PlasticLandfillCreate(WizardCreatePartial):
+    """Scenario Plastic Landfill Create view."""
 
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
+    form_class = PlasticLandfillForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'Plastic Landfill'
+    step_num = 8
+    next_url = 'plastic_reported_create'
 
 
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
+class PlasticReportedCreate(WizardCreatePartial):
+    """Scenario Plastic Reported Create view."""
 
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
+    form_class = PlasticReportedRecycledForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'Plastic Reported'
+    step_num = 9
+    next_url = 'plastic_imported_create'
 
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
 
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
+class PlasticImportCreate(WizardCreatePartial):
+    """Scenario Plastic Import Create view."""
 
+    form_class = ImportedPlasticForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'Plastic Import'
+    step_num = 10
+    next_url = 'plastic_exported_create'
 
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
 
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
+class PlasticExportCreate(WizardCreatePartial):
+    """Scenario Plastic Export Create view."""
 
-
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
-
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
-
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
-
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
-
-
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
-
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
-
-
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
-
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
-
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
-
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
-
-
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
-
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
-
-
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
-
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
-
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
-
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
-
-
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
-
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
-
-
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
-
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
-
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
-
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
-
-
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
-
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
-
-
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
-
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
-
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
-
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
-
-
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
-
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
-
-
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
-
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
-
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
-
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
-
-
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
-
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
-
-
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
-
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
-
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
-
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
-
-
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
-
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
-
-
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
-
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
-
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
-
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
-
-
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
-
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
-
-
-# class ConditionsCreate(LoginRequiredMixin, CreateView):
-#     """Scenario Conditions Create view."""
-
-#     form_class = ConditionForm
-#     template_name = 'scenario/_generic_inputs_create.html'
-
-#     def get_context_data(self, *args, **kwargs):
-#         """Override default context to return the proper scenario step."""
-#         ctx = super().get_context_data(*args, **kwargs)
-#         ctx['page_title'] = 'Condition'
-#         ctx['step_num'] = 0
-#         ctx = get_steps(ctx, ctx['step_num'])
-#         return ctx
-
-#     def get_success_url(self, *args, **kwargs):
-#         """
-#         On successful Scenario creation, automatically redirect users
-#         to the first page in the scenario wizard.
-#         """
-#         return reverse_lazy('msw_composition_create', args=(self.object.id,))
-
-
-# class ConditionsDetail(LoginRequiredMixin, DetailView):
-#     """Scenario Conditions Detail view."""
-
-#     model = Condition
-#     template_name = 'scenario/conditions_detail.html'
+    form_class = ExportedPlasticForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'Plastic Export'
+    step_num = 11
+    next_url = 'plastic_reexported_create'
+
+
+class PlasticReExportCreate(WizardCreatePartial):
+    """Scenario Plastic ReExport Create view."""
+
+    form_class = ReExportedPlasticForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'Plastic Re-Export'
+    step_num = 12
+    next_url = 'RUN CALCULATIONS'
