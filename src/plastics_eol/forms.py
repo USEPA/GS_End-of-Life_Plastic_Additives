@@ -9,7 +9,7 @@ Forms related to Plastics EoL models.
 from datetime import datetime
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from .models import Condition, Scenario
+from .models import Condition, MSWComposition, Scenario
 
 
 USEPA_TEXT_ATTRS = {'class': 'usa-input mb-2'}
@@ -79,10 +79,63 @@ class ConditionForm(forms.ModelForm):
         widget=forms.NumberInput({'class': 'usa-input mb-2'}))
 
     class Meta:
-        """Meta data for Scenario Form."""
+        """Meta data for Conditions inputs Form."""
 
         model = Condition
         fields = (
             'total_msw', 'total_waste', 'total_recyc', 'domestic_recyc',
             'export', 're_export', 'recyc_efficiency', 'incinerated',
             'landfilled', 'waste_facility_emissions', 'landfill_emissions')
+
+    def form_valid(self, form):
+        """
+        Custom form valid method to add created_by (requesting user)
+        and date created (datetime.now).
+        """
+        print('here')
+        # form.instance.scenario_id = self.request.user
+        return super().form_valid(form)
+
+
+class MSWCompositionForm(forms.ModelForm):
+    """Form representing a Scenario's MSW Composition inputs."""
+
+    inorganic = forms.FloatField(
+        label=_("Misc. Inorganic Waste (Fraction):"),
+        widget=forms.NumberInput({'class': 'usa-input mb-2'}))
+    other = forms.FloatField(
+        label=_("Other (Fraction):"),
+        widget=forms.NumberInput({'class': 'usa-input mb-2'}))
+    yard_trimmings = forms.FloatField(
+        label=_("Yard Trimmings (Fraction):"),
+        widget=forms.NumberInput({'class': 'usa-input mb-2'}))
+    food = forms.FloatField(
+        label=_("Food (Fraction):"),
+        widget=forms.NumberInput({'class': 'usa-input mb-2'}))
+    rubber_leather_textiles = forms.FloatField(
+        label=_("Rubber, Leather, Textiles (Fraction):"),
+        widget=forms.NumberInput({'class': 'usa-input mb-2'}))
+    wood = forms.FloatField(
+        label=_("Wood (Fraction):"),
+        widget=forms.NumberInput({'class': 'usa-input mb-2'}))
+    metals = forms.FloatField(
+        label=_("Metals (Fraction):"),
+        widget=forms.NumberInput({'class': 'usa-input mb-2'}))
+    glass = forms.FloatField(
+        label=_("Glass (Fraction):"),
+        widget=forms.NumberInput({'class': 'usa-input mb-2'}))
+    paper = forms.FloatField(
+        label=_("Paper and Paperboard (Fraction):"),
+        widget=forms.NumberInput({'class': 'usa-input mb-2'}))
+    plastics = forms.FloatField(
+        label=_("Plastics (Fraction):"),
+        widget=forms.NumberInput({'class': 'usa-input mb-2'}))
+
+    class Meta:
+        """Meta data for Scenario MSW Composition inputs form."""
+        model = MSWComposition
+        fields = (
+            'inorganic', 'other', 'yard_trimmings', 'food',
+            'rubber_leather_textiles', 'wood', 'metals',
+            'glass', 'paper', 'plastics'
+        )

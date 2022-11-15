@@ -1,7 +1,7 @@
 <h3 class="site-preview-heading">Scenario Creation Progress</h3>
-<!-- <div class="usa-step-indicator usa-step-indicator--counters-sm" aria-label="progress"> -->
 <div class="usa-step-indicator" aria-label="progress">
     <ol class="usa-step-indicator__segments">
+        {% if step_num < 4 %}
         <li class="usa-step-indicator__segment {{conditions_status_css}}">
             <span class="usa-step-indicator__segment-label">
                 Conditions <span class="usa-sr-only">{{conditions_status_span}}</span>
@@ -22,6 +22,7 @@
                 MSW Incineration <span class="usa-sr-only">{{msw_incineration_status_span}}</span>
             </span>
         </li>
+        {% elif step_num < 8 %}
         <li class="usa-step-indicator__segment {{msw_landfill_status_css}}">
             <span class="usa-step-indicator__segment-label">
                 MSW Landfill <span class="usa-sr-only">{{msw_landfill_status_span}}</span>
@@ -42,6 +43,7 @@
                 Incinerated Plastic <span class="usa-sr-only">{{incinerated_plastic_status_span}}</span>
             </span>
         </li>
+        {% else %}
         <li class="usa-step-indicator__segment {{landfilled_plastic_status_css}}">
             <span class="usa-step-indicator__segment-label">
                 Landfilled Plastic <span class="usa-sr-only">{{landfilled_plastic_status_span}}</span>
@@ -67,5 +69,6 @@
                 Re-Exported  Plastic <span class="usa-sr-only">{{re_exported_plastic_status_span}}</span>
             </span>
         </li>
+        {% endif %}
     </ol>
 </div>

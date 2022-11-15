@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+{% include 'scenario/_wizard_header.html' %}
+
+<h3>Input {{page_title}} Values for Scenario {{obj.scenario_id}}</h3>
+
+<form method="post" >
+    {% if form.errors %}
+    <div class="usa-alert usa-alert--error" role="alert">
+        <div class="usa-alert__body">
+            <h5 class="usa-alert__heading">Please correct the following errors</h5>
+            {% for field in form %}
+                {% if field.errors %}
+                <p class="usa-alert__text">{{field.label_tag}} {{ field.errors|striptags }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% csrf_token %}
+    {{ form }}
+
+    <div class="button-group">
+        <button type="reset" class="usa-button">
+            Reset Inputs
+            <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
+                <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#autorenew"></use>
+            </svg>
+        </button>
+        <button type="submit" class="usa-button" >
+            Next Page
+            <svg class="usa-icon" aria-hidden="true" focusable="false" role="img">
+                <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#navigate_next"></use>
+            </svg>
+        </button>
+    </div>
+</form>
+{% endblock %}
