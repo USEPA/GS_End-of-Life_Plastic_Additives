@@ -109,3 +109,7 @@ def is_float(val_str):
     except ValueError:
         return False
     return True
+
+
+def export_excel(request, filename, dict_):
+    pass
