@@ -5,6 +5,9 @@
 
 <h3>Input {{page_title}} Values for Scenario {{scenario_id}}</h3>
 
+<p>Defaults should be here:</p>
+<p>{{defaults}}</p>
+
 <form method="post" >
     {% if form.errors %}
     <div class="usa-alert usa-alert--error" role="alert">
@@ -46,6 +49,16 @@
 </form>
 {% endblock %}
 
+{% block extend_js %}
+<!-- NOTE: JQuery is already included inside base.html... -->
+<!-- NOTE: Not sure why, but JQuery won't work unless I include again here. -->
+<script src="https://www.epa.gov/core/assets/vendor/jquery/jquery.min.js?v=3.6.0"></script>
+{% endblock %}
 {% block scripts %}
-
+<script>
+    $(document).ready(function () {
+        var defaults = {{defaults|safe}};
+        console.log(defaults);
+    });
+</script>
 {% endblock %}

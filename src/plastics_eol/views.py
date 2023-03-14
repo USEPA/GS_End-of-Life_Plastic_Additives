@@ -9,6 +9,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 
+from json import dumps
+
 from .forms import ConditionForm, MSWCompositionForm, MSWCompostForm, \
     MSWIncinerationForm, MSWLandfillForm, MSWRecyclingForm, \
     ScenarioForm, PlasticRecyclingForm, PlasticIncinerationForm, \
@@ -96,6 +98,7 @@ class WizardCreatePartial(LoginRequiredMixin, CreateView):
         ctx = super().get_context_data(*args, **kwargs)
         ctx['page_title'] = self.page_title
         ctx['step_num'] = self.step_num
+        ctx['defaults'] = self.defaults
         ctx['scenario_id'] = self.kwargs['pk']
         ctx = get_steps(ctx, ctx['step_num'])
         return ctx
@@ -122,6 +125,7 @@ class ConditionsCreate(WizardCreatePartial):
     page_title = 'Condition'
     step_num = 0
     next_url = 'msw_composition_create'
+    defaults = dumps({'test_key': 'test_val'})
 
 
 class ConditionsDetail(LoginRequiredMixin, DetailView):
