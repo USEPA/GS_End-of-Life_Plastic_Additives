@@ -248,3 +248,13 @@ class PlasticReExportCreate(WizardCreatePartial):
     page_title = 'Plastic Re-Export'
     step_num = 12
     next_url = 'RUN CALCULATIONS'
+
+
+class RunCalculations(WizardCreatePartial):
+    """Scenario Plastic ReExport Create view."""
+
+    form_class = ReExportedPlasticForm
+    template_name = 'scenario/_generic_inputs_create.html'
+    page_title = 'Plastic Re-Export'
+    step_num = 13
+    next_url = 'RUN CALCULATIONS'
