@@ -79,14 +79,15 @@ WASTE_TYPES = [
 ]
 
 # Note: This is the same as the one above without a plastics string
-CALC_WASTE_TYPES = WASTE_TYPES[:len(WASTE_TYPES)-1]
+CALC_WASTE_TYPES = WASTE_TYPES[:len(WASTE_TYPES) - 1]
+
 
 # Types of plastics in international calculations
 INTERNATIONAL_PLASTICS = [
-  "Ethylene",
-  "Vinyl Chloride",
-  "Styrene",
-  "Other"
+    "Ethylene",
+    "Vinyl Chloride",
+    "Styrene",
+    "Other"
 ]
 
 # Categories for life cycle inventory
@@ -156,9 +157,10 @@ ADDITIVE_TYPES = {
 
 DEFAULTS = {
     '2018': {
-        'conditions': [292360000.0, 35_680_000.0, 0.084, (0.084-0.0456706),
-                       0.6670, 0.0456706, 0.0002, 0.172271*(1-0.084),
-                       1-0.084-0.172271*(1-0.084), 109_000_000, 630_000_000],
+        'conditions': [292360000.0, 35_680_000.0, 0.084, (0.084 - 0.0456706),
+                       0.6670, 0.0456706, 0.0002, 0.172271 * (1 - 0.084),
+                       1 - 0.084 - 0.172271 * (1 - 0.084), 109_000_000,
+                       630_000_000],
         'msw_comp_prop': [0.0139, 0.0156, 0.121, 0.2159, 0.0896, 0.0619,
                           0.0876, 0.0419, 0.2305, 0.122],
         'msw_recyc': [69_000_000.0, 0, 0.014, 0, 0, 0.0606, 0.0449, 0.1263,
@@ -187,3 +189,121 @@ DEFAULTS = {
             0.0685854255970606, 0.0933864053888549],
     }
 }
+
+PETadditiveTypes = [
+    "UV Stabilizer",
+    "Flame Retardant",
+    "Antistatic",
+    "Clarifier/Toner",
+    "Organic Pigment",
+]
+
+HDPEadditiveTypes = [
+    "Antioxidant",
+    "UV Stabilizer",
+    "Colorant",
+    "Flame Retardant",
+    "Heat Stabilizer",
+    "Organic Pigment",
+]
+
+PVCadditiveTypes = [
+    "Plasticizer",
+    "Antioxidant",
+    "Slip Agent",
+    "Heat Stabilizer",
+    "Lubricant",
+    "Colorant",
+    "Organic Pigment",
+]
+
+PPadditiveTypes = [
+    "Antioxidant",
+    "Slip Agent",
+    "UV Stabilizer",
+    "Flame Retardant",
+    "Clarifier/Toner",
+    "Organic Pigment",
+]
+
+PSadditiveTypes = [
+    "Antioxidant",
+    "Slip Agent",
+    "UV Stabilizer",
+    "Antistatic",
+    "Colorant",
+    "Organic Pigment",
+]
+
+LDPEadditiveTypes = [
+    "Antioxidant",
+    "Slip Agent",
+    "UV Stabilizer",
+    "Flame Retardant",
+    "Heat Stabilizer",
+    "Colorant",
+    "Organic Pigment",
+]
+
+PLAadditiveTypes = [
+    "Plasticizer",
+    "Heat Stabilizer",
+    "Filler",
+    "Reinforcement",
+    "Biocide",
+    "Antioxidant",
+    "Colorant",
+]
+
+otherResinAdditives = [
+    "Plasticizer",
+    "Antioxidant",
+    "UV Stabilizer",
+    "Colorant",
+    "Flame Retardant",
+    "Curing Agent",
+    "Blowing Agent",
+    "Biocide",
+    "Clarifier/Toner",
+    "Inorganic Pigment",
+    "Heat Stabilizer",
+    "Organic Pigment",
+    "Filler",
+    "Reinforcement",
+    "Lubricant",
+    "Slip Agent",
+    "Antistatic",
+]
+
+lowAdditiveFractions = {
+    "Plasticizer": 0.1,
+    "Flame Retardant": 0.007,
+    "UV Stabilizer": 0.005,
+    "Heat Stabilizer": 0.005,
+    "Antioxidant": 0.005,
+    "Slip Agent": 0.001,
+    "Lubricant": 0.001,
+    "Antistatic": 0.001,
+    "Curing Agent": 0.001,
+    "Blowing Agent": 0.005,
+    "Biocide": 0.00001,
+    "Colorant": 0.0025,
+    "Organic Pigment": 0.00001,
+    "Clarifier/Toner": 0.00015,
+    "Inorganic Pigment": 0.0001,
+    "Filler": 0.00001,
+    "Reinforcement": 0.15,
+}
+
+additivesListList = [
+    PETadditiveTypes,
+    HDPEadditiveTypes,
+    PVCadditiveTypes,
+    PPadditiveTypes,
+    PSadditiveTypes,
+    LDPEadditiveTypes,
+    PLAadditiveTypes,
+    otherResinAdditives,
+]
+
+mswIncin = []
