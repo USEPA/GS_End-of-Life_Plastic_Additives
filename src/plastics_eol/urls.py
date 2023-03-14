@@ -9,7 +9,8 @@ from .views import home, contact, about, ConditionsCreate, ConditionsDetail, \
     MSWLandfillCreate, MSWRecyclingCreate, \
     PlasticRecyclingCreate, PlasticIncinerationCreate, PlasticLandfillCreate, \
     PlasticReportedCreate, PlasticImportCreate, PlasticExportCreate, \
-    PlasticReExportCreate, ScenarioCreate, ScenarioDetail, ScenarioList
+    PlasticReExportCreate, ScenarioCreate, ScenarioDetail, ScenarioList, \
+     RunCalculations
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +28,10 @@ urlpatterns = [
     path('scenario/<int:pk>/',
          ScenarioDetail.as_view(),
          name='scenario_detail'),
+
+    path('scenario/<int:pk>/run/',
+         RunCalculations.as_view(),
+         name='run_calculations'),
 
     path('scenario/<int:pk>/conditions/',
          ConditionsDetail.as_view(),

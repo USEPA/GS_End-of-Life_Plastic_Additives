@@ -248,14 +248,18 @@ class PlasticReExportCreate(WizardCreatePartial):
     template_name = 'scenario/_generic_inputs_create.html'
     page_title = 'Plastic Re-Export'
     step_num = 12
-    next_url = 'RUN CALCULATIONS'
+    next_url = 'run_calculations'
 
 
-class RunCalculations(WizardCreatePartial):
+class RunCalculations(LoginRequiredMixin, DetailView):
     """Scenario Plastic ReExport Create view."""
 
-    form_class = ReExportedPlasticForm
-    template_name = 'scenario/_generic_inputs_create.html'
-    page_title = 'Plastic Re-Export'
-    step_num = 13
-    next_url = 'RUN CALCULATIONS'
+    template = 'scenario/results.html'
+
+    def get(self, request, *args, **kwargs):
+        ctx = {}
+        # Get scenario ID
+        # Get inputs
+        # Run calculator
+        # render the results page
+        return render(request, self.template, ctx)
