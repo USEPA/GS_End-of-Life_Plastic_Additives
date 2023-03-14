@@ -3,7 +3,7 @@
 
 {% include 'scenario/_wizard_header.html' %}
 
-<h3>Input {{page_title}} Values for Scenario {{obj.scenario_id}}</h3>
+<h3>Input {{page_title}} Values for Scenario {{scenario_id}}</h3>
 
 <form method="post" >
     {% if form.errors %}
@@ -35,6 +35,17 @@
                 <use xlink:href="https://www.epa.gov/themes/epa_theme/images/sprite.svg#navigate_next"></use>
             </svg>
         </button>
+        <!-- First cut: Just redirect to the API URL (will show JSON in page) -->
+        <!-- After that's working, change this to a button with onclick function. -->
+        <!-- API call will then take place inside javascript and the fields will be auto-populated. -->
+        <!-- There might be a better way to do this with Django, would need to google. -->
+        <a class="usa-button" href="/scenario/{{scenario_id}}/{{page_title}}/defaults">
+            Autofill
+        </a>
     </div>
 </form>
+{% endblock %}
+
+{% block scripts %}
+
 {% endblock %}

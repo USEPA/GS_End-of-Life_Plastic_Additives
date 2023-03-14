@@ -96,6 +96,7 @@ class WizardCreatePartial(LoginRequiredMixin, CreateView):
         ctx = super().get_context_data(*args, **kwargs)
         ctx['page_title'] = self.page_title
         ctx['step_num'] = self.step_num
+        ctx['scenario_id'] = self.kwargs['pk']
         ctx = get_steps(ctx, ctx['step_num'])
         return ctx
 
