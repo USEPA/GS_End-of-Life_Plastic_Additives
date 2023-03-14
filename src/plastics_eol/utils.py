@@ -4,7 +4,7 @@
 
 """Utility methods."""
 
-from . import constants as CONST
+from plastics_eol import constants as CONST
 
 
 def get_steps(ctx, current_step):
@@ -214,3 +214,98 @@ def check_entry(check):
     if check == []:
         return True
     return False
+
+
+def totalOfAdditiveType(typeOfAdditive, listOfAdditiveLists):
+    """Takes argument for STRING of type of additive, and LIST of dicts of
+    additives
+
+    Sums mass of additive type in specified stream
+
+    Args:
+        typeOfAdditive (_type_): _description_
+        listOfAdditiveLists (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+
+    additiveAmount = 0
+    for i in listOfAdditiveLists:
+        if (typeOfAdditive in i):
+            # Checks whether additive is in each list of additives, then adds
+            # to total of that additive
+            additiveAmount += i[typeOfAdditive]
+    return additiveAmount
+
+
+def backwardsLumpPlasticCalculator(resinMassList, typeOfResin, additiveList):
+    """Calculates bulk plastic masses in reverse of total resin calculator,
+    based on resin masses
+
+    Args:
+        resinMassList (_type_): _description_
+        typeOfResin (_type_): _description_
+        additiveList (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    additiveFraction = sum(
+        [CONST.lowAdditiveFractions[i] for i in additiveList]
+    )  # Finds total Fraction of bulk mass that is resin
+    lumpSum = resinMassList[typeOfResin] / (
+        1 - additiveFraction
+    )  # Divides to find bulk mass
+    return lumpSum
+
+
+
+def additiveMassCalculator(additiveList, plasticType, massDict):
+    """Will calculate amount of each kind of additive in each kind of plastic
+    based on low additive Fractions and bulk mass;
+    key = types of additives,
+    value = amount of each additive
+
+    Args:
+        additiveList (_type_): _description_
+        plasticType (_type_): _description_
+        massDict (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    # Takes argument of LIST of types of additives going into type of plastic,
+    # STRING of type of plastic, then DICT of bulk masses
+    newDict = dict(zip(additiveList,
+                       [massDict[plasticType] * CONST.lowAdditiveFractions[i]
+                        for i in additiveList])
+                   )
+    # takes bulk mass and multiplies by low additive Fraction for each kind
+    # of additive
+    return newDict
+
+
+def streamSummaryTRVWLister(listOfDicts, category):
+    """creates lists that will be added to stream summary TRVW tables.
+    Takes argument of list of dictionaries that are to be examined,
+    along with string for category that will make up the row of the table
+
+    Args:
+        listOfDicts (_type_): _description_
+        category (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
+
+    trvwList = []
+    trvwList.append(category)  # adds category/row name
+    for i in listOfDicts:
+        if category in i:
+            # adds values corresponding to category from dictionary to this
+            # list if there is one, otherwise adds 0
+            trvwList.append(i[category])
+        else:
+            trvwList.append(0)
+    return trvwList
