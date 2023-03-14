@@ -71,29 +71,43 @@ class MSWGeneric(models.Model):
     class Meta:
         abstract = True
 
+    def multiply_mass(self, mass):
+        totals = self.__dict__
+        # for key in self build dict
+        # totals['key'] = self.total_mass * self.key
+        fraction_mass = dict(zip(totals.keys(), map(lambda x: x*mass, totals)))
+        return fraction_mass
 
-class MSWComposition(MSWGeneric):
+
+class MSWTotalsGeneric(MSWGeneric):
+    """User Specifications for MSW Data."""
+    total_mass = models.FloatField(null=False, blank=False, default=0.0)
+
+    class Meta:
+        abstract = True
+
+    def fractions_to_mass(self):
+        return self.multiply_mass(self.total_mass)
+
+
+class MSWComposition(MSWTotalsGeneric):
     """User specifications for Municipal Solid Waste Composition."""
 
 
-class MSWRecycling(MSWGeneric):
+class MSWRecycling(MSWTotalsGeneric):
     """User Specifications for Recycling Data."""
-    total_mass = models.FloatField(null=False, blank=False, default=0.0)
 
 
-class MSWIncineration(MSWGeneric):
+class MSWIncineration(MSWTotalsGeneric):
     """User Specifications for Incineration Data."""
-    total_mass = models.FloatField(null=False, blank=False, default=0.0)
 
 
-class MSWLandfill(MSWGeneric):
+class MSWLandfill(MSWTotalsGeneric):
     """User Specifications for Landfill Data."""
-    total_mass = models.FloatField(null=False, blank=False, default=0.0)
 
 
-class MSWCompost(MSWGeneric):
+class MSWCompost(MSWTotalsGeneric):
     """User Specifications for Compost Data."""
-    total_mass = models.FloatField(null=False, blank=False, default=0.0)
 
 
 class PlasticGeneric(models.Model):
