@@ -5,8 +5,6 @@
 
 <h3>Input {{page_title}} Values for Scenario {{scenario_id}}</h3>
 
-<p>Defaults should be here:</p>
-<p>{{defaults}}</p>
 
 <form method="post" >
     {% if form.errors %}
@@ -42,9 +40,7 @@
         <!-- After that's working, change this to a button with onclick function. -->
         <!-- API call will then take place inside javascript and the fields will be auto-populated. -->
         <!-- There might be a better way to do this with Django, would need to google. -->
-        <a class="usa-button" href="/scenario/{{scenario_id}}/{{page_title}}/defaults">
-            Autofill
-        </a>
+        <a id="autofillButton" class="usa-button">Autofill</a>
     </div>
 </form>
 {% endblock %}
@@ -56,9 +52,18 @@
 {% endblock %}
 {% block scripts %}
 <script>
+    function setDefaults(defaults) {
+    for (var key in defaults){
+            $(`#${key}`).val(defaults[key]);
+            // console.log(key);
+        }
+    }
+
     $(document).ready(function () {
         var defaults = {{defaults|safe}};
-        console.log(defaults);
+        $("#autofillButton").on('click', function() {
+            setDefaults(defaults);
+        })
     });
 </script>
 {% endblock %}
