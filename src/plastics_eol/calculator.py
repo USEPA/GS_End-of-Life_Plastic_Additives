@@ -8,24 +8,27 @@ from plastics_eol import constants as CONST
 from plastics_eol import utils
 import numpy as np
 import matplotlib.pyplot as plt
-from plastics_eol.models import MSWCompost, MSWIncineration, MSWRecycling, \
-    MSWLandfill
+from plastics_eol.models import MSWCompost, MSWComposition, MSWIncineration, \
+    MSWRecycling, MSWLandfill, PlasticLandfill, PlasticRecycling, \
+    PlasticIncineration, Condition, ImportedPlastic, ExportedPlastic, \
+    ReExportedPlastic, PlasticReportedRecycled
 
-def run_calculator():
+
+def run_calculator(scenario_id):
     # ########################################################################
     # User inputs, TODO move to forms:
-    plastic_land_fractions = []
-    plastic_recyc_fractions = []
-    plastic_incin_fractions = []
-    msw_comp_prop = []
-    conditions = []
-    rep_plastic_import = []
-    rep_plastic_export = []
-    rep_plastic_re_export = []
-    rep_rec_plastics = []
+    # plastic_land_fractions = []
+    # plastic_recyc_fractions = []
+    # plastic_incin_fractions = []
+    # msw_comp_prop = []
+    # conditions = []
+    # rep_plastic_import = []
+    # rep_plastic_export = []
+    # rep_plastic_re_export = []
+    # rep_rec_plastics = []
     # ########################################################################
 
-    domestic_plastics = CONST.DOMESTIC_PLASTICS_DENSITIES.values()
+    domestic_plastics = list(CONST.DOMESTIC_PLASTICS_DENSITIES.keys())
     # #  will be removed before distribution. This is a programming shortcut
     # assign_vals()
 
@@ -54,41 +57,65 @@ def run_calculator():
 
     # dict of Fractions of total plastic landfilled
     # associated with each type of plastic
-    plastic_land_fractions = dict(zip(domestic_plastics,
-                                      plastic_land_fractions))
+    plastic_landfill = PlasticLandfill.objects.filter(scenario_id=scenario_id).first().__dict__
+    plastic_land_fractions = {p: plastic_landfill[p] for p in domestic_plastics}
 
+
+    # plastic_land_fractions_dict = {
+    #     CONST.MAPPER_FRM_DB_TO_APP[member]: plastic_land_fractions[member] for member in members
+    # }
     # dict of proportion of each type of plastic that has been recycled.
     # key = type of plastic A5:A12;
     # value = proportion of each type of plastic in MSW stream B5:B12
-    plasticFractionsRecycled = dict(zip(domestic_plastics,
-                                        plastic_recyc_fractions))
+    plastic_recyc = PlasticRecycling.objects.filter(scenario_id=scenario_id).first().__dict__
+    plasticFractionsRecycled = {p: plastic_recyc[p] for p in domestic_plastics}
+    # plasticFractionsRecycled = dict(zip(domestic_plastics,
+    #                                     plastic_recyc_fractions))
 
     # dict of incineration Fractions for each kind of plastic.
     # Key = type of plastic, value = proportion of incineration make up
-    plasticIncinFractionsDict = dict(zip(domestic_plastics,
-                                         plastic_incin_fractions))
+
+    plastic_incin = PlasticIncineration.objects.filter(scenario_id=scenario_id).first().__dict__
+    plasticIncinFractionsDict = {p: plastic_incin[p] for p in domestic_plastics}
+
+    # plasticIncinFractionsDict = dict(zip(domestic_plastics,
+    #                                      plastic_incin_fractions))
 
     # dicts of data, associating category with value
     # key = MSW waste, value = proportion of MSW
-    mswGeneratedProps = dict(zip(CONST.WASTE_TYPES, msw_comp_prop))
+    msw_composition = MSWComposition.objects.filter(scenario_id=scenario_id).first().__dict__
+    mswGeneratedProps = {w: msw_composition[w] for w in CONST.WASTE_TYPES}
+    # mswGeneratedProps = dict(zip(CONST.WASTE_TYPES, msw_comp_prop))
 
     # key = conditions (total MSW, total plastic, plastic recycled, etc.)
-    mswConditions = dict(zip(CONST.CONDITION_CATEGORIES, conditions))
+    condition = Condition.objects.filter(scenario_id=scenario_id).first().__dict__
+    mswConditions = {c: condition[c] for c in CONST.CONDITION_CATEGORIES}
+    # mswConditions = dict(zip(CONST.CONDITION_CATEGORIES, conditions))
 
     # Create dictionaries of international recycling values
-    rep_plastic_importDict = dict(zip(CONST.INTERNATIONAL_PLASTICS,
-                                      rep_plastic_import))
+    plast_import = ImportedPlastic.objects.filter(scenario_id=scenario_id).first().__dict__
+    rep_plastic_importDict = {p: plast_import[p] for p in CONST.INTERNATIONAL_PLASTICS}
 
-    rep_plastic_exportDict = dict(zip(CONST.INTERNATIONAL_PLASTICS,
-                                      rep_plastic_export))
+    # rep_plastic_importDict = dict(zip(CONST.INTERNATIONAL_PLASTICS,
+    #                                   rep_plastic_import))
 
-    rep_plastic_re_exportDict = dict(zip(CONST.INTERNATIONAL_PLASTICS,
-                                         rep_plastic_re_export))
+    plast_export = ImportedPlastic.objects.filter(scenario_id=scenario_id).first().__dict__
+    rep_plastic_exportDict = {p: plast_export[p] for p in CONST.INTERNATIONAL_PLASTICS}
+
+    # rep_plastic_exportDict = dict(zip(CONST.INTERNATIONAL_PLASTICS,
+                                    #   rep_plastic_export))
+
+    plast_reexport = ReExportedPlastic.objects.filter(scenario_id=scenario_id).first().__dict__
+    rep_plastic_re_exportDict = {p: plast_reexport[p] for p in CONST.INTERNATIONAL_PLASTICS}
+    # rep_plastic_re_exportDict = dict(zip(CONST.INTERNATIONAL_PLASTICS,
+    #                                      rep_plastic_re_export))
 
     # dict of scaled recycled masses
     # key = type of plastic, value = bulk mass of plastic and additives G9:G16
-    scaledRec = utils.recycleScaler(
-        rep_rec_plastics, conditions[1], conditions[2])
+    rep_rec_plastics = PlasticReportedRecycled.objects.filter(scenario_id=scenario_id).first().__dict__
+    rep_rec_plastics_values = [rep_rec_plastics[p] for p in CONST.DOMESTIC_PLASTICS_DENSITIES.keys()]
+    scaledRec = utils.recycle_scaler(
+        rep_rec_plastics_values, condition['total_waste'], condition['total_recyc'])
 
     ###########################################################################
     ###########################################################################
@@ -99,26 +126,26 @@ def run_calculator():
     # key = plastic type A5:A12; value = bulk mass including additives C5:C12
     plasticsMassDict = dict(zip(
         domestic_plastics,
-        [plasticFractionsRecycled[i] * conditions[1]
+        [plasticFractionsRecycled[i] * condition['total_waste']
          for i in domestic_plastics]))
 
     # Create dicts of additive masses in each kind of plastic in
     PETAdditiveMasses = utils.additiveMassCalculator(
-        CONST.PETadditiveTypes, "PET", plasticsMassDict)
+        CONST.PETadditiveTypes, "pet", plasticsMassDict)
     HDPEAdditiveMasses = utils.additiveMassCalculator(
-        CONST.HDPEadditiveTypes, "HDPE", plasticsMassDict)
+        CONST.HDPEadditiveTypes, "hdpe", plasticsMassDict)
     PVCAdditiveMasses = utils.additiveMassCalculator(
-        CONST.PVCadditiveTypes, "PVC", plasticsMassDict)
+        CONST.PVCadditiveTypes, "pvc", plasticsMassDict)
     PPAdditiveMasses = utils.additiveMassCalculator(
-        CONST.PPadditiveTypes, "PP", plasticsMassDict)
+        CONST.PPadditiveTypes, "pp", plasticsMassDict)
     PSAdditiveMasses = utils.additiveMassCalculator(
-        CONST.PSadditiveTypes, "PS", plasticsMassDict)
+        CONST.PSadditiveTypes, "ps", plasticsMassDict)
     LDPEAdditiveMasses = utils.additiveMassCalculator(
-        CONST.LDPEadditiveTypes, "LDPE", plasticsMassDict)
+        CONST.LDPEadditiveTypes, "ldpe", plasticsMassDict)
     PLAAdditiveMasses = utils.additiveMassCalculator(
-        CONST.PLAadditiveTypes, "PLA", plasticsMassDict)
+        CONST.PLAadditiveTypes, "pla", plasticsMassDict)
     otherResinAdditivesMasses = utils.additiveMassCalculator(
-        CONST.otherResinAdditives, "Other Resin", plasticsMassDict)
+        CONST.otherResinAdditives, "other", plasticsMassDict)
 
     # Define list of preceding 8 dicts
     listOfStream6Additives_ = [
@@ -140,33 +167,33 @@ def run_calculator():
     # by the ratio of domestic recycled plastic to total recycled plastic
     stream16PlasticCalcMasses = dict(zip(
         domestic_plastics,
-        [conditions[3]/conditions[2]*scaledRec[i]
+        [condition['domestic_recyc']/condition['total_recyc']*scaledRec[i]
          for i in domestic_plastics]))
 
     # Creates dictionary of masses of each kind of
     # additive in each kind of plastic
-    stream16PET = utils.additiveMassCalculator(CONST.PETadditiveTypes, "PET",
+    stream16PET = utils.additiveMassCalculator(CONST.PETadditiveTypes, "pet",
                                                stream16PlasticCalcMasses)
-    stream16HDPE = utils.additiveMassCalculator(CONST.HDPEadditiveTypes, "HDPE",
+    stream16HDPE = utils.additiveMassCalculator(CONST.HDPEadditiveTypes, "hdpe",
                                                 stream16PlasticCalcMasses)
-    stream16PVC = utils.additiveMassCalculator(CONST.PVCadditiveTypes, "PVC",
+    stream16PVC = utils.additiveMassCalculator(CONST.PVCadditiveTypes, "pvc",
                                                stream16PlasticCalcMasses)
-    stream16PP = utils.additiveMassCalculator(CONST.PPadditiveTypes, "PP",
+    stream16PP = utils.additiveMassCalculator(CONST.PPadditiveTypes, "pp",
                                               stream16PlasticCalcMasses)
-    stream16PS = utils.additiveMassCalculator(CONST.PSadditiveTypes, "PS",
+    stream16PS = utils.additiveMassCalculator(CONST.PSadditiveTypes, "ps",
                                               stream16PlasticCalcMasses)
-    stream16LDPE = utils.additiveMassCalculator(CONST.LDPEadditiveTypes, "LDPE",
+    stream16LDPE = utils.additiveMassCalculator(CONST.LDPEadditiveTypes, "ldpe",
                                                 stream16PlasticCalcMasses)
-    stream16PLA = utils.additiveMassCalculator(CONST.PLAadditiveTypes, "PLA",
+    stream16PLA = utils.additiveMassCalculator(CONST.PLAadditiveTypes, "pla",
                                                stream16PlasticCalcMasses)
     stream16Other = utils.additiveMassCalculator(CONST.otherResinAdditives,
-                                                 "Other Resin",
+                                                 "other",
                                                  stream16PlasticCalcMasses)
 
     # Creates dict of emissions factors per M24:M31.
     # Key = type of additive, value = emission factor
-    emissionFactors = {"PET": -1.13, "HDPE": -.88, "PVC": 0, "LDPE": 0,
-                       "PLA": 0, "PP": 0, "PS": 0, "Other Resin": -1.03}
+    emissionFactors = {"pet": -1.13, "hdpe": -.88, "pvc": 0, "ldpe": 0,
+                       "pla": 0, "pp": 0, "ps": 0, "other": -1.03}
 
     # Creates list of additive dicts in stream 16
     listOfstream16Additives = [
@@ -177,7 +204,7 @@ def run_calculator():
     # key = type of additive, value = total mass of additive
     totalAdditivesStream16_ = dict(zip(
         CONST.otherResinAdditives,
-        [CONST.totalOfAdditiveType(i, listOfstream16Additives)
+        [utils.totalOfAdditiveType(i, listOfstream16Additives)
          for i in CONST.otherResinAdditives]))  # Dict of additive in stream 16
 
     # Calc Fraction of each additive of total mass of additives in stream 16
@@ -270,31 +297,31 @@ def run_calculator():
     # of plastic imported based on reported Imported plastics in
     # includes resin and additives lumped together
     stream21PlasticMasses = {
-        "PET": rep_plastic_importDict["Other"] * 0.4,
-        "HDPE": rep_plastic_importDict["Ethylene"] / 2,
-        "PVC": rep_plastic_importDict["Vinyl Chloride"],
-        "LDPE": rep_plastic_importDict["Ethylene"] / 2,
-        "PLA": 0, "PP": 0, "PS": rep_plastic_importDict["Styrene"],
-        "Other Resin": rep_plastic_importDict["Other"] * 0.6}
+        "pet": rep_plastic_importDict["other"] * 0.4,
+        "hdpe": rep_plastic_importDict["ethylene"] / 2,
+        "pvc": rep_plastic_importDict["vinyl_chloride"],
+        "ldpe": rep_plastic_importDict["ethylene"] / 2,
+        "pla": 0, "pp": 0, "ps": rep_plastic_importDict["styrene"],
+        "other": rep_plastic_importDict["other"] * 0.6}
 
     # Create dict of each kind of additive in each kind of plastic.
     # Key = additive, value = mass of that additive
-    stream21PET = utils.additiveMassCalculator(CONST.PETadditiveTypes, "PET",
+    stream21PET = utils.additiveMassCalculator(CONST.PETadditiveTypes, "pet",
                                                stream21PlasticMasses)
-    stream21HDPE = utils.additiveMassCalculator(CONST.HDPEadditiveTypes, "HDPE",
+    stream21HDPE = utils.additiveMassCalculator(CONST.HDPEadditiveTypes, "hdpe",
                                                 stream21PlasticMasses)
-    stream21PVC = utils.additiveMassCalculator(CONST.PVCadditiveTypes, "PVC",
+    stream21PVC = utils.additiveMassCalculator(CONST.PVCadditiveTypes, "pvc",
                                                stream21PlasticMasses)
-    stream21PP = utils.additiveMassCalculator(CONST.PPadditiveTypes, "PP",
+    stream21PP = utils.additiveMassCalculator(CONST.PPadditiveTypes, "pp",
                                               stream21PlasticMasses)
-    stream21PS = utils.additiveMassCalculator(CONST.PSadditiveTypes, "PS",
+    stream21PS = utils.additiveMassCalculator(CONST.PSadditiveTypes, "ps",
                                               stream21PlasticMasses)
-    stream21LDPE = utils.additiveMassCalculator(CONST.LDPEadditiveTypes, "LDPE",
+    stream21LDPE = utils.additiveMassCalculator(CONST.LDPEadditiveTypes, "ldpe",
                                                 stream21PlasticMasses)
-    stream21PLA = utils.additiveMassCalculator(CONST.PLAadditiveTypes, "PLA",
+    stream21PLA = utils.additiveMassCalculator(CONST.PLAadditiveTypes, "pla",
                                                stream21PlasticMasses)
     stream21Other = utils.additiveMassCalculator(CONST.otherResinAdditives,
-                                                 "Other Resin",
+                                                 "other",
                                                  stream21PlasticMasses)
 
     # lists of preceding dicts
@@ -313,7 +340,7 @@ def run_calculator():
     # Key = type of plastic, value = amount of resin
     stream21ResinMasses_ = dict(zip(
         domestic_plastics,
-        [utils.totalResinCalculator(
+        [utils.total_resin_calc(
             domestic_plastics[i],
             stream21PlasticMasses,
             listOfStream21Additives_[i])
@@ -333,31 +360,31 @@ def run_calculator():
     # Create dict with key = type of plastic and value = amount of
     # type of plastic reexported based on reported reexported plastics in
     stream22PlasticMasses = {
-        "PET": rep_plastic_re_exportDict["Other"] * 0.4,
-        "HDPE": rep_plastic_re_exportDict["Ethylene"] / 2,
-        "PVC": rep_plastic_re_exportDict["Vinyl Chloride"],
-        "LDPE": rep_plastic_re_exportDict["Ethylene"] / 2,
-        "PLA": 0, "PP": 0, "PS": rep_plastic_re_exportDict["Styrene"],
-        "Other Resin": rep_plastic_re_exportDict["Other"] * 0.6}
+        "pet": rep_plastic_re_exportDict["other"] * 0.4,
+        "hdpe": rep_plastic_re_exportDict["ethylene"] / 2,
+        "pvc": rep_plastic_re_exportDict["vinyl_chloride"],
+        "ldpe": rep_plastic_re_exportDict["ethylene"] / 2,
+        "pla": 0, "pp": 0, "ps": rep_plastic_re_exportDict["styrene"],
+        "other": rep_plastic_re_exportDict["other"] * 0.6}
 
     # Calculate amount of each additive in each type of plastic in stream 22.
     # Key = type of additive, value = mass of that additive in stream 22
-    stream22PET = utils.additiveMassCalculator(CONST.PETadditiveTypes, "PET",
+    stream22PET = utils.additiveMassCalculator(CONST.PETadditiveTypes, "pet",
                                                stream22PlasticMasses)
-    stream22HDPE = utils.additiveMassCalculator(CONST.HDPEadditiveTypes, "HDPE",
+    stream22HDPE = utils.additiveMassCalculator(CONST.HDPEadditiveTypes, "hdpe",
                                                 stream22PlasticMasses)
-    stream22PVC = utils.additiveMassCalculator(CONST.PVCadditiveTypes, "PVC",
+    stream22PVC = utils.additiveMassCalculator(CONST.PVCadditiveTypes, "pvc",
                                                stream22PlasticMasses)
-    stream22PP = utils.additiveMassCalculator(CONST.PPadditiveTypes, "PP",
+    stream22PP = utils.additiveMassCalculator(CONST.PPadditiveTypes, "pp",
                                               stream22PlasticMasses)
-    stream22PS = utils.additiveMassCalculator(CONST.PSadditiveTypes, "PS",
+    stream22PS = utils.additiveMassCalculator(CONST.PSadditiveTypes, "ps",
                                               stream22PlasticMasses)
-    stream22LDPE = utils.additiveMassCalculator(CONST.LDPEadditiveTypes, "LDPE",
+    stream22LDPE = utils.additiveMassCalculator(CONST.LDPEadditiveTypes, "ldpe",
                                                 stream22PlasticMasses)
-    stream22PLA = utils.additiveMassCalculator(CONST.PLAadditiveTypes, "PLA",
+    stream22PLA = utils.additiveMassCalculator(CONST.PLAadditiveTypes, "pla",
                                                stream22PlasticMasses)
     stream22Other = utils.additiveMassCalculator(CONST.otherResinAdditives,
-                                                 "Other Resin",
+                                                 "other",
                                                  stream22PlasticMasses)
 
     # Create list of above dictionaries
@@ -369,7 +396,7 @@ def run_calculator():
     # Key = type of plastic, value = mass of resin
     stream22ResinMasses_ = dict(zip(
         domestic_plastics,
-        [utils.totalResinCalculator(domestic_plastics[i],
+        [utils.total_resin_calc(domestic_plastics[i],
                               stream22PlasticMasses,
                               listOfStream22Additives_[i])
          for i in range(8)]))
@@ -397,7 +424,7 @@ def run_calculator():
     # key = type of plastic resin, value = mass of resin
     stream23ResinMasses_ = dict(zip(
         domestic_plastics,
-        [(1 - conditions[4]) / 2 * stream16ResinMasses_[i]
+        [(1 - condition['export']) / 2 * stream16ResinMasses_[i]
          for i in domestic_plastics]))  # Resin alone
 
     # Dictionary of additive masses in stream 23, based on efficiency of
@@ -406,7 +433,7 @@ def run_calculator():
     # key = type of plastic additive, value = mass of additive
     stream23AdditiveMasses_ = dict(zip(
         CONST.otherResinAdditives,
-        [totalAdditivesStream16_[i] * (1 - conditions[4]) / 2
+        [totalAdditivesStream16_[i] * (1 - condition['export']) / 2
          for i in CONST.otherResinAdditives]))
     stream23PlasticMasses = dict(zip(
         domestic_plastics,
@@ -520,27 +547,27 @@ def run_calculator():
     # Create dictionary of additives for each type for each
     # kind of plastic based on bulk mass
     stream3PETAdditives = utils.additiveMassCalculator(
-        CONST.PETadditiveTypes, "PET", stream3PlasticMasses)
+        CONST.PETadditiveTypes, "pet", stream3PlasticMasses)
     stream3HDPEAdditives = utils.additiveMassCalculator(
-        CONST.HDPEadditiveTypes, "HDPE", stream3PlasticMasses)
+        CONST.HDPEadditiveTypes, "hdpe", stream3PlasticMasses)
     stream3PVCAdditives = utils.additiveMassCalculator(
-        CONST.PVCadditiveTypes, "PVC", stream3PlasticMasses)
+        CONST.PVCadditiveTypes, "pvc", stream3PlasticMasses)
     stream3LDPEAdditives = utils.additiveMassCalculator(
-        CONST.LDPEadditiveTypes, "LDPE", stream3PlasticMasses)
+        CONST.LDPEadditiveTypes, "ldpe", stream3PlasticMasses)
     stream3PLAAdditives = utils.additiveMassCalculator(
-        CONST.PLAadditiveTypes, "PLA", stream3PlasticMasses)
+        CONST.PLAadditiveTypes, "pla", stream3PlasticMasses)
     stream3PPAdditives = utils.additiveMassCalculator(
-        CONST.PPadditiveTypes, "PP", stream3PlasticMasses)
+        CONST.PPadditiveTypes, "pp", stream3PlasticMasses)
     stream3PSAdditives = utils.additiveMassCalculator(
-        CONST.PSadditiveTypes, "PS", stream3PlasticMasses)
+        CONST.PSadditiveTypes, "ps", stream3PlasticMasses)
     stream3OtherAdditives = utils.additiveMassCalculator(
-        CONST.otherResinAdditives, "Other Resin", stream3PlasticMasses)
+        CONST.otherResinAdditives, "other", stream3PlasticMasses)
 
     # Create dictionary of emisions factors for each kind of plastic.
     # Key = type of plastic, value = emission factor
     stream3EmissionFactor = {
-        "PET": 2.2, "HDPE": 1.53, "PVC": 1.9, "LDPE": 1.76, "PLA": 2.09,
-        "PP": 1.51, "PS": 2.46, "Other Resin": 1.92}
+        "pet": 2.2, "hdpe": 1.53, "pvc": 1.9, "ldpe": 1.76, "pla": 2.09,
+        "pp": 1.51, "ps": 2.46, "other": 1.92}
 
     # Create dictionary of emissions for stream 3.
     # Key = type of plastic, value = emissions for that
@@ -582,31 +609,31 @@ def run_calculator():
     # based on Export definitions in US  Sensitivity facts.
     # Key = type of plastic, value = bulk mass of that plastic
     stream27PlasticMasses = {
-        "PET": rep_plastic_exportDict["Other"] * 0.4,
-        "HDPE": rep_plastic_exportDict["Ethylene"] / 2,
-        "PVC": rep_plastic_exportDict["Vinyl Chloride"],
-        "LDPE": rep_plastic_exportDict["Ethylene"] / 2,
-        "PLA": 0, "PP": 0, "PS": rep_plastic_exportDict["Styrene"],
-        "Other Resin": rep_plastic_exportDict["Other"] * 0.6}
+        "pet": rep_plastic_exportDict["other"] * 0.4,
+        "hdpe": rep_plastic_exportDict["ethylene"] / 2,
+        "pvc": rep_plastic_exportDict["vinyl_chloride"],
+        "ldpe": rep_plastic_exportDict["ethylene"] / 2,
+        "pla": 0, "pp": 0, "ps": rep_plastic_exportDict["styrene"],
+        "other": rep_plastic_exportDict["other"] * 0.6}
 
     # Dict defining mass of each kind of additive in each kind of plastic.
     # Key = type of additive, value = mass of that additive
     stream27PETAdditives = utils.additiveMassCalculator(
-        CONST.PETadditiveTypes, "PET", stream27PlasticMasses)
+        CONST.PETadditiveTypes, "pet", stream27PlasticMasses)
     stream27HDPEAdditives = utils.additiveMassCalculator(
-        CONST.HDPEadditiveTypes, "HDPE", stream27PlasticMasses)
+        CONST.HDPEadditiveTypes, "hdpe", stream27PlasticMasses)
     stream27PVCAdditives = utils.additiveMassCalculator(
-        CONST.PVCadditiveTypes, "PVC", stream27PlasticMasses)
+        CONST.PVCadditiveTypes, "pvc", stream27PlasticMasses)
     stream27LDPEAdditives = utils.additiveMassCalculator(
-        CONST.LDPEadditiveTypes, "LDPE", stream27PlasticMasses)
+        CONST.LDPEadditiveTypes, "ldpe", stream27PlasticMasses)
     stream27PLAAdditives = utils.additiveMassCalculator(
-        CONST.PLAadditiveTypes, "PLA", stream27PlasticMasses)
+        CONST.PLAadditiveTypes, "pla", stream27PlasticMasses)
     stream27PPAdditives = utils.additiveMassCalculator(
-        CONST.PPadditiveTypes, "PP", stream27PlasticMasses)
+        CONST.PPadditiveTypes, "pp", stream27PlasticMasses)
     stream27PSAdditives = utils.additiveMassCalculator(
-        CONST.PETadditiveTypes, "PS", stream27PlasticMasses)
+        CONST.PETadditiveTypes, "ps", stream27PlasticMasses)
     stream27OtherAdditives = utils.additiveMassCalculator(
-        CONST.otherResinAdditives, "Other Resin", stream27PlasticMasses)
+        CONST.otherResinAdditives, "other", stream27PlasticMasses)
 
     # List of above dictionaries
     listOfstream27Additives = [
@@ -646,9 +673,10 @@ def run_calculator():
     # Creates dictionary of types of MSW waste (without plastic),
     # takes total MSW and multiplies that by their respective proportions.
     # Key = type of MSW, value = mass of that MSW
+    msw_comp_prop = list(mswGeneratedProps.values())
     stream8MSWMasses_ = dict(zip(
         CONST.CALC_WASTE_TYPES,
-        [msw_comp_prop[i] * conditions[0]
+        [msw_comp_prop[i] * condition['total_msw']
          for i in range(len(CONST.CALC_WASTE_TYPES))]))
 
     ###########################################################################
@@ -673,21 +701,21 @@ def run_calculator():
     # bulk masses determined above.
     # Key = type of additive, value = mass of additive
     stream9PETAdditives = utils.additiveMassCalculator(
-        CONST.PETadditiveTypes, "PET", stream9PlasticMasses_)
+        CONST.PETadditiveTypes, "pet", stream9PlasticMasses_)
     stream9HDPEAdditives = utils.additiveMassCalculator(
-        CONST.HDPEadditiveTypes, "HDPE", stream9PlasticMasses_)
+        CONST.HDPEadditiveTypes, "hdpe", stream9PlasticMasses_)
     stream9PVCAdditives = utils.additiveMassCalculator(
-        CONST.PVCadditiveTypes, "PVC", stream9PlasticMasses_)
+        CONST.PVCadditiveTypes, "pvc", stream9PlasticMasses_)
     stream9LDPEAdditives = utils.additiveMassCalculator(
-        CONST.LDPEadditiveTypes, "LDPE", stream9PlasticMasses_)
+        CONST.LDPEadditiveTypes, "ldpe", stream9PlasticMasses_)
     stream9PLAAdditives = utils.additiveMassCalculator(
-        CONST.PLAadditiveTypes, "PLA", stream9PlasticMasses_)
+        CONST.PLAadditiveTypes, "pla", stream9PlasticMasses_)
     stream9PPAdditives = utils.additiveMassCalculator(
-        CONST.PPadditiveTypes, "PP", stream9PlasticMasses_)
+        CONST.PPadditiveTypes, "pp", stream9PlasticMasses_)
     stream9PSAdditives = utils.additiveMassCalculator(
-        CONST.PSadditiveTypes, "PS", stream9PlasticMasses_)
+        CONST.PSadditiveTypes, "ps", stream9PlasticMasses_)
     stream9OtherAdditives = utils.additiveMassCalculator(
-        CONST.otherResinAdditives, "Other Resin", stream9PlasticMasses_)
+        CONST.otherResinAdditives, "other", stream9PlasticMasses_)
 
     # Create list of above dicts
     listOfstream9Additives = [
@@ -772,13 +800,12 @@ def run_calculator():
     # Create dictionary of key = types of MSW (except plastic);
     # value = mass of MSW incinerated
     # (total mass incinerated * proportion incinerated)
-    scenario_id = 0
 
     # .get throws an error if obj doesn't exist
     # mswIncin = MSWIncineration.objects.get(id=scenario_id)
 
     # .filter returns an empty set, calling .first() on the
-    mswIncin = MSWIncineration.objects.filter(id=scenario_id).first()
+    mswIncin = MSWIncineration.objects.filter(scenario_id=scenario_id).first()
     stream11MSWValues = mswIncin.fractions_to_mass()
     # stream11MSWValues = dict(zip(
     #     CONST.CALC_WASTE_TYPES,
@@ -793,7 +820,7 @@ def run_calculator():
     # Creates dict of key = types of MSW (except plastic)
     # value = mass of MSW landfilled
     # (total mass landfilled*proportion landfilled)
-    mswLand = MSWLandfill.objects.filter(id=scenario_id).first()
+    mswLand = MSWLandfill.objects.filter(scenario_id=scenario_id).first()
     stream12MSWValues = mswLand.fractions_to_mass()
     # stream12MSWValues = dict(zip(
     #     CONST.CALC_WASTE_TYPES,
@@ -807,7 +834,7 @@ def run_calculator():
 
     # Creates dict of key = type of plastic,
     # value = mass*0.01Fraction*Fraction of each kind of plastic.
-    mswCompost = MSWCompost.objects.filter(id=scenario_id).first()
+    mswCompost = MSWCompost.objects.filter(scenario_id=scenario_id).first()
     stream13PlasticMasses = mswCompost.fractions_to_mass()
     # stream13PlasticMasses = dict(zip(
     #     domestic_plastics,
@@ -817,21 +844,21 @@ def run_calculator():
     # Creates dict of key = type of additive,
     # value = mass of additive in this stream
     stream13PETAdditives = utils.additiveMassCalculator(
-        CONST.PETadditiveTypes, "PET", stream13PlasticMasses)
+        CONST.PETadditiveTypes, "pet", stream13PlasticMasses)
     stream13HDPEAdditives = utils.additiveMassCalculator(
-        CONST.HDPEadditiveTypes, "HDPE", stream13PlasticMasses)
+        CONST.HDPEadditiveTypes, "hdpe", stream13PlasticMasses)
     stream13PVCAdditives = utils.additiveMassCalculator(
-        CONST.PVCadditiveTypes, "PVC", stream13PlasticMasses)
+        CONST.PVCadditiveTypes, "pvc", stream13PlasticMasses)
     stream13LDPEAdditives = utils.additiveMassCalculator(
-        CONST.LDPEadditiveTypes, "LDPE", stream13PlasticMasses)
+        CONST.LDPEadditiveTypes, "ldpe", stream13PlasticMasses)
     stream13PLAAdditives = utils.additiveMassCalculator(
-        CONST.PLAadditiveTypes, "PLA", stream13PlasticMasses)
+        CONST.PLAadditiveTypes, "pla", stream13PlasticMasses)
     stream13PPAdditives = utils.additiveMassCalculator(
-        CONST.PPadditiveTypes, "PP", stream13PlasticMasses)
+        CONST.PPadditiveTypes, "pp", stream13PlasticMasses)
     stream13PSAdditives = utils.additiveMassCalculator(
-        CONST.PSadditiveTypes, "PS", stream13PlasticMasses)
+        CONST.PSadditiveTypes, "ps", stream13PlasticMasses)
     stream13OtherAdditives = utils.additiveMassCalculator(
-        CONST.otherResinAdditives, "Other Resin", stream13PlasticMasses)
+        CONST.otherResinAdditives, "other", stream13PlasticMasses)
 
     # List of above dicts
     listOfStream13Additives = [
@@ -876,7 +903,7 @@ def run_calculator():
     ###########################################################################
     # Stream 15 Input
     # Sheet = US Mat Flow Analysis
-    wasteFacilityEmissions = conditions[9] * 1.10231  # CellP43
+    wasteFacilityEmissions = condition['waste_facility_emissions'] * 1.10231  # CellP43
 
     ###########################################################################
     ###########################################################################
@@ -884,7 +911,7 @@ def run_calculator():
     # Sheet = Stream 24 - Incineration
 
     # Calculates mass basis, total plastic*Fraction incinerated
-    stream24MassBasis = conditions[1] * conditions[7]
+    stream24MassBasis = condition['total_waste'] * condition['incinerated']
 
     # Creates dict of bulk masses of each kind of plastic based on
     # mass basis and proportions of each plastic incinerated.
@@ -897,21 +924,21 @@ def run_calculator():
     # Creates dict of additives based on bulk masses.
     # Key= type of additive, value = mass of additive
     stream24PETAdditives = utils.additiveMassCalculator(
-        CONST.PETadditiveTypes, "PET", stream24PlasticMasses)
+        CONST.PETadditiveTypes, "pet", stream24PlasticMasses)
     stream24HDPEAdditives = utils.additiveMassCalculator(
-        CONST.HDPEadditiveTypes, "HDPE", stream24PlasticMasses)
+        CONST.HDPEadditiveTypes, "hdpe", stream24PlasticMasses)
     stream24PVCAdditives = utils.additiveMassCalculator(
-        CONST.PVCadditiveTypes, "PVC", stream24PlasticMasses)
+        CONST.PVCadditiveTypes, "pvc", stream24PlasticMasses)
     stream24LDPEAdditives = utils.additiveMassCalculator(
-        CONST.LDPEadditiveTypes, "LDPE", stream24PlasticMasses)
+        CONST.LDPEadditiveTypes, "ldpe", stream24PlasticMasses)
     stream24PLAAdditives = utils.additiveMassCalculator(
-        CONST.PLAadditiveTypes, "PLA", stream24PlasticMasses)
+        CONST.PLAadditiveTypes, "pla", stream24PlasticMasses)
     stream24PPAdditives = utils.additiveMassCalculator(
-        CONST.PPadditiveTypes, "PP", stream24PlasticMasses)
+        CONST.PPadditiveTypes, "pp", stream24PlasticMasses)
     stream24PSAdditives = utils.additiveMassCalculator(
-        CONST.PSadditiveTypes, "PS", stream24PlasticMasses)
+        CONST.PSadditiveTypes, "ps", stream24PlasticMasses)
     stream24OtherAdditives = utils.additiveMassCalculator(
-        CONST.otherResinAdditives, "Other Resin", stream24PlasticMasses)
+        CONST.otherResinAdditives, "other", stream24PlasticMasses)
 
     # List of above dicts
     listOfStream24Additives = [
@@ -934,8 +961,8 @@ def run_calculator():
     # Creates dict of emissions factors, then creates dict of
     # emissions associated with each type of plastic's bulk masses
     stream24EmissionsFactors = {
-        "PET": 1.24, "HDPE": 1.27, "PVC": 0.67, "LDPE": 1.27, "PLA": 1.25,
-        "PP": 1.27, "PS": 1.64, "Other Resin": 2.33}
+        "pet": 1.24, "hdpe": 1.27, "pvc": 0.67, "ldpe": 1.27, "pla": 1.25,
+        "pp": 1.27, "ps": 1.64, "other": 2.33}
     stream24Emissions = dict(zip(
         domestic_plastics,
         [stream24EmissionsFactors[i] * stream24PlasticMasses[i] * 1.10231
@@ -976,7 +1003,7 @@ def run_calculator():
     # Sheet = Stream 26 Landfilled Plastic
 
     # Creates dict of total plastic landfilled
-    stream26MassBasis = conditions[1] * conditions[8]
+    stream26MassBasis = condition['total_waste'] * condition['landfilled']
 
     # Creates dict of
     # key = type of plastic, value = bulk mass of type of plastic
@@ -989,21 +1016,21 @@ def run_calculator():
     # Creates dict of additives for each kind of plastic.
     # Key = type of additive, value = mass
     stream26PETAdditives = utils.additiveMassCalculator(
-        CONST.PETadditiveTypes, "PET", stream26PlasticMasses)
+        CONST.PETadditiveTypes, "pet", stream26PlasticMasses)
     stream26HDPEAdditives = utils.additiveMassCalculator(
-        CONST.HDPEadditiveTypes, "HDPE", stream26PlasticMasses)
+        CONST.HDPEadditiveTypes, "hdpe", stream26PlasticMasses)
     stream26PVCAdditives = utils.additiveMassCalculator(
-        CONST.PVCadditiveTypes, "PVC", stream26PlasticMasses)
+        CONST.PVCadditiveTypes, "pvc", stream26PlasticMasses)
     stream26LDPEAdditives = utils.additiveMassCalculator(
-        CONST.LDPEadditiveTypes, "LDPE", stream26PlasticMasses)
+        CONST.LDPEadditiveTypes, "ldpe", stream26PlasticMasses)
     stream26PLAAdditives = utils.additiveMassCalculator(
-        CONST.PLAadditiveTypes, "PLA", stream26PlasticMasses)
+        CONST.PLAadditiveTypes, "pla", stream26PlasticMasses)
     stream26PPAdditives = utils.additiveMassCalculator(
-        CONST.PPadditiveTypes, "PP", stream26PlasticMasses)
+        CONST.PPadditiveTypes, "pp", stream26PlasticMasses)
     stream26PSAdditives = utils.additiveMassCalculator(
-        CONST.PSadditiveTypes, "PS", stream26PlasticMasses)
+        CONST.PSadditiveTypes, "ps", stream26PlasticMasses)
     stream26OtherAdditives = utils.additiveMassCalculator(
-        CONST.otherResinAdditives, "Other Resin", stream26PlasticMasses)
+        CONST.otherResinAdditives, "other", stream26PlasticMasses)
 
     # List of above created dicts
     listOfStream26Additives = [
@@ -1063,7 +1090,7 @@ def run_calculator():
 
     # Inputs landfill emissions in
     FractionOfMSWEmissionLandfill = 0.15
-    combinedLandfillEmissions = conditions[10] * FractionOfMSWEmissionLandfill
+    combinedLandfillEmissions = condition['landfill_emissions'] * FractionOfMSWEmissionLandfill
 
     # Sums stream 30 emissions
     stream30Emissions = stream26totalEmissions + combinedLandfillEmissions
@@ -1151,7 +1178,7 @@ def run_calculator():
         [stream3EmissionFactor[i] * 1.10231 + 0.0025
          for i in domestic_plastics]))
     matFlowManufactureGHG['Chemical Additives'] = matFlowManufactureGHG[
-        'Other Resin']
+        'other']
 
     # TRVW (table) lists
     manufactureDictList = [
@@ -1311,7 +1338,7 @@ def run_calculator():
         [emissionFactors[i] * 1.10231 for i in domestic_plastics]))
 
     matFlowMechRecycGHG['Chemical Additives'] = \
-        matFlowMechRecycGHG['Other Resin']
+        matFlowMechRecycGHG['other']
 
     # creates list of above dicts
     mechRecycDictList = [
@@ -1360,7 +1387,7 @@ def run_calculator():
         [stream24EmissionsFactors[i] * 1.10231
          for i in domestic_plastics]))
 
-    matFlowIncinGHG['Chemical Additives'] = matFlowIncinGHG['Other Resin']
+    matFlowIncinGHG['Chemical Additives'] = matFlowIncinGHG['other']
 
     incinDictList = [
         matFlowIncinInput, matFlowIncinOutput, matFlowIncinLitter,
@@ -1421,7 +1448,7 @@ def run_calculator():
     # inappropriate numbers are added to table
 
     # These dicts will be iterated over to look for data.
-    # (e.g. will be searched for "PET", "HDPE", etc.)
+    # (e.g. will be searched for "pet", "hdpe", etc.)
     listOfStreamsForResinTRVW = [
         stream1PlasticMasses, dummyDictionary, dummyDictionary,
         stream4ResinMasses_, stream5ResinMasses, stream6ResinTotals,
@@ -1517,7 +1544,7 @@ def run_calculator():
          sum(stream4ResinMasses_.values())) * 0.0025 +
         sum(stream3Emissions.values()), 0, 0, 0,
         totalStream10Waste * 230 * 0.00110231, 0, 0, 0, 0, 0, 0, 0,
-        conditions[9] * 1.10231131, 0, sum(emissionStream16.values()), 0, 0,
+        condition['waste_facility_emissions'] * 1.10231131, 0, sum(emissionStream16.values()), 0, 0,
         sum(stream20Emissions.values()), 0, 0, sum(stream23Emissions.values()),
         0, sum(stream24Emissions.values()) +
         1.05*sum(stream11MSWValues.values()),
@@ -1532,7 +1559,7 @@ def run_calculator():
          sum(stream4ResinMasses_.values())) * 0.0025 +
         sum(stream3Emissions.values()), 0, 0, 0,
         totalStream10Waste * 230 * 0.00110231, 0, 0, 0, 0, 0, 0, 0,
-        conditions[9] * 1.10231131, 0, sum(emissionStream16.values()), 0, 0,
+        condition['waste_facility_emissions'] * 1.10231131, 0, sum(emissionStream16.values()), 0, 0,
         sum(stream20Emissions.values()), 0, 0, sum(stream23Emissions.values()),
         0, sum(stream24Emissions.values()), 0, sum(stream27Emissions.values()),
         sum(stream23Emissions.values()), sum(stream29Emissions.values()),
@@ -1550,7 +1577,7 @@ def run_calculator():
 
     # Creates pie chart for data analysis stream. Shows msw composition
     # PIE CHART
-    piecharttest = np.array(msw_comp_prop)
+    # piecharttest = np.array(msw_comp_prop)
 
     # make the plastic section wedge out from the center of the pie.
     plasticexplode = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5]
