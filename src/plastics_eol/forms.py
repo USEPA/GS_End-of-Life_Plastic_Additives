@@ -291,5 +291,5 @@ class ExportedPlasticForm(ImportExportGenericForm):
 class ReExportedPlasticForm(ImportExportGenericForm):
 
     class Meta:
-        model = ExportedPlastic
+        model = ReExportedPlastic
         fields = ImportExportGenericForm.Meta.fields
