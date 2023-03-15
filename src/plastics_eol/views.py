@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
 from json import dumps
 
@@ -23,6 +23,8 @@ from .models import Condition, ExportedPlastic, ImportedPlastic, \
     PlasticRecycling, PlasticReportedRecycled, Scenario
 
 from .utils import get_steps
+from .constants import DEFAULTS
+from .calculator import run_calculator
 
 
 def home(request):
@@ -98,7 +100,9 @@ class WizardCreatePartial(LoginRequiredMixin, CreateView):
         ctx = super().get_context_data(*args, **kwargs)
         ctx['page_title'] = self.page_title
         ctx['step_num'] = self.step_num
-        ctx['defaults'] = self.defaults
+        ctx['defaults'] = self.form_class.get_defaults(year='2018')
+        # Inside here do the formatting
+        # you can use self.form_class to get the form class, then .fields
         ctx['scenario_id'] = self.kwargs['pk']
         ctx = get_steps(ctx, ctx['step_num'])
         return ctx
@@ -125,7 +129,8 @@ class ConditionsCreate(WizardCreatePartial):
     page_title = 'Condition'
     step_num = 0
     next_url = 'msw_composition_create'
-    defaults = dumps({'test_key': 'test_val'})
+    defaults = DEFAULTS['2018']['conditions']
+    # dumps({'test_key': 'test_val'})
 
 
 class ConditionsDetail(LoginRequiredMixin, DetailView):
@@ -252,18 +257,33 @@ class PlasticReExportCreate(WizardCreatePartial):
     template_name = 'scenario/_generic_inputs_create.html'
     page_title = 'Plastic Re-Export'
     step_num = 12
-    next_url = 'run_calculations'
+    next_url = 'scenario_review'
 
 
-class RunCalculations(LoginRequiredMixin, DetailView):
+class ScenarioReview(LoginRequiredMixin, TemplateView):
     """Scenario Plastic ReExport Create view."""
 
-    template = 'scenario/results.html'
+    template_name = 'scenario/scenario_review.html'
 
-    def get(self, request, *args, **kwargs):
-        ctx = {}
-        # Get scenario ID
-        # Get inputs
-        # Run calculator
-        # render the results page
-        return render(request, self.template, ctx)
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['scenario_id'] = kwargs.get('pk')
+        return ctx
+
+
+class ScenarioResults(LoginRequiredMixin, DetailView):
+    """Scenario Plastic ReExport Create view."""
+
+    template_name = 'scenario/scenario_results.html'
+    # model = ScenarioResults
+
+
+def run_calculations(request, *args, **kwargs):
+    # get the scenario ID from kwargs
+    scenario_id = kwargs.get('pk')
+    # get whatever inputs you need from the database
+    # run calculations
+    run_calculator(scenario_id)
+    # on error, render ScenarioReview again with a message
+    # on success
+    return reverse_lazy('scenario_results', args=(scenario_id,))
