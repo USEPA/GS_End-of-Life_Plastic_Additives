@@ -119,7 +119,7 @@ class PlasticGeneric(models.Model):
     hdpe = models.FloatField(null=False, blank=False, default=0.0)
     pvc = models.FloatField(null=False, blank=False, default=0.0)
     ldpe = models.FloatField(null=False, blank=False, default=0.0)
-    pal = models.FloatField(null=False, blank=False, default=0.0)
+    pla = models.FloatField(null=False, blank=False, default=0.0)
     pp = models.FloatField(null=False, blank=False, default=0.0)
     ps = models.FloatField(null=False, blank=False, default=0.0)
     other = models.FloatField(null=False, blank=False, default=0.0)
