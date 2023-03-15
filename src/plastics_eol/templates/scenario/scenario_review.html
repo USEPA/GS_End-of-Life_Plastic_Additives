@@ -1,0 +1,17 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+
+<h3>Review Inputs for Scenario {{scenario_id}}</h3>
+
+<a class="usa-button" href="/scenario/{{scenario_id}}/run">Run Calculations</a>
+
+{% endblock %}
+
+{% block extend_js %}
+<!-- NOTE: JQuery is already included inside base.html... -->
+<!-- NOTE: Not sure why, but JQuery won't work unless I include again here. -->
+<script src="https://www.epa.gov/core/assets/vendor/jquery/jquery.min.js?v=3.6.0"></script>
+{% endblock %}
+{% block scripts %}
+{% endblock %}
