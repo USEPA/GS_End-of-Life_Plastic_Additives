@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.utils import timezone
 from .constants import *
 from accounts.models import User
+from plastics_eol import constants as CONST
 
 
 class Scenario(models.Model):
@@ -73,9 +74,10 @@ class MSWGeneric(models.Model):
 
     def multiply_mass(self, mass):
         totals = self.__dict__
+        values = [totals[w] for w in CONST.WASTE_TYPES]
         # for key in self build dict
         # totals['key'] = self.total_mass * self.key
-        fraction_mass = dict(zip(totals.keys(), map(lambda x: x*mass, totals)))
+        fraction_mass = dict(zip(totals.keys(), map(lambda x: x*mass, values)))
         return fraction_mass
 
 
