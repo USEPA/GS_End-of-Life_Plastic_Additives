@@ -15,6 +15,7 @@ from .models import Condition, MSWComposition, MSWCompost, MSWIncineration, \
     PlasticReportedRecycled, ImportedPlastic, ExportedPlastic, \
     ReExportedPlastic
 
+from .constants import DEFAULTS, DEFAULT_YEAR
 
 USEPA_TEXT_ATTRS = {'class': 'usa-input mb-2'}
 
@@ -82,6 +83,20 @@ class ConditionForm(forms.ModelForm):
         label=_("Emissions from Landfill (Tons):"),
         widget=forms.NumberInput({'class': 'usa-input mb-2'}))
 
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        # defaults = {}
+        # for idx, name in CONST.mapped_conditions:
+        #     defaults[name] = CONST.defaults[year]['conditions'][idx]
+
+        # Do the formatting here
+        fields = ConditionForm.Meta.fields
+        values = DEFAULTS[year]['conditions']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
+
     class Meta:
         """Meta data for Conditions inputs Form."""
 
@@ -126,6 +141,15 @@ class MSWCompositionForm(forms.ModelForm):
         label=_("Plastics (Fraction):"),
         widget=forms.NumberInput({'class': 'usa-input mb-2'}))
 
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        fields = MSWCompositionForm.Meta.fields
+        values = DEFAULTS[year]['msw_comp_prop']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
+
     class Meta:
         """Meta data for Scenario MSW Composition inputs form."""
         model = MSWComposition
@@ -159,6 +183,15 @@ class MSWRecyclingForm(MSWTotalsForm):
         model = MSWRecycling
         fields = MSWTotalsForm.Meta.fields
 
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        fields = MSWRecyclingForm.Meta.fields
+        values = DEFAULTS[year]['msw_recyc']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
+
 
 class MSWIncinerationForm(MSWTotalsForm):
     """Form representing a Scenario's MSW Incineration inputs."""
@@ -167,6 +200,15 @@ class MSWIncinerationForm(MSWTotalsForm):
         """Meta data for Scenario MSW Composition inputs form."""
         model = MSWIncineration
         fields = MSWTotalsForm.Meta.fields
+
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        fields = MSWIncinerationForm.Meta.fields
+        values = DEFAULTS[year]['msw_incin']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
 
 
 class MSWLandfillForm(MSWTotalsForm):
@@ -177,6 +219,15 @@ class MSWLandfillForm(MSWTotalsForm):
         model = MSWLandfill
         fields = MSWTotalsForm.Meta.fields
 
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        fields = MSWLandfillForm.Meta.fields
+        values = DEFAULTS[year]['msw_land']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
+
 
 class MSWCompostForm(MSWTotalsForm):
     """Form representing a Scenario's MSW Compost inputs."""
@@ -185,6 +236,15 @@ class MSWCompostForm(MSWTotalsForm):
         """Meta data for Scenario MSW Composition inputs form."""
         model = MSWCompost
         fields = MSWTotalsForm.Meta.fields
+
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        fields = MSWCompostForm.Meta.fields
+        values = DEFAULTS[year]['msw_compost']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
 
 
 class PlasticsGenericForm(forms.ModelForm):
@@ -223,10 +283,24 @@ class PlasticsGenericForm(forms.ModelForm):
         widget=forms.NumberInput({'class': 'usa-input mb-2'}))
 
     class Meta:
-        fields = ('pet', 'hdpe', 'pvc', 'ldpe', 'pal', 'pp', 'ps', 'other')
+        fields = ('pet', 'hdpe', 'pvc', 'ldpe', 'pla', 'pp', 'ps', 'other')
 
 
 class PlasticRecyclingForm(PlasticsGenericForm):
+
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        # defaults = {}
+        # for idx, name in CONST.mapped_conditions:
+        #     defaults[name] = CONST.defaults[year]['conditions'][idx]
+
+        # Do the formatting here
+        fields = PlasticRecyclingForm.Meta.fields
+        values = DEFAULTS[year]['plastics_recyc_fractions']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
 
     class Meta:
         model = PlasticRecycling
@@ -239,6 +313,20 @@ class PlasticIncinerationForm(PlasticsGenericForm):
         model = PlasticIncineration
         fields = PlasticsGenericForm.Meta.fields
 
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        # defaults = {}
+        # for idx, name in CONST.mapped_conditions:
+        #     defaults[name] = CONST.defaults[year]['conditions'][idx]
+
+        # Do the formatting here
+        fields = PlasticIncinerationForm.Meta.fields
+        values = DEFAULTS[year]['plastic_incin_fractions']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
+
 
 class PlasticLandfillForm(PlasticsGenericForm):
 
@@ -246,12 +334,40 @@ class PlasticLandfillForm(PlasticsGenericForm):
         model = PlasticLandfill
         fields = PlasticsGenericForm.Meta.fields
 
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        # defaults = {}
+        # for idx, name in CONST.mapped_conditions:
+        #     defaults[name] = CONST.defaults[year]['conditions'][idx]
+
+        # Do the formatting here
+        fields = PlasticLandfillForm.Meta.fields
+        values = DEFAULTS[year]['plastics_land_fractions']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
+
 
 class PlasticReportedRecycledForm(PlasticsGenericForm):
 
     class Meta:
         model = PlasticReportedRecycled
         fields = PlasticsGenericForm.Meta.fields
+
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        # defaults = {}
+        # for idx, name in CONST.mapped_conditions:
+        #     defaults[name] = CONST.defaults[year]['conditions'][idx]
+
+        # Do the formatting here
+        fields = PlasticReportedRecycledForm.Meta.fields
+        values = DEFAULTS[year]['conditions']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
 
 
 class ImportExportGenericForm(forms.ModelForm):
@@ -280,6 +396,20 @@ class ImportedPlasticForm(ImportExportGenericForm):
         model = ImportedPlastic
         fields = ImportExportGenericForm.Meta.fields
 
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        # defaults = {}
+        # for idx, name in CONST.mapped_conditions:
+        #     defaults[name] = CONST.defaults[year]['conditions'][idx]
+
+        # Do the formatting here
+        fields = ImportedPlasticForm.Meta.fields
+        values = DEFAULTS[year]['rep_plastics_import']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
+
 
 class ExportedPlasticForm(ImportExportGenericForm):
 
@@ -287,9 +417,37 @@ class ExportedPlasticForm(ImportExportGenericForm):
         model = ExportedPlastic
         fields = ImportExportGenericForm.Meta.fields
 
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        # defaults = {}
+        # for idx, name in CONST.mapped_conditions:
+        #     defaults[name] = CONST.defaults[year]['conditions'][idx]
+
+        # Do the formatting here
+        fields = ExportedPlasticForm.Meta.fields
+        values = DEFAULTS[year]['rep_plastics_export']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
+
 
 class ReExportedPlasticForm(ImportExportGenericForm):
 
     class Meta:
         model = ReExportedPlastic
         fields = ImportExportGenericForm.Meta.fields
+
+    @staticmethod
+    def get_defaults(year=DEFAULT_YEAR):
+        # defaults = {}
+        # for idx, name in CONST.mapped_conditions:
+        #     defaults[name] = CONST.defaults[year]['conditions'][idx]
+
+        # Do the formatting here
+        fields = ReExportedPlasticForm.Meta.fields
+        values = DEFAULTS[year]['rep_plastics_re_export']
+        defaults = {
+            f'id_{key}': value for key, value in zip(fields, values)
+        }
+        return defaults
