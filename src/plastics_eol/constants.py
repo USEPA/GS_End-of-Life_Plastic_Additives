@@ -53,30 +53,52 @@ LOW_ADD_FRACTIONS = {
 
 # Categories to be paired with data for each year
 CONDITION_CATEGORIES = [
-    "Total MSW (Tons)",
-    "Total Plastic waste (Tons)",
-    "Plastic Recycled (Total, domestic and export)",
-    "Plastic Domestically Recycled Fraction",
-    "Efficiency of Domestic Recycling",
-    "Plastic Export Fraction",
-    "Plastic Re-Export Fraction",
-    "Plastic Incinerated Fraction",
-    "Plastic Landfilled Fraction",
-    "Waste Facility Emissions",
+    # "Total MSW (Tons)",
+    # "Total Plastic waste (Tons)",
+    # "Plastic Recycled (Total, domestic and export)",
+    # "Plastic Domestically Recycled Fraction",
+    # "Efficiency of Domestic Recycling",
+    # "Plastic Export Fraction",
+    # "Plastic Re-Export Fraction",
+    # "Plastic Incinerated Fraction",
+    # "Plastic Landfilled Fraction",
+    # "Waste Facility Emissions",
+    "total_msw",
+    "total_waste",
+    "total_recyc",
+    "domestic_recyc",
+    "export",
+    "re_export",
+    "recyc_efficiency",
+    "incinerated",
+    "landfilled",
+    "waste_facility_emissions"
 ]
 
 WASTE_TYPES = [
-    "Misc. Inorganic Waste",
-    "Other",
-    "Yard Trimmings",
-    "Food",
-    "Rubber, Leather and Textiles",
-    "Wood",
-    "Metals",
-    "Glass",
-    "Paper and Paperboard",
-    "Plastics",
+    # "Misc. Inorganic Waste",
+    # "Other",
+    # "Yard Trimmings",
+    # "Food",
+    # "Rubber, Leather and Textiles",
+    # "Wood",
+    # "Metals",
+    # "Glass",
+    # "Paper and Paperboard",
+    # "Plastics",
+    "inorganic",
+    "other",
+    "yard_trimmings",
+    "food",
+    "rubber_leather_textiles",
+    "wood",
+    "metals",
+    "glass",
+    "paper",
+    "plastics"
 ]
+
+
 
 # Note: This is the same as the one above without a plastics string
 CALC_WASTE_TYPES = WASTE_TYPES[:len(WASTE_TYPES) - 1]
@@ -84,10 +106,14 @@ CALC_WASTE_TYPES = WASTE_TYPES[:len(WASTE_TYPES) - 1]
 
 # Types of plastics in international calculations
 INTERNATIONAL_PLASTICS = [
-    "Ethylene",
-    "Vinyl Chloride",
-    "Styrene",
-    "Other"
+    # "Ethylene",
+    # "Vinyl Chloride",
+    # "Styrene",
+    # "Other",
+    "ethylene",
+    "vinyl_chloride",
+    "styrene",
+    "other"
 ]
 
 # Categories for life cycle inventory
@@ -107,14 +133,36 @@ INVENTORY_CATEGORIES = [
 # Densities of plastics for later calculations
 # polymerWasteDensity = {
 DOMESTIC_PLASTICS_DENSITIES = {
-    "PET": 1.365,
-    "HDPE": 952.5,
-    "PVC": 1.455,
-    "LDPE": 0.925,
-    "PLA": 1.26,
-    "PP": 905,
-    "PS": 1.055,
-    "Other Resin": 1.29,
+    "pet": 1.365,
+    "hdpe": 952.5,
+    "pvc": 1.455,
+    "ldpe": 0.925,
+    "pla": 1.26,
+    "pp": 905,
+    "ps": 1.055,
+    "other": 1.29,
+}
+
+MAPPER_FRM_DB_TO_APP = {
+    "pet": "PET",
+    "hdpe": "HDPE",
+    "pvc": "PVC",
+    "ldpe": "LDPE",
+    "pla": "PLA",
+    "pp": "PP",
+    "ps": "PS",
+    "other": "Other Resin",
+}
+
+MAPPER_FRM_APP_TO_DB = {
+    "PET": "pet",
+    "HDPE": "hdpe",
+    "PVC": "pvc",
+    "LDPE": "ldpe",
+    "PLA": "pla",
+    "PP": "pp",
+    "PS": "ps",
+    "Other Resin": "other",
 }
 
 ADDITIVE_TYPES = {
@@ -154,6 +202,14 @@ ADDITIVE_TYPES = {
 #     "PS",
 #     "Other Resin",
 # ]
+
+# TODO: Proposed table layout
+# 4 cols: year, page, field_name, field_value
+#         2018, conditions, condition_field_1, 292360000
+#         2018, conditions, condition_field_2, 35_680_000
+#         2018, msw_comp_prop, msw_comp_prop_field_1, 0.0139
+
+DEFAULT_YEAR = '2018'
 
 DEFAULTS = {
     '2018': {
