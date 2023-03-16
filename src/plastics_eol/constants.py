@@ -119,14 +119,14 @@ INTERNATIONAL_PLASTICS = [
 # Categories for life cycle inventory
 # (formerly known as material flow analysis)
 INVENTORY_CATEGORIES = [
-    "PET",
-    "HDPE",
-    "PVC",
-    "LDPE",
-    "PLA",
-    "PP",
-    "PS",
-    "Other Resin",
+    "pet",
+    "hdpe",
+    "pvc",
+    "ldpe",
+    "pla",
+    "pp",
+    "ps",
+    "other",
     "Chemical Additives",
 ]
 
