@@ -77,7 +77,7 @@ class MSWGeneric(models.Model):
         values = [totals[w] for w in CONST.WASTE_TYPES]
         # for key in self build dict
         # totals['key'] = self.total_mass * self.key
-        fraction_mass = dict(zip(totals.keys(), map(lambda x: x*mass, values)))
+        fraction_mass = dict(zip(CONST.WASTE_TYPES, map(lambda x: x*mass, values)))
         return fraction_mass
 
 
