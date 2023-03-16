@@ -834,12 +834,14 @@ def run_calculator(scenario_id):
 
     # Creates dict of key = type of plastic,
     # value = mass*0.01Fraction*Fraction of each kind of plastic.
-    mswCompost = MSWCompost.objects.filter(scenario_id=scenario_id).first()
-    stream13PlasticMasses = mswCompost.fractions_to_mass()
-    # stream13PlasticMasses = dict(zip(
-    #     domestic_plastics,
-    #     [mswCompost[0] * 0.0001 * plasticFractionsRecycled[i]
-    #      for i in domestic_plastics]))
+    # TODO: define a custom function in the class
+    mswCompost = MSWCompost.objects.filter(scenario_id=scenario_id).first().__dict__
+    # stream13PlasticMasses = mswCompost.fractions_to_mass()
+    # mswCompost_values =
+    stream13PlasticMasses = dict(zip(
+        domestic_plastics,
+        [mswCompost['total_mass'] * 0.0001 * plasticFractionsRecycled[i]
+         for i in domestic_plastics]))
 
     # Creates dict of key = type of additive,
     # value = mass of additive in this stream
@@ -880,6 +882,7 @@ def run_calculator(scenario_id):
          for i in range(8)]))
 
     # MSW for this stream
+    mswCompost = CONST.DEFAULTS['2018']['msw_compost']
     stream13MSW = dict(zip(
         CONST.CALC_WASTE_TYPES,
         [mswCompost[i + 1] * mswCompost[0] for i in range(10)]))
@@ -891,7 +894,7 @@ def run_calculator(scenario_id):
     # Creates dict of key = types of MSW except plastic,
     # value = mass recycled
     # (total mass recycled*proportion of each kind of plastic recycled)
-    mswRecyc = MSWRecycling.objects.filter(id=scenario_id).first()
+    mswRecyc = MSWRecycling.objects.filter(scenario_id=scenario_id).first()
     stream14MSWValues = mswRecyc.fractions_to_mass()
 
     # stream14MSWValues = dict(zip(
