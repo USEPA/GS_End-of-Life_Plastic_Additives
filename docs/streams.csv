@@ -1,0 +1,33 @@
+key,title
+1,Monomer/Raw Materials
+2,Additives
+3,Manufacture GHG Releases
+4,Manufacture to Use
+5,Additives Migration
+6,Use to Collection
+7,Collection GHG Emissions
+8,Other Waste into Collection
+9,Plastic Litter
+10,Collection to Sort
+11,Nonrecyclable Incinerate: Sort to Incineration
+12,Sort to Landfill
+13,Sort to Compost
+14,Sort to Recycle: Recyclable Nonplastic Waste
+15,Sort GHG Emissions
+16,Sort to Mechanical Recycling
+17,Mechanical Recycling Net GHG Emissions
+18,Mechanical Recycling Additive Migration
+19,Mechanical Recycling Additive Contamination
+20,Plastic: Mechanical Recycling to Manufacture
+21,Plastic Import
+22,Plastic Re-Export
+23,Mechanical Recycling to Incineration
+24,Plastic: Sort to Incineration
+25,Incineration GHG Emissions
+26,Plastic: Sort to Landfill
+27,Plastic Export from Sort
+28,Mechanical Recycling to Landfill
+29,Landfill Plastic Leak
+30,Landfill GHG Emissions
+31,Waste Incinerated
+32,Waste Accumulated in Landfill
