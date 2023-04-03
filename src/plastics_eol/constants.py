@@ -16,7 +16,6 @@ CURRENT_CSS = 'usa-step-indicator__segment--current'
 COMPLETE_SPAN = 'completed'
 INCOMPLETE_SPAN = 'not completed'
 
-
 # Constant values from assumptions to be used in calculations.
 ASSUMED_VALUES = {
     "Plastic waste lost to littering": 0.02,

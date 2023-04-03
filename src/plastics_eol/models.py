@@ -173,3 +173,31 @@ class ExportedPlastic(ImportExportGeneric):
 
 class ReExportedPlastic(ImportExportGeneric):
     """User Specifications for Plastic Re-Exported Masses."""
+
+
+class Stream(models.Model):
+    """Class representing a Stream from the calculator."""
+    # (1, Monomer/Raw Materials)
+    id = models.IntegerField(null=False, primary_key=True)
+    title = models.TextField(blank=False, null=False)
+
+class Result(models.Model):
+    """Results for a calculator run."""
+    # (1, 1, PET, 4624952)
+    scenario = models.OneToOneField(Scenario,
+                                    on_delete=models.CASCADE,
+                                    primary_key=True)
+    stream = models.ForeignKey(Stream, null=True, on_delete=models.SET_NULL)
+    key = models.TextField(blank=False, null=False) # i.e. PET,
+    value = models.FloatField(null=False) # i.e. 4,624,952
+
+    def __str__(self, *args, **kwargs):
+        """Override stringify method to return <.5 etc. when appropriate."""
+        if self.value < 0.1:
+            return '<0.1'
+        elif self.value < 0.5:
+            return '<0.5'
+        elif self.value < 1:
+            return '<1'
+        # TODO Could consider formatting it with commas, etc.
+        return str(self.value)

@@ -4,6 +4,34 @@
 
 <h3>Results for Scenario {{scenario_id}}</h3>
 
+<div class="usa-table-container--scrollable" tabindex="0">
+    <table class="usa-table">
+        <thead>
+            <tr>
+                <th>Stream ID</th>
+                {% for stream in stream_ids %}
+                <th>{{stream}}</th>
+                {% endfor %}
+            </tr>
+            <tr>
+                <th>Stream Title</th>
+                {% for stream in stream_titles %}
+                <th>{{stream}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, values in results.items %}
+            <tr>
+                <td>{{key}}</td>
+                {% for val in values %}
+                <td>{{val}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
 
 {% block extend_js %}

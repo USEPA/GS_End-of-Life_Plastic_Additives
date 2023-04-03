@@ -6,8 +6,6 @@
 
 from plastics_eol import constants as CONST
 from plastics_eol import utils
-import numpy as np
-import matplotlib.pyplot as plt
 from plastics_eol.models import MSWCompost, MSWComposition, MSWIncineration, \
     MSWRecycling, MSWLandfill, PlasticLandfill, PlasticRecycling, \
     PlasticIncineration, Condition, ImportedPlastic, ExportedPlastic, \
@@ -1571,6 +1569,10 @@ def run_calculator(scenario_id):
     listsToAdd.append(emissionsFromPlasticList)
 
     streamTRVWLists = streamTRVWLists + listsToAdd
+
+    # TODO: Save the results to database.
+    return True
+
     # streamSummaryTRVW.insert(parent ='', index ='end', iid = 0, text = '',
     # values = tuple([streamTitleRows[b]
     #                 for b in range(len(streamTitleRows))]))
@@ -1583,7 +1585,7 @@ def run_calculator(scenario_id):
     # piecharttest = np.array(msw_comp_prop)
 
     # make the plastic section wedge out from the center of the pie.
-    plasticexplode = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5]
+    # plasticexplode = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5]
 
     ####################################################################
     ## From here, to below, all code is related to graphing

@@ -5,7 +5,7 @@
 """Definition of views."""
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
@@ -20,7 +20,7 @@ from .forms import ConditionForm, MSWCompositionForm, MSWCompostForm, \
 from .models import Condition, ExportedPlastic, ImportedPlastic, \
     ReExportedPlastic, MSWComposition, MSWCompost, MSWIncineration, \
     MSWLandfill, MSWRecycling, PlasticIncineration, PlasticLandfill, \
-    PlasticRecycling, PlasticReportedRecycled, Scenario
+    PlasticRecycling, PlasticReportedRecycled, Scenario, Result, Stream
 
 from .utils import get_steps
 from .constants import DEFAULTS
@@ -271,11 +271,29 @@ class ScenarioReview(LoginRequiredMixin, TemplateView):
         return ctx
 
 
-class ScenarioResults(LoginRequiredMixin, DetailView):
+class ScenarioResults(LoginRequiredMixin, TemplateView):
     """Scenario Plastic ReExport Create view."""
 
     template_name = 'scenario/scenario_results.html'
-    # model = ScenarioResults
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['scenario_id'] = kwargs.get('pk')
+        # all_results = Result.objects.filter(scenario_id=ctx['scenario_id'])
+        # TODO: Format the results on a row-basis, i.e. on result.key
+        # Use pandas or w/e to format [{1, 1, 'PET', 12.34}, {}, {}]
+        # converted to: {'PET': ['stream_id', 'stream_title', value]}
+        # so ultimately we can do
+        # for row in results:
+        ctx['results'] = {
+            'PET': [462, 0, 0],
+            'HDPE': [952, 0, 0],
+            'PVC': [249, 0, 0],
+        }
+        streams = Stream.objects.all().order_by('id')
+        ctx['stream_ids'] = streams.values_list('id', flat=True)
+        ctx['stream_titles'] = streams.values_list('title', flat=True)
+        return ctx
 
 
 def run_calculations(request, *args, **kwargs):
@@ -283,7 +301,9 @@ def run_calculations(request, *args, **kwargs):
     scenario_id = kwargs.get('pk')
     # get whatever inputs you need from the database
     # run calculations
-    run_calculator(scenario_id)
+    success = run_calculator(scenario_id)
     # on error, render ScenarioReview again with a message
+    if not success:
+        print('Error! Do something about it.')
     # on success
-    return reverse_lazy('scenario_results', args=(scenario_id,))
+    return redirect('scenario_results', pk=scenario_id)
