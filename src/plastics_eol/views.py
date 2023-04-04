@@ -285,14 +285,27 @@ class ScenarioResults(LoginRequiredMixin, TemplateView):
         # converted to: {'PET': ['stream_id', 'stream_title', value]}
         # so ultimately we can do
         # for row in results:
-        ctx['results'] = {
-            'PET': [462, 0, 0],
-            'HDPE': [952, 0, 0],
-            'PVC': [249, 0, 0],
-        }
         streams = Stream.objects.all().order_by('id')
         ctx['stream_ids'] = streams.values_list('id', flat=True)
         ctx['stream_titles'] = streams.values_list('title', flat=True)
+
+        results = Result.objects.filter(scenario_id=ctx['scenario_id'])
+        formatted_result = {}
+        for res in results:
+            if res.key not in formatted_result:
+                formatted_result[res.key] = [res.value]
+            else:
+                formatted_result[res.key].append(res.value)
+        for k, v in formatted_result.items():
+            print(k, len(v))
+        # print(results)
+        # x = 5
+        # ctx['results'] = {
+        #     'PET': list(range(32)),  # [462, 0, 0],
+        #     'HDPE': list(range(32)),  # [952, 0, 0],
+        #     'PVC': list(range(32)),  # [249, 0, 0],
+        # }
+        ctx['results'] = formatted_result
         return ctx
 
 
