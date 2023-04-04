@@ -184,7 +184,7 @@ class Stream(models.Model):
 class Result(models.Model):
     """Results for a calculator run."""
     # (auto_id, 1, 1, PET, 4624952)
-    scenario = models.OneToOneField(Scenario, on_delete=models.CASCADE)
+    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE)
     stream = models.ForeignKey(Stream, null=True, on_delete=models.SET_NULL)
     key = models.TextField(blank=False, null=False) # i.e. PET,
     value = models.FloatField(null=False) # i.e. 4,624,952
