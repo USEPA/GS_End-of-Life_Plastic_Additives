@@ -3,13 +3,12 @@
 # coding=utf-8
 
 """Utility methods."""
-
 from plastics_eol import constants as CONST
 from plastics_eol import utils
 from plastics_eol.models import MSWCompost, MSWComposition, MSWIncineration, \
     MSWRecycling, MSWLandfill, PlasticLandfill, PlasticRecycling, \
     PlasticIncineration, Condition, ImportedPlastic, ExportedPlastic, \
-    ReExportedPlastic, PlasticReportedRecycled
+    ReExportedPlastic, PlasticReportedRecycled, Result, Scenario
 
 
 def run_calculator(scenario_id):
@@ -1535,7 +1534,8 @@ def run_calculator(scenario_id):
     listsToAdd.append(totalAdditivesStreamSummaryList)
 
     actualMassEmissionTotalTRVWList = ['Actual mass of emission (Tons):'] + [
-        0, 0, '-', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        # 0, 0, '-', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, stream25AshMass, 0, 0, 0, 0, 0, 0, 0]
     listsToAdd.append(actualMassEmissionTotalTRVWList)
 
@@ -1568,7 +1568,20 @@ def run_calculator(scenario_id):
 
     listsToAdd.append(emissionsFromPlasticList)
 
-    streamTRVWLists = streamTRVWLists + listsToAdd
+    finalTRVWList = streamTRVWLists + listsToAdd
+    # f = np.asarray(finalTRVWList, dtype=object)
+    # print(f.shape)
+    # scenario = Scenario.objects.filter(id=scenario_id).first()
+    for values in finalTRVWList:
+        key = values[0]
+        for index, val in enumerate(values[1:]):
+            try:
+                _ = float(val)
+                res = Result(scenario_id=scenario_id, stream_id=index + 1,
+                             key=key, value=val)
+                res.save()
+            except:
+                print(key, val, type(val))
 
     # TODO: Save the results to database.
     return True
